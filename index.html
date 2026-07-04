@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Security headers (meta equivalents for static hosting) -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Ronnachai Sitthichoksathit — Interview Availability</title>
+<meta name="description" content="Interview availability for Ronnachai Sitthichoksathit, Junior DevOps / SRE Engineer. Check the schedule and open a ticket to request an interview.">
+<style>
+  :root{
+    --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb; --bg:#ffffff;
+    --accent:#111827; --free:#16a34a; --busy:#dc2626;
+    --mono:ui-monospace,Consolas,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --text:#e5e7eb; --muted:#9ca3af; --border:#2d333b; --bg:#0f1216; --accent:#e5e7eb; }
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);line-height:1.6;
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  /* smooth, understated motion */
+  a,button,input,select,textarea,.day,.status{transition:all .18s ease}
+  @media (prefers-reduced-motion: no-preference){
+    main > *{animation:rise .5s ease both}
+    main > :nth-child(2){animation-delay:.06s}
+    main > :nth-child(3){animation-delay:.12s}
+    main > :nth-child(4){animation-delay:.18s}
+    main > :nth-child(5){animation-delay:.24s}
+    @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  }
+  .day:hover{transform:translateY(-1px);border-color:var(--accent)}
+  button:hover{opacity:.85}
+  button:active{transform:scale(.98)}
+  main{max-width:720px;margin:0 auto;padding:48px 20px 80px}
+  a{color:inherit}
+  h1{font-size:1.5rem;font-weight:650}
+  .sub,.meta{color:var(--muted)}
+  .meta{font-family:var(--mono);font-size:.8rem;margin-top:4px}
+  .status{display:inline-block;margin-top:12px;padding:4px 12px;border:1px solid var(--border);
+          border-radius:999px;font-family:var(--mono);font-size:.8rem}
+  .status::before{content:"●";margin-right:8px}
+  .status.open::before{color:var(--free)}
+  .status.limited::before{color:#d97706}
+  .status.busy::before{color:var(--busy)}
+
+  section{margin-top:44px}
+  h2{font-size:.95rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;
+     color:var(--muted);margin-bottom:14px}
+
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .dow{font-family:var(--mono);font-size:.65rem;color:var(--muted);text-align:center;padding-bottom:2px}
+  .day{border:1px solid var(--border);border-radius:4px;text-align:center;
+       font-family:var(--mono);font-size:.75rem;padding:6px 2px}
+  .day small{display:block;color:var(--muted);font-size:.6rem}
+  .day.free{border-color:color-mix(in srgb,var(--free) 45%,transparent)}
+  .day.busy{border-color:var(--busy);background:color-mix(in srgb,var(--busy) 10%,transparent)}
+  .day.off{opacity:.4}
+  .day.today{outline:2px solid var(--accent)}
+  .legend{margin-top:10px;font-size:.78rem;color:var(--muted)}
+  .note{margin-top:12px;font-size:.85rem;color:var(--muted)}
+  ul.busy-list{margin-top:10px;padding-left:0;list-style:none;font-family:var(--mono);font-size:.82rem}
+  ul.busy-list li{padding:4px 0;border-bottom:1px dashed var(--border)}
+
+  dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:.9rem}
+  dt{color:var(--muted)}
+  dd{font-family:var(--mono);word-break:break-all}
+
+  form{display:grid;gap:12px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:560px){.row{grid-template-columns:1fr}}
+  label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:3px}
+  input,select,textarea{width:100%;padding:8px 10px;font-size:.9rem;color:var(--text);
+    background:transparent;border:1px solid var(--border);border-radius:6px;font-family:inherit}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+  textarea{min-height:80px;resize:vertical}
+  .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  button{padding:9px 18px;font-size:.9rem;border-radius:6px;cursor:pointer;
+         border:1px solid var(--accent);background:var(--accent);color:var(--bg)}
+  button.secondary{background:transparent;color:var(--text);border-color:var(--border)}
+  #copied{font-size:.8rem;color:var(--free);visibility:hidden}
+  .hint{font-size:.78rem;color:var(--muted)}
+  footer{margin-top:56px;font-size:.75rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Ronnachai Sitthichoksathit</h1>
+    <p class="sub">Junior DevOps / SRE Engineer</p>
+    <p class="meta">Asia/Bangkok (GMT+7) · updated <span id="updated"></span></p>
+    <span id="status" class="status"></span>
+    <p class="meta"><a href="#h-ticket">Resume available on request — open a ticket below</a></p>
+  </header>
+
+  <section aria-labelledby="h-about">
+    <h2 id="h-about">About me</h2>
+    <p style="font-size:.92rem">
+      B.Eng. Computer Engineering graduate, Chiang Mai University (2022–2026).
+      Completed a Cooperative Education program at ITSC, Chiang Mai University —
+      GitLab CI/CD pipelines with GitOps, Kubernetes, and ArgoCD — and independently delivered a
+      Windows Server 2012 R2 → 2022 Active Directory migration for an SME client.
+      Built <a href="https://github.com/Unlxii/VisScan" target="_blank" rel="noopener noreferrer">VisScan</a>,
+      a DevSecOps platform integrating Semgrep, Gitleaks, and Trivy.
+    </p>
+    <p class="note">
+      AWS Certified Cloud Practitioner (CLF-C02) · preparing AWS SAA-C03 &amp; CKA ·
+      Looking for: <strong>Junior DevOps / Cloud / SRE / System Engineer</strong> roles ·
+      Bangkok / Chiang Mai, TH — open to on-site (Bangkok) or remote.
+    </p>
+  </section>
+
+  <section aria-labelledby="h-avail">
+    <h2 id="h-avail">Availability — next 4 weeks</h2>
+    <div class="row" style="margin-bottom:14px;align-items:end">
+      <div>
+        <label for="checkDate">Check a specific date</label>
+        <input type="date" id="checkDate">
+      </div>
+      <p id="checkResult" class="note" style="margin:0;padding-bottom:8px" role="status" aria-live="polite"></p>
+    </div>
+    <div class="cal" id="cal"></div>
+    <p class="legend">green border = available · red = busy (exam/commitment) · faded = weekend / past</p>
+    <ul class="busy-list" id="busyList"></ul>
+    <p class="note" id="hours"></p>
+  </section>
+
+  <section aria-labelledby="h-contact">
+    <h2 id="h-contact">Contact</h2>
+    <dl id="contact"></dl>
+    <p class="note">Fastest response: open a ticket below or email directly — I reply within a few hours on weekdays.</p>
+  </section>
+
+  <section aria-labelledby="h-ticket">
+    <h2 id="h-ticket">Open a ticket — interview request</h2>
+    <form id="ticket" novalidate>
+      <div class="row">
+        <div><label for="company">Company *</label>
+          <input id="company" required maxlength="120" autocomplete="organization"></div>
+        <div><label for="role">Position *</label>
+          <input id="role" required maxlength="120" autocomplete="organization-title"></div>
+      </div>
+      <div class="row">
+        <div><label for="person">Contact person</label>
+          <input id="person" maxlength="120" autocomplete="name"></div>
+        <div><label for="email">Your email (corporate address gets priority)</label>
+          <input id="email" type="email" maxlength="254" autocomplete="email"></div>
+      </div>
+      <div class="row">
+        <div><label for="format">Format</label>
+          <select id="format">
+            <option>MS Teams</option><option>Google Meet</option><option>Zoom</option>
+            <option>Phone</option><option>Onsite</option>
+          </select></div>
+        <div><label for="when">Proposed date &amp; time (GMT+7)</label>
+          <input id="when" maxlength="120" placeholder="e.g. Mon 13 Jul, 14:00"></div>
+      </div>
+      <div><label for="msg">Message / JD link</label>
+        <textarea id="msg" maxlength="2000"></textarea></div>
+      <label style="display:flex;gap:8px;align-items:center;font-size:.85rem;color:var(--text)">
+        <input type="checkbox" id="wantResume" style="width:auto">
+        Request my resume (sent by email after I verify your company — usually same day)
+      </label>
+      <label style="display:flex;gap:8px;align-items:center;font-size:.85rem;color:var(--text)">
+        <input type="checkbox" id="notify" style="width:auto">
+        Notify me by email if this availability changes (optional — requires your email above)
+      </label>
+      <div class="actions">
+        <button type="submit">Send via email</button>
+        <button type="button" class="secondary" id="copy">Copy ticket</button>
+        <span id="copied">copied ✓</span>
+      </div>
+      <p class="hint">"Send" opens your mail client pre-filled. If nothing opens, use "Copy ticket" and paste into any email.</p>
+    </form>
+  </section>
+
+  <footer>Static page · no cookies · no tracking · no third-party requests</footer>
+</main>
+
+<script>
+"use strict";
+
+/* ---- Static identity config (rarely changes) ---- */
+const CONFIG = Object.freeze({
+  email: "ronnachaisitti@gmail.com",
+  github: "https://github.com/Unlxii",
+  linkedin: "https://linkedin.com/in/tent-ronnachai",
+  statusText: {
+    open: "Open to interviews — preparing AWS SAA-C03 & CKA",
+    limited: "Limited availability — exam period, see calendar",
+    busy: "Unavailable — please propose dates after blocked period",
+  },
+  hours: "Preferred hours: Mon–Fri 09:00–18:00 (GMT+7). Weekends on request.",
+});
+
+/* ---- Schedule data: managed in availability.json (add/move/remove dates there).
+        Falls back to these defaults if the file can't be loaded. ---- */
+let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [] };
+
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+function sanitizeSchedule(raw) {
+  if (typeof raw !== "object" || raw === null) return null;
+  const status = ["open", "limited", "busy"].includes(raw.status) ? raw.status : "open";
+  const updated = DATE_RE.test(String(raw.updated)) ? raw.updated : SCHEDULE.updated;
+  const busy = Array.isArray(raw.busy)
+    ? raw.busy
+        .filter((b) => b && DATE_RE.test(String(b.from)) && DATE_RE.test(String(b.to)))
+        .map((b) => ({
+          from: b.from, to: b.to,
+          time: String(b.time || "").slice(0, 40),
+          label: String(b.label || "Busy").slice(0, 120),
+        }))
+    : [];
+  return { status, updated, busy };
+}
+
+async function loadSchedule() {
+  try {
+    const res = await fetch("availability.json", { cache: "no-store" });
+    if (!res.ok) return;
+    const clean = sanitizeSchedule(await res.json());
+    if (clean) SCHEDULE = clean;
+  } catch {
+    /* offline / file:// — keep embedded defaults */
+  }
+}
+/* ----------------------------------------- */
+
+const $ = (id) => document.getElementById(id);
+const iso = (d) => d.toISOString().slice(0, 10);
+const isBusy = (ds) => SCHEDULE.busy.find((b) => ds >= b.from && ds <= b.to);
+
+/* All dynamic content is inserted via textContent / DOM APIs — never innerHTML. */
+
+function el(tag, className, text) {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+function renderCalendar() {
+  const cal = $("cal");
+  cal.textContent = "";
+  for (const d of ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]) cal.append(el("div", "dow", d));
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const start = new Date(today);
+  start.setDate(start.getDate() - ((start.getDay() + 6) % 7)); // back to Monday
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    const ds = iso(d);
+    const busy = isBusy(ds);
+    const weekend = d.getDay() === 0 || d.getDay() === 6;
+    const cls = ["day", busy ? "busy" : "free"];
+    if (weekend || d < today) cls.push("off");
+    if (ds === iso(today)) cls.push("today");
+    const cell = el("div", cls.join(" "), String(d.getDate()));
+    cell.append(el("small", "", d.toLocaleString("en", { month: "short" })));
+    cell.title = busy ? `${busy.label}${busy.time ? ` (${busy.time})` : ""}` : weekend ? "Weekend — on request" : "Available";
+    cal.append(cell);
+  }
+}
+
+function renderBusyList() {
+  const ul = $("busyList");
+  ul.textContent = "";
+  if (SCHEDULE.busy.length === 0) {
+    ul.append(el("li", "", "No exams booked yet — SAA-C03 / CKA dates will appear here once scheduled."));
+    return;
+  }
+  for (const b of SCHEDULE.busy)
+    ul.append(el("li", "", `${b.from} → ${b.to}${b.time ? ` (${b.time})` : " (all day)"} — ${b.label}`));
+}
+
+function renderContact() {
+  const dl = $("contact");
+  const rows = [
+    ["Email", CONFIG.email, `mailto:${CONFIG.email}`],
+    ["GitHub", CONFIG.github.replace(/^https:\/\//, ""), CONFIG.github],
+    ["LinkedIn", CONFIG.linkedin.replace(/^https:\/\//, ""), CONFIG.linkedin],
+  ];
+  for (const [label, text, href] of rows) {
+    dl.append(el("dt", "", label));
+    const dd = el("dd");
+    const a = el("a", "", text);
+    a.href = href;
+    a.rel = "noopener noreferrer";
+    a.target = "_blank";
+    dd.append(a);
+    dl.append(dd);
+  }
+}
+
+function ticketBody() {
+  const v = (id) => $(id).value.trim() || "-";
+  return [
+    "=== INTERVIEW REQUEST ===",
+    `Company: ${v("company")}`,
+    `Position: ${v("role")}`,
+    `Contact: ${v("person")}`,
+    `Contact email: ${v("email")}`,
+    `Format: ${$("format").value}`,
+    `Proposed time (GMT+7): ${v("when")}`,
+    `Resume requested: ${$("wantResume").checked ? "YES" : "no"}`,
+    `Notify on schedule changes: ${$("notify").checked ? "YES — please email me if dates change" : "no"}`,
+    "",
+    "Message:",
+    v("msg"),
+  ].join("\n");
+}
+
+$("ticket").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (($("wantResume").checked || $("notify").checked) && !$("email").value.trim()) {
+    $("email").setCustomValidity("Email is required for resume requests or notifications.");
+  } else {
+    $("email").setCustomValidity("");
+  }
+  if (!$("ticket").reportValidity()) return;
+  const subject = `[Interview Request] ${$("company").value.trim()} — ${$("role").value.trim()}`;
+  window.location.href =
+    `mailto:${CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(ticketBody())}`;
+});
+
+$("copy").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(`To: ${CONFIG.email}\n${ticketBody()}`);
+    $("copied").style.visibility = "visible";
+    setTimeout(() => { $("copied").style.visibility = "hidden"; }, 2000);
+  } catch {
+    $("copied").textContent = "copy blocked — select text manually";
+    $("copied").style.visibility = "visible";
+  }
+});
+
+/* Date checker for interviewers */
+function checkDate() {
+  const v = $("checkDate").value;
+  const out = $("checkResult");
+  if (!DATE_RE.test(v)) { out.textContent = ""; return; }
+  const d = new Date(v + "T00:00:00");
+  const busy = isBusy(v);
+  const weekend = d.getDay() === 0 || d.getDay() === 6;
+  const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+  if (busy && busy.time) out.textContent = `△ ${pretty}: busy ${busy.time} — ${busy.label}. Free outside those hours.`;
+  else if (busy) out.textContent = `✗ ${pretty}: busy all day — ${busy.label}. Please pick another date.`;
+  else if (weekend) out.textContent = `△ ${pretty}: weekend — possible on request.`;
+  else out.textContent = `✓ ${pretty}: available (${CONFIG.hours})`;
+}
+
+function renderSchedule() {
+  $("updated").textContent = SCHEDULE.updated;
+  const st = $("status");
+  st.className = "status " + SCHEDULE.status;
+  st.textContent = CONFIG.statusText[SCHEDULE.status];
+  renderCalendar();
+  renderBusyList();
+  checkDate();
+}
+
+$("checkDate").addEventListener("input", checkDate);
+
+(async function init() {
+  $("hours").textContent = CONFIG.hours;
+  renderContact();
+  await loadSchedule();
+  renderSchedule();
+  /* near-realtime: re-fetch schedule every 60 s while the page is open */
+  setInterval(async () => { await loadSchedule(); renderSchedule(); }, 60_000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+name: Notify subscribers on availability change
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - availability.json
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    # SUBSCRIBERS secret: comma-separated emails, kept private in repo Settings
+    env:
+      SUBSCRIBERS: ${{ secrets.SUBSCRIBERS }}
+    steps:
+      - name: Send notification email (BCC for privacy)
+        if: ${{ env.SUBSCRIBERS != '' }}
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          from: Ronnachai Sitthichoksathit <${{ secrets.MAIL_USERNAME }}>
+          to: ${{ secrets.MAIL_USERNAME }}
+          bcc: ${{ secrets.SUBSCRIBERS }}
+          subject: "[Schedule update] Ronnachai Sitthichoksathit — interview availability changed"
+          body: |
+            Hello,
+
+            You asked to be notified when my interview availability changes.
+            My schedule has just been updated.
+
+            Check the latest calendar here:
+            https://unlxii.github.io/interview-availability/
+
+            Best regards,
+            Ronnachai Sitthichoksathit
+            ronnachaisitti@gmail.com
+
+            (You received this because you requested schedule-change notifications.
+            Reply "unsubscribe" to stop receiving these.)

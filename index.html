@@ -89,7 +89,7 @@
   .meta{color:var(--faint);font-size:.8rem;margin-top:6px}
   .meta a{color:var(--muted);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border-strong)}
   .status{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:5px 14px 5px 11px;
-          border-radius:999px;font-size:.8rem;font-weight:500;
+          border-radius:999px;font-family:var(--mono);font-size:.76rem;font-weight:500;
           background:color-mix(in srgb,var(--free) 10%,transparent);color:var(--text)}
   .status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--free);
           box-shadow:0 0 0 3px color-mix(in srgb,var(--free) 22%,transparent)}
@@ -105,9 +105,20 @@
 
   /* ---------- sections / cards ---------- */
   section{margin-top:36px}
-  /* terminal-prompt section headers — the signature of this page */
-  h2{font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--muted);margin:0 2px 12px}
-  h2::before{content:"$ ";color:var(--free);font-weight:600}
+  /* mono section headers — the signature of this page */
+  h2{font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--muted);margin:0 2px 12px;scroll-margin-top:28px}
+
+  /* jump-highlight: the section you navigate to glows so you can't miss it */
+  @media (prefers-reduced-motion: no-preference){
+    section.glow .card{animation:glowPulse 1.6s ease}
+    @keyframes glowPulse{
+      0%{box-shadow:0 0 0 2px var(--border-strong),0 0 46px 8px rgba(255,255,255,.26)}
+      100%{box-shadow:var(--shadow)}
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    section.glow .card{box-shadow:0 0 0 2px var(--border-strong)}
+  }
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
         padding:22px;box-shadow:var(--shadow)}
 
@@ -125,7 +136,7 @@
   .term{display:flex;gap:10px;align-items:center;background:var(--surface2);border:1px solid var(--border);
         border-radius:9px;padding:11px 14px;margin-bottom:8px;font-family:var(--mono)}
   .term:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
-  .t-prompt{color:var(--free);font-weight:600;font-size:.85rem;user-select:none}
+  .t-prompt{color:var(--faint);font-size:.85rem;user-select:none}
   .t-input{flex:1;border:0;background:transparent;color:var(--text);font-family:var(--mono);
            font-size:.85rem;padding:0}
   .t-input::placeholder{color:var(--faint)}
@@ -137,6 +148,12 @@
   .t-out.err{color:var(--faint)}
 
   /* ---------- calendar ---------- */
+  .calnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+  .range{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+  .navbtns{display:flex;gap:6px}
+  .navBtn{padding:5px 12px;font-size:.8rem;font-family:var(--mono);border-radius:8px;cursor:pointer;
+    background:var(--surface2);border:1px solid var(--border);color:var(--muted)}
+  .navBtn:hover{color:var(--text);border-color:var(--border-strong);opacity:1}
   .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
   .dow{font-size:.62rem;font-weight:600;color:var(--faint);text-align:right;
        text-transform:uppercase;letter-spacing:.06em;padding:0 7px 4px}
@@ -153,6 +170,11 @@
   .day.off{opacity:.45}
   .day:hover{border-color:var(--border-strong);transform:translateY(-1px)}
   .day:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .day.hit{border-color:var(--accent);box-shadow:0 0 0 2px var(--ring)}
+  @media (prefers-reduced-motion: no-preference){
+    .day.hit{animation:hitPulse .7s ease}
+    @keyframes hitPulse{0%{box-shadow:0 0 0 8px var(--ring)}100%{box-shadow:0 0 0 2px var(--ring)}}
+  }
   .day .dot{display:none}
   @media(max-width:560px){
     .day{min-height:46px}
@@ -177,7 +199,7 @@
   .tip.past{border-top-color:var(--faint)}
   .day.holiday .num{color:var(--busy);font-weight:600}
   @media (prefers-reduced-motion: reduce){ .tip{transition:none} }
-  .legend{margin-top:12px;font-size:.72rem;color:var(--faint)}
+  .legend{margin-top:12px;font-family:var(--mono);font-size:.68rem;color:var(--faint)}
 
   .note{margin-top:14px;font-size:.8rem;color:var(--muted)}
 
@@ -203,7 +225,9 @@
     background:var(--surface);border:1px solid var(--border);border-radius:9px;font-family:inherit}
   input:hover,select:hover,textarea:hover{border-color:var(--border-strong)}
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
-  textarea{min-height:88px;resize:vertical}
+  textarea{min-height:96px;resize:vertical;line-height:1.6;overflow-y:hidden}
+  @media(max-width:560px){ input,select,textarea{font-size:16px} } /* prevents iOS focus-zoom */
+  .count{font-family:var(--mono);font-size:.68rem;color:var(--faint);text-align:right;margin-top:4px}
   .check{display:flex;gap:10px;align-items:center;font-size:.84rem;color:var(--text)}
   .check input{width:15px;height:15px;accent-color:var(--accent)}
   .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px}
@@ -216,7 +240,7 @@
   #copied{font-size:.8rem;color:var(--free);visibility:hidden}
   .hint{font-size:.76rem;color:var(--faint)}
 
-  footer{margin-top:56px;font-size:.74rem;color:var(--faint);text-align:center}
+  footer{margin-top:56px;font-family:var(--mono);font-size:.7rem;color:var(--faint);text-align:center}
 </style>
 </head>
 <body>
@@ -252,10 +276,18 @@
   </section>
 
   <section aria-labelledby="h-avail">
-    <h2 id="h-avail">availability --next 4w</h2>
+    <h2 id="h-avail">availability</h2>
     <div class="card">
+      <div class="calnav">
+        <span class="range" id="calRange"></span>
+        <div class="navbtns">
+          <button type="button" class="navBtn" id="calPrev" aria-label="Previous 4 weeks">‹</button>
+          <button type="button" class="navBtn" id="calToday">today</button>
+          <button type="button" class="navBtn" id="calNext" aria-label="Next 4 weeks">›</button>
+        </div>
+      </div>
       <div class="term">
-        <span class="t-prompt">$ check</span>
+        <span class="t-prompt">›</span>
         <input id="q" class="t-input" placeholder="15 jul · 15/07 · tomorrow · next mon" autocomplete="off" spellcheck="false" aria-label="Check a date">
       </div>
       <p id="qOut" class="t-out" role="status" aria-live="polite" hidden></p>
@@ -304,7 +336,8 @@
             <input id="when" maxlength="120" placeholder="e.g. Mon 13 Jul, 14:00"></div>
         </div>
         <div><label for="msg">Message / JD link</label>
-          <textarea id="msg" maxlength="2000"></textarea></div>
+          <textarea id="msg" maxlength="2000" placeholder="Anything helpful — JD link, salary range, next steps…"></textarea>
+          <div class="count" id="msgCount" hidden></div></div>
         <label class="check">
           <input type="checkbox" id="wantResume">
           Request my resume (sent by email after I verify your company — usually same day)
@@ -418,6 +451,9 @@ function el(tag, className, text) {
   return e;
 }
 
+let calOffset = 0; // weeks from the current Sunday — arrows move 4 weeks per page
+const sundayOf = (x) => { const s = new Date(x); s.setHours(0, 0, 0, 0); s.setDate(s.getDate() - s.getDay()); return s; };
+
 function renderCalendar() {
   const cal = $("cal");
   cal.textContent = "";
@@ -425,8 +461,12 @@ function renderCalendar() {
   for (const d of ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]) frag.append(el("div", "dow", d)); // Thai calendars start on Sunday
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const start = new Date(today);
-  start.setDate(start.getDate() - start.getDay()); // back to Sunday
+  const start = sundayOf(today);
+  start.setDate(start.getDate() + calOffset * 7);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 27);
+  $("calRange").textContent =
+    `${start.toLocaleDateString("en", { day: "numeric", month: "short" })} – ${end.toLocaleDateString("en", { day: "numeric", month: "short", year: "numeric" })}`;
   for (let i = 0; i < 28; i++) {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
@@ -504,9 +544,17 @@ function hideTip() {
   cal.addEventListener("focusin", enter);
   cal.addEventListener("mouseleave", hideTip);
   cal.addEventListener("focusout", hideTip);
-  window.addEventListener("scroll", hideTip, { passive: true });
-  document.addEventListener("click", (e) => { if (!e.target.closest(".day")) hideTip(); }); // mobile: tap outside closes
+  window.addEventListener("scroll", () => { if (Date.now() > tipPinnedUntil) hideTip(); }, { passive: true });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".day") && !e.target.closest(".term")) hideTip(); // mobile: tap outside closes
+  });
 }
+let tipPinnedUntil = 0; // lets the search auto-scroll finish without closing the popover
+
+/* calendar paging */
+$("calPrev").addEventListener("click", () => { calOffset -= 4; hideTip(); renderCalendar(); });
+$("calNext").addEventListener("click", () => { calOffset += 4; hideTip(); renderCalendar(); });
+$("calToday").addEventListener("click", () => { calOffset = 0; hideTip(); renderCalendar(); });
 
 /* ---- Dark / light toggle — follows system until the visitor picks ---- */
 function applyTheme(t) {
@@ -522,6 +570,23 @@ $("themeBtn").addEventListener("click", () => {
   applyTheme(next);
 });
 try { applyTheme(localStorage.getItem("theme") || ""); } catch { applyTheme(""); }
+
+/* ---- glow the section you jump to (works for every in-page link and tab) ---- */
+function glowSection(hash) {
+  const t = hash && document.getElementById(hash.slice(1));
+  const sec = t && t.closest("section");
+  if (!sec) return;
+  sec.classList.remove("glow");
+  void sec.offsetWidth; // restart animation on repeat clicks
+  sec.classList.add("glow");
+  setTimeout(() => sec.classList.remove("glow"), 1700);
+}
+window.addEventListener("hashchange", () => glowSection(location.hash));
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (a) glowSection(a.getAttribute("href"));
+});
+if (location.hash) glowSection(location.hash);
 
 function renderFocus() {
   const wrap = $("focusChips");
@@ -580,6 +645,25 @@ $("ticket").addEventListener("submit", (e) => {
     `mailto:${CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(ticketBody())}`;
 });
 
+/* comfortable typing: auto-grow message box, live counter, draft survives refresh */
+{
+  const msg = $("msg");
+  const grow = () => { msg.style.height = "auto"; msg.style.height = Math.min(msg.scrollHeight + 2, 420) + "px"; };
+  const count = () => { const n = msg.value.length; $("msgCount").hidden = n === 0; $("msgCount").textContent = `${n} / 2000`; };
+  msg.addEventListener("input", () => { grow(); count(); });
+
+  const FIELDS = ["company", "role", "person", "email", "format", "when", "msg"];
+  const saveDraft = () => {
+    try { sessionStorage.setItem("ticket-draft", JSON.stringify(Object.fromEntries(FIELDS.map((f) => [f, $(f).value])))); } catch { /* private mode */ }
+  };
+  for (const f of FIELDS) $(f).addEventListener("input", saveDraft);
+  try {
+    const d = JSON.parse(sessionStorage.getItem("ticket-draft") || "{}");
+    for (const f of FIELDS) if (d[f]) $(f).value = d[f];
+    grow(); count();
+  } catch { /* ignore corrupt draft */ }
+}
+
 $("copy").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(`To: ${CONFIG.email}\n${ticketBody()}`);
@@ -627,19 +711,27 @@ function parseDateQuery(raw) {
   if (m) { const mi = MONTHS.findIndex((x) => m[1].startsWith(x)); if (mi >= 0) return mk(m[3] ? normYear(+m[3]) : today.getFullYear(), mi + 1, +m[2]); }
   return null;
 }
+function clearHit() {
+  document.querySelectorAll(".day.hit").forEach((c) => c.classList.remove("hit"));
+}
 $("q").addEventListener("input", () => {
   const out = $("qOut");
   const raw = $("q").value;
-  if (!raw.trim()) { out.hidden = true; return; }
+  clearHit();
+  if (!raw.trim()) { out.hidden = true; hideTip(); return; }
   const d = parseDateQuery(raw);
-  out.hidden = false;
-  if (!d) { out.className = "t-out err"; out.textContent = "… try: 15 jul · 15/07 · 2026-07-15 · tomorrow · next mon"; return; }
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  if (d < today) { out.className = "t-out err"; out.textContent = `− ${d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" })} is in the past`; return; }
-  const info = describeDay(iso(d));
-  const sym = info.cls === "busy" ? "✗" : info.cls === "partial" ? "△" : "✓";
-  out.className = `t-out ${info.cls}`;
-  out.textContent = `${sym} ${info.date} — ${info.text}`;
+  if (!d) { out.hidden = false; out.className = "t-out err"; out.textContent = "… try: 15 jul · 15/07 · 2026-07-15 · tomorrow · next mon"; hideTip(); return; }
+  /* the answer IS the calendar: page to the right 4 weeks, jump to the cell, pop the detail */
+  out.hidden = true;
+  const weeksDiff = Math.round((sundayOf(d) - sundayOf(new Date())) / 604800000);
+  const page = Math.floor(weeksDiff / 4) * 4;
+  if (page !== calOffset) { calOffset = page; renderCalendar(); }
+  const cell = document.querySelector(`.day[data-ds="${iso(d)}"]`);
+  if (!cell) { hideTip(); return; }
+  cell.classList.add("hit");
+  tipPinnedUntil = Date.now() + 800;
+  cell.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  showTip(cell);
 });
 
 function renderSchedule() {

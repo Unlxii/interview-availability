@@ -139,18 +139,19 @@
     .day.busy .dot{background:var(--busy)}
   }
 
-  .detail{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--surface2);
-    border-left:3px solid var(--faint);font-size:.85rem;
-    display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;transition:border-color .25s ease}
-  .detail .d-date{font-weight:600;white-space:nowrap;font-size:.82rem}
-  .detail .d-status{color:var(--muted)}
-  .detail.free{border-left-color:var(--free)}
-  .detail.partial{border-left-color:var(--partial)}
-  .detail.busy{border-left-color:var(--busy)}
-  @media (prefers-reduced-motion: no-preference){
-    .detail.pop{animation:pop .25s ease}
-    @keyframes pop{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}
-  }
+  /* floating popover anchored to the hovered day */
+  .tip{position:fixed;z-index:40;max-width:280px;background:var(--surface);border:1px solid var(--border);
+       border-radius:10px;padding:10px 13px;font-size:.78rem;
+       box-shadow:0 10px 30px rgba(0,0,0,.22),0 2px 6px rgba(0,0,0,.12);
+       pointer-events:none;opacity:0;transform:translateY(5px) scale(.97);
+       transition:opacity .16s ease,transform .16s ease;border-top:3px solid var(--faint)}
+  .tip.show{opacity:1;transform:none}
+  .tip .t-date{font-weight:650;margin-bottom:2px}
+  .tip .t-text{color:var(--muted);line-height:1.5}
+  .tip.free{border-top-color:var(--free)}
+  .tip.partial{border-top-color:var(--partial)}
+  .tip.busy{border-top-color:var(--busy)}
+  @media (prefers-reduced-motion: reduce){ .tip{transition:none} }
   .legend{margin-top:12px;font-size:.72rem;color:var(--faint)}
 
   ul.busy-list{margin-top:16px;padding:0;list-style:none;display:grid;gap:2px}
@@ -240,10 +241,6 @@
         <p id="checkResult" role="status" aria-live="polite"></p>
       </div>
       <div class="cal" id="cal"></div>
-      <div id="dayDetail" class="detail" aria-live="polite">
-        <span class="d-date" id="dDate">—</span>
-        <span class="d-status" id="dStatus">Hover or tap any date to see details here.</span>
-      </div>
       <p class="legend">amber block = partly busy (hours shown) · red block = busy all day · empty = available · faded = weekend / past</p>
       <ul class="busy-list" id="busyList"></ul>
       <p class="note" id="hours"></p>
@@ -305,6 +302,11 @@
 
   <footer>© 2026 Ronnachai Sitthichoksathit · static page · no cookies · no tracking · no third-party requests</footer>
 </main>
+
+<div id="tip" class="tip" role="tooltip" aria-hidden="true">
+  <div class="t-date" id="tDate"></div>
+  <div class="t-text" id="tText"></div>
+</div>
 
 <script>
 "use strict";
@@ -392,10 +394,8 @@ function renderCalendar() {
     const showMonth = i === 0 || d.getDate() === 1;
     cell.append(el("span", "num", showMonth ? `${d.toLocaleString("en", { month: "short" })} ${d.getDate()}` : String(d.getDate())));
     if (busy) {
-      const chip = el("div", `evt ${busy.time ? "partial" : "busy"}`,
-        busy.time ? `${busy.time} · ${busy.label}` : busy.label);
-      chip.title = `${busy.label}${busy.time ? ` (${busy.time})` : " (all day)"}`;
-      cell.append(chip);
+      cell.append(el("div", `evt ${busy.time ? "partial" : "busy"}`,
+        busy.time ? `${busy.time} · ${busy.label}` : busy.label));
     }
     cell.append(el("span", "dot"));
     cell.dataset.ds = ds;
@@ -419,26 +419,41 @@ function describeDay(ds) {
   return { cls: "free", date: pretty, text: `Available. ${CONFIG.hours}` };
 }
 
-function showDayDetail(ds) {
-  const info = describeDay(ds);
-  $("dDate").textContent = info.date;
-  $("dStatus").textContent = info.text;
-  const panel = $("dayDetail");
-  panel.className = `detail ${info.cls}`;
-  void panel.offsetWidth; // restart pop animation
-  panel.classList.add("pop");
+/* floating popover: pops out of the hovered/tapped cell, auto-positions, flips if near top */
+function showTip(cell) {
+  const info = describeDay(cell.dataset.ds);
+  const tip = $("tip");
+  $("tDate").textContent = info.date;
+  $("tText").textContent = info.text;
+  tip.className = `tip ${info.cls}`;
+  tip.setAttribute("aria-hidden", "false");
+  tip.classList.add("show");
+  const r = cell.getBoundingClientRect();
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let x = r.left + r.width / 2 - tw / 2;
+  x = Math.max(8, Math.min(x, innerWidth - tw - 8)); // keep on screen
+  let y = r.top - th - 10;
+  if (y < 8) y = r.bottom + 10; // flip below when near viewport top
+  tip.style.left = `${x}px`;
+  tip.style.top = `${y}px`;
+}
+function hideTip() {
+  const tip = $("tip");
+  tip.classList.remove("show");
+  tip.setAttribute("aria-hidden", "true");
 }
 
 /* one delegated listener set for all 28 cells (hover, tap, keyboard focus) */
 {
   const cal = $("cal");
-  const pick = (e) => {
-    const cell = e.target.closest(".day");
-    if (cell && cell.dataset.ds) showDayDetail(cell.dataset.ds);
-  };
-  cal.addEventListener("mouseover", pick);
-  cal.addEventListener("click", pick);
-  cal.addEventListener("focusin", pick);
+  const cellOf = (e) => e.target.closest(".day");
+  const enter = (e) => { const c = cellOf(e); if (c && c.dataset.ds) showTip(c); };
+  cal.addEventListener("mouseover", enter);
+  cal.addEventListener("click", enter);
+  cal.addEventListener("focusin", enter);
+  cal.addEventListener("mouseleave", hideTip);
+  cal.addEventListener("focusout", hideTip);
+  window.addEventListener("scroll", hideTip, { passive: true });
 }
 
 /* ---- Dark / light toggle — follows system until the visitor picks ---- */

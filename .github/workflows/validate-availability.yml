@@ -1,0 +1,39 @@
+name: Validate availability.json
+
+# Quality gate: broken JSON would silently fall back to defaults on the live
+# page. Fail fast at push time instead of discovering it in production.
+
+on:
+  push:
+    paths:
+      - availability.json
+  pull_request:
+    paths:
+      - availability.json
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Schema check
+        run: |
+          node -e '
+          const fs = require("fs");
+          const d = JSON.parse(fs.readFileSync("availability.json", "utf8"));
+          const DATE = /^\d{4}-\d{2}-\d{2}$/;
+          const TIME = /^([01]\d|2[0-3]):[0-5]\d-([01]\d|2[0-3]):[0-5]\d$/;
+          const fail = (m) => { console.error("INVALID:", m); process.exit(1); };
+          if (!["open", "limited", "busy"].includes(d.status)) fail("status must be open|limited|busy");
+          if (!DATE.test(String(d.updated))) fail("updated must be YYYY-MM-DD");
+          if (!Array.isArray(d.busy)) fail("busy must be an array");
+          for (const [i, b] of d.busy.entries()) {
+            if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);
+            if (b.to < b.from) fail(`busy[${i}]: reversed range (${b.from} > ${b.to})`);
+            if (b.time && !TIME.test(b.time)) fail(`busy[${i}]: time must be HH:MM-HH:MM`);
+            if (typeof (b.label ?? "") !== "string" || String(b.label || "").length > 120) fail(`busy[${i}]: label must be a string <= 120 chars`);
+          }
+          console.log(`availability.json valid — ${d.busy.length} busy period(s)`);'

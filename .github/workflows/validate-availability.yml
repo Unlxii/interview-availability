@@ -30,6 +30,11 @@ jobs:
           if (!["open", "limited", "busy"].includes(d.status)) fail("status must be open|limited|busy");
           if (!DATE.test(String(d.updated))) fail("updated must be YYYY-MM-DD");
           if (!Array.isArray(d.busy)) fail("busy must be an array");
+          if (d.focus !== undefined) {
+            if (!Array.isArray(d.focus)) fail("focus must be an array of strings");
+            for (const [i, f] of d.focus.entries())
+              if (typeof f !== "string" || f.length > 60) fail(`focus[${i}]: must be a string <= 60 chars`);
+          }
           for (const [i, b] of d.busy.entries()) {
             if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);
             if (b.to < b.from) fail(`busy[${i}]: reversed range (${b.from} > ${b.to})`);

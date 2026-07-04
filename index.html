@@ -179,17 +179,13 @@
   @media (prefers-reduced-motion: reduce){ .tip{transition:none} }
   .legend{margin-top:12px;font-size:.72rem;color:var(--faint)}
 
-  ul.busy-list{margin-top:16px;padding:0;list-style:none;display:grid;gap:2px}
-  .busy-item{display:flex;gap:12px;align-items:center;padding:9px 12px;border-radius:8px}
-  .busy-item:hover{background:var(--surface2)}
-  .busy-item .b-dot{flex:none;width:8px;height:8px;border-radius:50%}
-  .busy-item .b-dot.partial{background:var(--partial)}
-  .busy-item .b-dot.busy{background:var(--busy)}
-  .busy-item .b-main{display:flex;justify-content:space-between;gap:12px;flex:1;flex-wrap:wrap;align-items:baseline}
-  .busy-item .b-label{font-size:.87rem;font-weight:500}
-  .busy-item .b-when{font-family:var(--mono);font-size:.72rem;color:var(--faint)}
-  ul.busy-list .empty{color:var(--muted);font-size:.85rem;padding:6px 2px}
   .note{margin-top:14px;font-size:.8rem;color:var(--muted)}
+
+  /* ---------- current focus chips ---------- */
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:.75rem;padding:6px 13px;border-radius:999px;
+        background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+  .chip::before{content:"→ ";color:var(--free);font-weight:600}
 
   /* ---------- contact ---------- */
   dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:.88rem;align-items:baseline}
@@ -265,9 +261,13 @@
       <p id="qOut" class="t-out" role="status" aria-live="polite" hidden></p>
       <div class="cal" id="cal"></div>
       <p class="legend">amber block = partly busy (hours shown) · red block = busy all day · red date = Thai public holiday · empty = available · faded = weekend / past</p>
-      <ul class="busy-list" id="busyList"></ul>
       <p class="note" id="hours"></p>
     </div>
+  </section>
+
+  <section aria-labelledby="h-focus" id="focusSection" hidden>
+    <h2 id="h-focus">current-focus</h2>
+    <div class="card"><div class="chips" id="focusChips"></div></div>
   </section>
 
   <section aria-labelledby="h-contact">
@@ -349,7 +349,7 @@ const CONFIG = Object.freeze({
 
 /* ---- Schedule data: managed in availability.json (add/move/remove dates there).
         Falls back to these defaults if the file can't be loaded. ---- */
-let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [] };
+let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [], focus: [] };
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 function sanitizeSchedule(raw) {
@@ -366,7 +366,10 @@ function sanitizeSchedule(raw) {
           label: (String(b.label || "").trim() || "Busy").slice(0, 120),
         }))
     : [];
-  return { status, updated, busy };
+  const focus = Array.isArray(raw.focus)
+    ? raw.focus.map((f) => String(f).trim().slice(0, 60)).filter(Boolean).slice(0, 6)
+    : [];
+  return { status, updated, busy, focus };
 }
 
 let scheduleFresh = false; // false = showing cached/default data (fetch failed)
@@ -520,22 +523,11 @@ $("themeBtn").addEventListener("click", () => {
 });
 try { applyTheme(localStorage.getItem("theme") || ""); } catch { applyTheme(""); }
 
-function renderBusyList() {
-  const ul = $("busyList");
-  ul.textContent = "";
-  if (SCHEDULE.busy.length === 0) {
-    ul.append(el("li", "empty", "No exams booked yet — SAA-C03 / CKA dates will appear here once scheduled."));
-    return;
-  }
-  for (const b of SCHEDULE.busy) {
-    const li = el("li", "busy-item");
-    li.append(el("span", `b-dot ${b.time ? "partial" : "busy"}`));
-    const main = el("div", "b-main");
-    main.append(el("span", "b-label", b.label));
-    main.append(el("span", "b-when", `${b.from} → ${b.to} · ${b.time || "all day"}`));
-    li.append(main);
-    ul.append(li);
-  }
+function renderFocus() {
+  const wrap = $("focusChips");
+  wrap.textContent = "";
+  $("focusSection").hidden = SCHEDULE.focus.length === 0;
+  for (const f of SCHEDULE.focus) wrap.append(el("span", "chip", f));
 }
 
 function renderContact() {
@@ -656,7 +648,7 @@ function renderSchedule() {
   st.className = "status " + SCHEDULE.status;
   st.textContent = CONFIG.statusText[SCHEDULE.status];
   renderCalendar();
-  renderBusyList();
+  renderFocus();
 }
 
 (async function init() {

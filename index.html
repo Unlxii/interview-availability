@@ -18,10 +18,14 @@
   @media (prefers-color-scheme: dark){
     :root{ --text:#e5e7eb; --muted:#9ca3af; --border:#2d333b; --bg:#0f1216; --accent:#e5e7eb; }
   }
+  /* manual theme override (persisted) — wins over system preference */
+  html[data-theme="light"]{ --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb; --bg:#ffffff; --accent:#111827; }
+  html[data-theme="dark"]{ --text:#e5e7eb; --muted:#9ca3af; --border:#2d333b; --bg:#0f1216; --accent:#e5e7eb; }
   *{box-sizing:border-box;margin:0}
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--text);line-height:1.6;
-       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       transition:background .3s ease,color .3s ease}
   /* smooth, understated motion */
   a,button,input,select,textarea,.day,.status{transition:all .18s ease}
   @media (prefers-reduced-motion: no-preference){
@@ -60,6 +64,29 @@
   .day.busy{border-color:var(--busy);background:color-mix(in srgb,var(--busy) 10%,transparent)}
   .day.partial{border-color:var(--partial);background:color-mix(in srgb,var(--partial) 12%,transparent)}
   .day.off{opacity:.4}
+  .day{cursor:pointer;outline-offset:1px}
+  .day:focus-visible{outline:2px solid var(--accent)}
+
+  /* day detail panel (under calendar) */
+  .detail{margin-top:12px;padding:12px 16px;border:1px solid var(--border);
+    border-left:3px solid var(--muted);border-radius:6px;font-size:.88rem;
+    display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;transition:border-color .25s ease}
+  .detail .d-date{font-family:var(--mono);font-weight:600;white-space:nowrap}
+  .detail .d-status{color:var(--muted)}
+  .detail.free{border-left-color:var(--free)}
+  .detail.partial{border-left-color:var(--partial)}
+  .detail.busy{border-left-color:var(--busy)}
+  @media (prefers-reduced-motion: no-preference){
+    .detail.pop{animation:pop .25s ease}
+    @keyframes pop{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+  }
+
+  /* theme toggle */
+  header{position:relative}
+  .themeBtn{position:absolute;top:0;right:0;width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--border);background:transparent;color:var(--text);
+    cursor:pointer;font-size:1rem;line-height:1;padding:0}
+  .themeBtn:hover{border-color:var(--accent);opacity:1}
   .day.today{outline:2px solid var(--accent)}
   .legend{margin-top:10px;font-size:.78rem;color:var(--muted)}
   .note{margin-top:12px;font-size:.85rem;color:var(--muted)}
@@ -90,6 +117,7 @@
 <body>
 <main>
   <header>
+    <button id="themeBtn" class="themeBtn" aria-label="Toggle dark / light mode">◐</button>
     <h1>Ronnachai Sitthichoksathit</h1>
     <p class="sub">Junior DevOps / SRE Engineer</p>
     <p class="meta">Asia/Bangkok (GMT+7) · updated <span id="updated"></span></p>
@@ -124,7 +152,11 @@
       <p id="checkResult" class="note" style="margin:0;padding-bottom:8px" role="status" aria-live="polite"></p>
     </div>
     <div class="cal" id="cal"></div>
-    <p class="legend">green = available · yellow = busy part of the day (hover for hours) · red = busy all day · faded = weekend / past</p>
+    <div id="dayDetail" class="detail" aria-live="polite">
+      <span class="d-date" id="dDate">—</span>
+      <span class="d-status" id="dStatus">Hover or tap any date to see details here.</span>
+    </div>
+    <p class="legend">green = available · yellow = partly busy · red = busy all day · faded = weekend / past</p>
     <ul class="busy-list" id="busyList"></ul>
     <p class="note" id="hours"></p>
   </section>
@@ -247,7 +279,8 @@ function el(tag, className, text) {
 function renderCalendar() {
   const cal = $("cal");
   cal.textContent = "";
-  for (const d of ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]) cal.append(el("div", "dow", d));
+  const frag = document.createDocumentFragment(); // batch DOM writes — single reflow
+  for (const d of ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]) frag.append(el("div", "dow", d));
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const start = new Date(today);
@@ -263,10 +296,63 @@ function renderCalendar() {
     if (ds === iso(today)) cls.push("today");
     const cell = el("div", cls.join(" "), String(d.getDate()));
     cell.append(el("small", "", d.toLocaleString("en", { month: "short" })));
-    cell.title = busy ? `${busy.label}${busy.time ? ` (${busy.time})` : ""}` : weekend ? "Weekend — on request" : "Available";
-    cal.append(cell);
+    cell.dataset.ds = ds;
+    cell.tabIndex = 0;
+    cell.setAttribute("role", "button");
+    cell.setAttribute("aria-label", d.toLocaleDateString("en", { weekday: "long", day: "numeric", month: "long" }));
+    frag.append(cell);
   }
+  cal.append(frag);
 }
+
+/* ---- Day detail panel (under calendar) ---- */
+function describeDay(ds) {
+  const d = new Date(ds + "T00:00:00");
+  const busy = isBusy(ds);
+  const weekend = d.getDay() === 0 || d.getDay() === 6;
+  const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" });
+  if (busy && busy.time) return { cls: "partial", date: pretty, text: `Busy ${busy.time} — ${busy.label.trim()}. Available outside those hours.` };
+  if (busy) return { cls: "busy", date: pretty, text: `Busy all day — ${busy.label.trim()}. Please pick another date.` };
+  if (weekend) return { cls: "free", date: pretty, text: "Weekend — interviews possible on request." };
+  return { cls: "free", date: pretty, text: `Available. ${CONFIG.hours}` };
+}
+
+function showDayDetail(ds) {
+  const info = describeDay(ds);
+  $("dDate").textContent = info.date;
+  $("dStatus").textContent = info.text;
+  const panel = $("dayDetail");
+  panel.className = `detail ${info.cls}`;
+  void panel.offsetWidth; // restart pop animation
+  panel.classList.add("pop");
+}
+
+/* one delegated listener set for all 28 cells (hover, tap, keyboard focus) */
+{
+  const cal = $("cal");
+  const pick = (e) => {
+    const cell = e.target.closest(".day");
+    if (cell && cell.dataset.ds) showDayDetail(cell.dataset.ds);
+  };
+  cal.addEventListener("mouseover", pick);
+  cal.addEventListener("click", pick);
+  cal.addEventListener("focusin", pick);
+}
+
+/* ---- Dark / light toggle — follows system until the visitor picks ---- */
+function applyTheme(t) {
+  if (t) document.documentElement.dataset.theme = t;
+  else delete document.documentElement.dataset.theme;
+  $("themeBtn").textContent = t === "dark" ? "☀" : t === "light" ? "☾" : "◐";
+}
+$("themeBtn").addEventListener("click", () => {
+  const cur = document.documentElement.dataset.theme;
+  const sysDark = matchMedia("(prefers-color-scheme: dark)").matches;
+  const next = cur ? (cur === "dark" ? "light" : "dark") : (sysDark ? "light" : "dark");
+  try { localStorage.setItem("theme", next); } catch { /* private mode */ }
+  applyTheme(next);
+});
+try { applyTheme(localStorage.getItem("theme") || ""); } catch { applyTheme(""); }
 
 function renderBusyList() {
   const ul = $("busyList");

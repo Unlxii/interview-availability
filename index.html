@@ -209,7 +209,8 @@ function sanitizeSchedule(raw) {
     ? raw.busy
         .filter((b) => b && DATE_RE.test(String(b.from)) && DATE_RE.test(String(b.to)))
         .map((b) => ({
-          from: b.from, to: b.to,
+          from: b.to < b.from ? b.to : b.from,   // normalize reversed ranges
+          to: b.to < b.from ? b.from : b.to,
           time: String(b.time || "").slice(0, 40),
           label: String(b.label || "Busy").slice(0, 120),
         }))

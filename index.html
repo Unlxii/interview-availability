@@ -12,7 +12,7 @@
 <style>
   :root{
     --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb; --bg:#ffffff;
-    --accent:#111827; --free:#16a34a; --busy:#dc2626;
+    --accent:#111827; --free:#16a34a; --busy:#dc2626; --partial:#d97706;
     --mono:ui-monospace,Consolas,Menlo,monospace;
   }
   @media (prefers-color-scheme: dark){
@@ -58,6 +58,7 @@
   .day small{display:block;color:var(--muted);font-size:.6rem}
   .day.free{border-color:color-mix(in srgb,var(--free) 45%,transparent)}
   .day.busy{border-color:var(--busy);background:color-mix(in srgb,var(--busy) 10%,transparent)}
+  .day.partial{border-color:var(--partial);background:color-mix(in srgb,var(--partial) 12%,transparent)}
   .day.off{opacity:.4}
   .day.today{outline:2px solid var(--accent)}
   .legend{margin-top:10px;font-size:.78rem;color:var(--muted)}
@@ -123,7 +124,7 @@
       <p id="checkResult" class="note" style="margin:0;padding-bottom:8px" role="status" aria-live="polite"></p>
     </div>
     <div class="cal" id="cal"></div>
-    <p class="legend">green border = available · red = busy (exam/commitment) · faded = weekend / past</p>
+    <p class="legend">green = available · yellow = busy part of the day (hover for hours) · red = busy all day · faded = weekend / past</p>
     <ul class="busy-list" id="busyList"></ul>
     <p class="note" id="hours"></p>
   </section>
@@ -257,7 +258,7 @@ function renderCalendar() {
     const ds = iso(d);
     const busy = isBusy(ds);
     const weekend = d.getDay() === 0 || d.getDay() === 6;
-    const cls = ["day", busy ? "busy" : "free"];
+    const cls = ["day", busy ? (busy.time ? "partial" : "busy") : "free"];
     if (weekend || d < today) cls.push("off");
     if (ds === iso(today)) cls.push("today");
     const cell = el("div", cls.join(" "), String(d.getDate()));

@@ -9,7 +9,7 @@
 <meta name="referrer" content="no-referrer">
 <title>Ronnachai Sitthichoksathit — Interview Availability</title>
 <meta name="description" content="Interview availability for Ronnachai Sitthichoksathit, Junior DevOps / SRE Engineer. Check the schedule and open a ticket to request an interview.">
-<meta name="theme-color" content="#0f1216">
+<meta name="theme-color" content="#0a0a0b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%230f1216'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='24'%20fill='%2316a34a'/%3E%3C/svg%3E">
 <!-- link previews (LINE / LinkedIn / Slack / email clients) -->
 <meta property="og:type" content="website">
@@ -21,207 +21,289 @@
 {"@context":"https://schema.org","@type":"Person","name":"Ronnachai Sitthichoksathit","jobTitle":"Junior DevOps / SRE Engineer","email":"mailto:ronnachaisitti@gmail.com","url":"https://unlxii.github.io/interview-availability/","sameAs":["https://github.com/Unlxii","https://linkedin.com/in/tent-ronnachai"]}
 </script>
 <style>
+  /* ---------- design tokens ---------- */
   :root{
-    --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb; --bg:#ffffff;
-    --accent:#111827; --free:#16a34a; --busy:#dc2626; --partial:#d97706;
-    --mono:ui-monospace,Consolas,Menlo,monospace;
+    --bg:#fafafa; --surface:#ffffff; --surface2:#f4f4f5;
+    --text:#18181b; --muted:#71717a; --faint:#a1a1aa;
+    --border:#e4e4e7; --border-strong:#d4d4d8;
+    --accent:#18181b; --accent-fg:#ffffff;
+    --free:#16a34a; --partial:#d97706; --busy:#dc2626;
+    --ring:rgba(24,24,27,.12);
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+    --mono:ui-monospace,"SF Mono",Consolas,Menlo,monospace;
+    --radius:12px;
   }
   @media (prefers-color-scheme: dark){
-    :root{ --text:#e5e7eb; --muted:#9ca3af; --border:#2d333b; --bg:#0f1216; --accent:#e5e7eb; }
+    :root{
+      --bg:#0a0a0b; --surface:#131316; --surface2:#1a1a1e;
+      --text:#f4f4f5; --muted:#a1a1aa; --faint:#71717a;
+      --border:#26262b; --border-strong:#3f3f46;
+      --accent:#f4f4f5; --accent-fg:#101013;
+      --ring:rgba(244,244,245,.14);
+      --shadow:none;
+    }
   }
-  /* manual theme override (persisted) — wins over system preference */
-  html[data-theme="light"]{ --text:#1a1a1a; --muted:#6b7280; --border:#e5e7eb; --bg:#ffffff; --accent:#111827; }
-  html[data-theme="dark"]{ --text:#e5e7eb; --muted:#9ca3af; --border:#2d333b; --bg:#0f1216; --accent:#e5e7eb; }
+  html[data-theme="light"]{
+    --bg:#fafafa; --surface:#ffffff; --surface2:#f4f4f5;
+    --text:#18181b; --muted:#71717a; --faint:#a1a1aa;
+    --border:#e4e4e7; --border-strong:#d4d4d8;
+    --accent:#18181b; --accent-fg:#ffffff;
+    --ring:rgba(24,24,27,.12);
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+  }
+  html[data-theme="dark"]{
+    --bg:#0a0a0b; --surface:#131316; --surface2:#1a1a1e;
+    --text:#f4f4f5; --muted:#a1a1aa; --faint:#71717a;
+    --border:#26262b; --border-strong:#3f3f46;
+    --accent:#f4f4f5; --accent-fg:#101013;
+    --ring:rgba(244,244,245,.14);
+    --shadow:none;
+  }
+
+  /* ---------- base ---------- */
   *{box-sizing:border-box;margin:0}
   html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);line-height:1.6;
-       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  body{background:var(--bg);color:var(--text);line-height:1.65;
+       font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+       font-size:15px;-webkit-font-smoothing:antialiased;
        transition:background .3s ease,color .3s ease}
-  /* smooth, understated motion */
-  a,button,input,select,textarea,.day,.status{transition:all .18s ease}
+  main{max-width:680px;margin:0 auto;padding:56px 20px 72px}
+  a{color:inherit;text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:3px}
+  a,button,input,select,textarea,.day{transition:all .16s ease}
   @media (prefers-reduced-motion: no-preference){
-    main > *{animation:rise .5s ease both}
-    main > :nth-child(2){animation-delay:.06s}
-    main > :nth-child(3){animation-delay:.12s}
-    main > :nth-child(4){animation-delay:.18s}
-    main > :nth-child(5){animation-delay:.24s}
-    @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    main > *{animation:rise .45s ease both}
+    main > :nth-child(2){animation-delay:.05s}
+    main > :nth-child(3){animation-delay:.1s}
+    main > :nth-child(4){animation-delay:.15s}
+    main > :nth-child(5){animation-delay:.2s}
+    @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   }
-  .day:hover{transform:translateY(-1px);border-color:var(--accent)}
-  button:hover{opacity:.85}
-  button:active{transform:scale(.98)}
-  main{max-width:720px;margin:0 auto;padding:48px 20px 80px}
-  a{color:inherit}
-  h1{font-size:1.5rem;font-weight:650}
-  .sub,.meta{color:var(--muted)}
-  .meta{font-family:var(--mono);font-size:.8rem;margin-top:4px}
-  .status{display:inline-block;margin-top:12px;padding:4px 12px;border:1px solid var(--border);
-          border-radius:999px;font-family:var(--mono);font-size:.8rem}
-  .status::before{content:"●";margin-right:8px}
-  .status.open::before{color:var(--free)}
-  .status.limited::before{color:#d97706}
-  .status.busy::before{color:var(--busy)}
 
-  section{margin-top:44px}
-  h2{font-size:.95rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;
-     color:var(--muted);margin-bottom:14px}
+  /* ---------- hero ---------- */
+  header{position:relative;display:flex;gap:18px;align-items:flex-start;margin-bottom:8px}
+  .avatar{flex:none;width:56px;height:56px;border-radius:16px;display:grid;place-items:center;
+          background:var(--accent);color:var(--accent-fg);font-weight:700;font-size:1.15rem;letter-spacing:.02em}
+  h1{font-size:1.45rem;font-weight:650;letter-spacing:-.02em;line-height:1.25}
+  .sub{color:var(--muted);font-size:.95rem;margin-top:2px}
+  .meta{color:var(--faint);font-size:.8rem;margin-top:6px}
+  .meta a{color:var(--muted);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border-strong)}
+  .status{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:5px 14px 5px 11px;
+          border-radius:999px;font-size:.8rem;font-weight:500;
+          background:color-mix(in srgb,var(--free) 10%,transparent);color:var(--text)}
+  .status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--free);
+          box-shadow:0 0 0 3px color-mix(in srgb,var(--free) 22%,transparent)}
+  .status.limited{background:color-mix(in srgb,var(--partial) 10%,transparent)}
+  .status.limited::before{background:var(--partial);box-shadow:0 0 0 3px color-mix(in srgb,var(--partial) 22%,transparent)}
+  .status.busy{background:color-mix(in srgb,var(--busy) 10%,transparent)}
+  .status.busy::before{background:var(--busy);box-shadow:0 0 0 3px color-mix(in srgb,var(--busy) 22%,transparent)}
 
+  .themeBtn{position:absolute;top:0;right:0;width:34px;height:34px;border-radius:10px;
+    border:1px solid var(--border);background:var(--surface);color:var(--muted);
+    cursor:pointer;font-size:.95rem;line-height:1;padding:0}
+  .themeBtn:hover{color:var(--text);border-color:var(--border-strong)}
+
+  /* ---------- sections / cards ---------- */
+  section{margin-top:36px}
+  h2{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;
+     color:var(--faint);margin:0 2px 12px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+        padding:22px;box-shadow:var(--shadow)}
+
+  /* ---------- calendar ---------- */
+  .checkrow{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;margin-bottom:18px}
+  .checkrow > div{flex:1;min-width:180px}
+  #checkResult{flex:2;min-width:220px;font-size:.85rem;color:var(--muted);padding-bottom:9px;margin:0}
   .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-  .dow{font-family:var(--mono);font-size:.65rem;color:var(--muted);text-align:center;padding-bottom:2px}
-  .day{border:1px solid var(--border);border-radius:4px;text-align:center;
-       font-family:var(--mono);font-size:.75rem;padding:6px 2px}
-  .day small{display:block;color:var(--muted);font-size:.6rem}
-  .day.free{border-color:color-mix(in srgb,var(--free) 45%,transparent)}
-  .day.busy{border-color:var(--busy);background:color-mix(in srgb,var(--busy) 10%,transparent)}
-  .day.partial{border-color:var(--partial);background:color-mix(in srgb,var(--partial) 12%,transparent)}
-  .day.off{opacity:.4}
-  .day{cursor:pointer;outline-offset:1px}
-  .day:focus-visible{outline:2px solid var(--accent)}
+  .dow{font-size:.62rem;font-weight:600;color:var(--faint);text-align:right;
+       text-transform:uppercase;letter-spacing:.06em;padding:0 7px 4px}
+  .day{display:flex;flex-direction:column;gap:3px;min-height:64px;border-radius:9px;
+       padding:5px 5px 4px;font-size:.72rem;background:var(--surface2);cursor:pointer;
+       border:1px solid transparent;overflow:hidden}
+  .day .num{align-self:flex-end;font-weight:500;color:var(--muted);line-height:1.3;padding:1px 3px}
+  .day.today .num{background:var(--accent);color:var(--accent-fg);border-radius:6px;
+       padding:1px 7px;font-weight:600}
+  .evt{font-size:.59rem;font-weight:500;line-height:1.4;padding:2px 6px;border-radius:4px;
+       color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .evt.partial{background:var(--partial)}
+  .evt.busy{background:var(--busy)}
+  .day.off{opacity:.45}
+  .day:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+  .day:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .day .dot{display:none}
+  @media(max-width:560px){
+    .day{min-height:46px}
+    .evt{display:none}
+    .day .dot{display:block;width:6px;height:6px;border-radius:50%;margin:auto 0 2px 3px}
+    .day.partial .dot{background:var(--partial)}
+    .day.busy .dot{background:var(--busy)}
+  }
 
-  /* day detail panel (under calendar) */
-  .detail{margin-top:12px;padding:12px 16px;border:1px solid var(--border);
-    border-left:3px solid var(--muted);border-radius:6px;font-size:.88rem;
+  .detail{margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--surface2);
+    border-left:3px solid var(--faint);font-size:.85rem;
     display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;transition:border-color .25s ease}
-  .detail .d-date{font-family:var(--mono);font-weight:600;white-space:nowrap}
+  .detail .d-date{font-weight:600;white-space:nowrap;font-size:.82rem}
   .detail .d-status{color:var(--muted)}
   .detail.free{border-left-color:var(--free)}
   .detail.partial{border-left-color:var(--partial)}
   .detail.busy{border-left-color:var(--busy)}
   @media (prefers-reduced-motion: no-preference){
     .detail.pop{animation:pop .25s ease}
-    @keyframes pop{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+    @keyframes pop{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}
   }
+  .legend{margin-top:12px;font-size:.72rem;color:var(--faint)}
 
-  /* theme toggle */
-  header{position:relative}
-  .themeBtn{position:absolute;top:0;right:0;width:36px;height:36px;border-radius:50%;
-    border:1px solid var(--border);background:transparent;color:var(--text);
-    cursor:pointer;font-size:1rem;line-height:1;padding:0}
-  .themeBtn:hover{border-color:var(--accent);opacity:1}
-  .day.today{outline:2px solid var(--accent)}
-  .legend{margin-top:10px;font-size:.78rem;color:var(--muted)}
-  .note{margin-top:12px;font-size:.85rem;color:var(--muted)}
-  ul.busy-list{margin-top:10px;padding-left:0;list-style:none;font-family:var(--mono);font-size:.82rem}
-  ul.busy-list li{padding:4px 0;border-bottom:1px dashed var(--border)}
+  ul.busy-list{margin-top:16px;padding:0;list-style:none;display:grid;gap:2px}
+  .busy-item{display:flex;gap:12px;align-items:center;padding:9px 12px;border-radius:8px}
+  .busy-item:hover{background:var(--surface2)}
+  .busy-item .b-dot{flex:none;width:8px;height:8px;border-radius:50%}
+  .busy-item .b-dot.partial{background:var(--partial)}
+  .busy-item .b-dot.busy{background:var(--busy)}
+  .busy-item .b-main{display:flex;justify-content:space-between;gap:12px;flex:1;flex-wrap:wrap;align-items:baseline}
+  .busy-item .b-label{font-size:.87rem;font-weight:500}
+  .busy-item .b-when{font-family:var(--mono);font-size:.72rem;color:var(--faint)}
+  ul.busy-list .empty{color:var(--muted);font-size:.85rem;padding:6px 2px}
+  .note{margin-top:14px;font-size:.8rem;color:var(--muted)}
 
-  dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:.9rem}
-  dt{color:var(--muted)}
-  dd{font-family:var(--mono);word-break:break-all}
+  /* ---------- contact ---------- */
+  dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:.88rem;align-items:baseline}
+  dt{color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+  dd{font-family:var(--mono);font-size:.83rem;word-break:break-all}
+  dd a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border-strong)}
+  dd a:hover{text-decoration-color:var(--text)}
 
-  form{display:grid;gap:12px}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  /* ---------- form ---------- */
+  form{display:grid;gap:14px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:560px){.row{grid-template-columns:1fr}}
-  label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:3px}
-  input,select,textarea{width:100%;padding:8px 10px;font-size:.9rem;color:var(--text);
-    background:transparent;border:1px solid var(--border);border-radius:6px;font-family:inherit}
-  input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
-  textarea{min-height:80px;resize:vertical}
-  .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  button{padding:9px 18px;font-size:.9rem;border-radius:6px;cursor:pointer;
-         border:1px solid var(--accent);background:var(--accent);color:var(--bg)}
-  button.secondary{background:transparent;color:var(--text);border-color:var(--border)}
+  label{display:block;font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:5px}
+  input,select,textarea{width:100%;padding:9px 12px;font-size:.88rem;color:var(--text);
+    background:var(--surface);border:1px solid var(--border);border-radius:9px;font-family:inherit}
+  input:hover,select:hover,textarea:hover{border-color:var(--border-strong)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+  textarea{min-height:88px;resize:vertical}
+  .check{display:flex;gap:10px;align-items:center;font-size:.84rem;color:var(--text)}
+  .check input{width:15px;height:15px;accent-color:var(--accent)}
+  .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px}
+  button{padding:10px 20px;font-size:.88rem;font-weight:500;border-radius:9px;cursor:pointer;
+         border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg)}
+  button:hover{opacity:.88}
+  button:active{transform:scale(.985)}
+  button.secondary{background:var(--surface);color:var(--text);border-color:var(--border)}
+  button.secondary:hover{border-color:var(--border-strong);opacity:1}
   #copied{font-size:.8rem;color:var(--free);visibility:hidden}
-  .hint{font-size:.78rem;color:var(--muted)}
-  footer{margin-top:56px;font-size:.75rem;color:var(--muted)}
+  .hint{font-size:.76rem;color:var(--faint)}
+
+  footer{margin-top:56px;font-size:.74rem;color:var(--faint);text-align:center}
 </style>
 </head>
 <body>
 <main>
   <header>
+    <div class="avatar" aria-hidden="true">RS</div>
+    <div>
+      <h1>Ronnachai Sitthichoksathit</h1>
+      <p class="sub">Junior DevOps / SRE Engineer</p>
+      <p class="meta">Asia/Bangkok (GMT+7) · updated <span id="updated"></span> · <a href="#h-ticket">resume on request</a></p>
+      <span id="status" class="status"></span>
+    </div>
     <button id="themeBtn" class="themeBtn" aria-label="Toggle dark / light mode">◐</button>
-    <h1>Ronnachai Sitthichoksathit</h1>
-    <p class="sub">Junior DevOps / SRE Engineer</p>
-    <p class="meta">Asia/Bangkok (GMT+7) · updated <span id="updated"></span></p>
-    <span id="status" class="status"></span>
-    <p class="meta"><a href="#h-ticket">Resume available on request — open a ticket below</a></p>
   </header>
 
   <section aria-labelledby="h-about">
-    <h2 id="h-about">About me</h2>
-    <p style="font-size:.92rem">
-      B.Eng. Computer Engineering graduate, Chiang Mai University (2022–2026).
-      Completed a Cooperative Education program at ITSC, Chiang Mai University —
-      GitLab CI/CD pipelines with GitOps, Kubernetes, and ArgoCD — and independently delivered a
-      Windows Server 2012 R2 → 2022 Active Directory migration for an SME client.
-      Built <a href="https://github.com/Unlxii/VisScan" target="_blank" rel="noopener noreferrer">VisScan</a>,
-      a DevSecOps platform integrating Semgrep, Gitleaks, and Trivy.
-    </p>
-    <p class="note">
-      AWS Certified Cloud Practitioner (CLF-C02) · preparing AWS SAA-C03 &amp; CKA ·
-      Looking for: <strong>Junior DevOps / Cloud / SRE / System Engineer</strong> roles ·
-      Chiang Rai, TH — willing to relocate to Bangkok, open to remote.
-    </p>
+    <h2 id="h-about">About</h2>
+    <div class="card">
+      <p style="font-size:.9rem">
+        B.Eng. Computer Engineering graduate, Chiang Mai University (2022–2026).
+        Completed a Cooperative Education program at ITSC, Chiang Mai University —
+        GitLab CI/CD pipelines with GitOps, Kubernetes, and ArgoCD — and independently delivered a
+        Windows Server 2012 R2 → 2022 Active Directory migration for an SME client.
+        Built <a href="https://github.com/Unlxii/VisScan" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;text-underline-offset:3px">VisScan</a>,
+        a DevSecOps platform integrating Semgrep, Gitleaks, and Trivy.
+      </p>
+      <p class="note">
+        AWS Certified Cloud Practitioner (CLF-C02) · preparing AWS SAA-C03 &amp; CKA ·
+        Looking for <strong>Junior DevOps / Cloud / SRE / System Engineer</strong> roles ·
+        Chiang Rai, TH — willing to relocate to Bangkok, open to remote.
+      </p>
+    </div>
   </section>
 
   <section aria-labelledby="h-avail">
     <h2 id="h-avail">Availability — next 4 weeks</h2>
-    <div class="row" style="margin-bottom:14px;align-items:end">
-      <div>
-        <label for="checkDate">Check a specific date</label>
-        <input type="date" id="checkDate">
+    <div class="card">
+      <div class="checkrow">
+        <div>
+          <label for="checkDate">Check a specific date</label>
+          <input type="date" id="checkDate">
+        </div>
+        <p id="checkResult" role="status" aria-live="polite"></p>
       </div>
-      <p id="checkResult" class="note" style="margin:0;padding-bottom:8px" role="status" aria-live="polite"></p>
+      <div class="cal" id="cal"></div>
+      <div id="dayDetail" class="detail" aria-live="polite">
+        <span class="d-date" id="dDate">—</span>
+        <span class="d-status" id="dStatus">Hover or tap any date to see details here.</span>
+      </div>
+      <p class="legend">amber block = partly busy (hours shown) · red block = busy all day · empty = available · faded = weekend / past</p>
+      <ul class="busy-list" id="busyList"></ul>
+      <p class="note" id="hours"></p>
     </div>
-    <div class="cal" id="cal"></div>
-    <div id="dayDetail" class="detail" aria-live="polite">
-      <span class="d-date" id="dDate">—</span>
-      <span class="d-status" id="dStatus">Hover or tap any date to see details here.</span>
-    </div>
-    <p class="legend">green = available · yellow = partly busy · red = busy all day · faded = weekend / past</p>
-    <ul class="busy-list" id="busyList"></ul>
-    <p class="note" id="hours"></p>
   </section>
 
   <section aria-labelledby="h-contact">
     <h2 id="h-contact">Contact</h2>
-    <dl id="contact"></dl>
-    <p class="note">Fastest response: open a ticket below or email directly — I reply within a few hours on weekdays.</p>
+    <div class="card">
+      <dl id="contact"></dl>
+      <p class="note">Fastest response: open a ticket below or email directly — I reply within a few hours on weekdays.</p>
+    </div>
   </section>
 
   <section aria-labelledby="h-ticket">
     <h2 id="h-ticket">Open a ticket — interview request</h2>
-    <form id="ticket" novalidate>
-      <div class="row">
-        <div><label for="company">Company *</label>
-          <input id="company" required maxlength="120" autocomplete="organization"></div>
-        <div><label for="role">Position *</label>
-          <input id="role" required maxlength="120" autocomplete="organization-title"></div>
-      </div>
-      <div class="row">
-        <div><label for="person">Contact person</label>
-          <input id="person" maxlength="120" autocomplete="name"></div>
-        <div><label for="email">Your email (corporate address gets priority)</label>
-          <input id="email" type="email" maxlength="254" autocomplete="email"></div>
-      </div>
-      <div class="row">
-        <div><label for="format">Format</label>
-          <select id="format">
-            <option>MS Teams</option><option>Google Meet</option><option>Zoom</option>
-            <option>Phone</option><option>Onsite</option>
-          </select></div>
-        <div><label for="when">Proposed date &amp; time (GMT+7)</label>
-          <input id="when" maxlength="120" placeholder="e.g. Mon 13 Jul, 14:00"></div>
-      </div>
-      <div><label for="msg">Message / JD link</label>
-        <textarea id="msg" maxlength="2000"></textarea></div>
-      <label style="display:flex;gap:8px;align-items:center;font-size:.85rem;color:var(--text)">
-        <input type="checkbox" id="wantResume" style="width:auto">
-        Request my resume (sent by email after I verify your company — usually same day)
-      </label>
-      <label style="display:flex;gap:8px;align-items:center;font-size:.85rem;color:var(--text)">
-        <input type="checkbox" id="notify" style="width:auto">
-        Notify me by email if this availability changes (optional — requires your email above)
-      </label>
-      <div class="actions">
-        <button type="submit">Send via email</button>
-        <button type="button" class="secondary" id="copy">Copy ticket</button>
-        <span id="copied">copied ✓</span>
-      </div>
-      <p class="hint">"Send" opens your mail client pre-filled. If nothing opens, use "Copy ticket" and paste into any email.</p>
-    </form>
+    <div class="card">
+      <form id="ticket" novalidate>
+        <div class="row">
+          <div><label for="company">Company *</label>
+            <input id="company" required maxlength="120" autocomplete="organization"></div>
+          <div><label for="role">Position *</label>
+            <input id="role" required maxlength="120" autocomplete="organization-title"></div>
+        </div>
+        <div class="row">
+          <div><label for="person">Contact person</label>
+            <input id="person" maxlength="120" autocomplete="name"></div>
+          <div><label for="email">Your email (corporate address gets priority)</label>
+            <input id="email" type="email" maxlength="254" autocomplete="email"></div>
+        </div>
+        <div class="row">
+          <div><label for="format">Format</label>
+            <select id="format">
+              <option>MS Teams</option><option>Google Meet</option><option>Zoom</option>
+              <option>Phone</option><option>Onsite</option>
+            </select></div>
+          <div><label for="when">Proposed date &amp; time (GMT+7)</label>
+            <input id="when" maxlength="120" placeholder="e.g. Mon 13 Jul, 14:00"></div>
+        </div>
+        <div><label for="msg">Message / JD link</label>
+          <textarea id="msg" maxlength="2000"></textarea></div>
+        <label class="check">
+          <input type="checkbox" id="wantResume">
+          Request my resume (sent by email after I verify your company — usually same day)
+        </label>
+        <label class="check">
+          <input type="checkbox" id="notify">
+          Notify me by email if this availability changes (optional — requires your email above)
+        </label>
+        <div class="actions">
+          <button type="submit">Send via email</button>
+          <button type="button" class="secondary" id="copy">Copy ticket</button>
+          <span id="copied">copied ✓</span>
+        </div>
+        <p class="hint">"Send" opens your mail client pre-filled. If nothing opens, use "Copy ticket" and paste into any email.</p>
+      </form>
+    </div>
   </section>
 
-  <footer>Static page · no cookies · no tracking · no third-party requests</footer>
+  <footer>© 2026 Ronnachai Sitthichoksathit · static page · no cookies · no tracking · no third-party requests</footer>
 </main>
 
 <script>
@@ -306,8 +388,16 @@ function renderCalendar() {
     const cls = ["day", busy ? (busy.time ? "partial" : "busy") : "free"];
     if (weekend || d < today) cls.push("off");
     if (ds === iso(today)) cls.push("today");
-    const cell = el("div", cls.join(" "), String(d.getDate()));
-    cell.append(el("small", "", d.toLocaleString("en", { month: "short" })));
+    const cell = el("div", cls.join(" "));
+    const showMonth = i === 0 || d.getDate() === 1;
+    cell.append(el("span", "num", showMonth ? `${d.toLocaleString("en", { month: "short" })} ${d.getDate()}` : String(d.getDate())));
+    if (busy) {
+      const chip = el("div", `evt ${busy.time ? "partial" : "busy"}`,
+        busy.time ? `${busy.time} · ${busy.label}` : busy.label);
+      chip.title = `${busy.label}${busy.time ? ` (${busy.time})` : " (all day)"}`;
+      cell.append(chip);
+    }
+    cell.append(el("span", "dot"));
     cell.dataset.ds = ds;
     cell.tabIndex = 0;
     cell.setAttribute("role", "button");
@@ -323,8 +413,8 @@ function describeDay(ds) {
   const busy = isBusy(ds);
   const weekend = d.getDay() === 0 || d.getDay() === 6;
   const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" });
-  if (busy && busy.time) return { cls: "partial", date: pretty, text: `Busy ${busy.time} — ${busy.label.trim()}. Available outside those hours.` };
-  if (busy) return { cls: "busy", date: pretty, text: `Busy all day — ${busy.label.trim()}. Please pick another date.` };
+  if (busy && busy.time) return { cls: "partial", date: pretty, text: `Busy ${busy.time} — ${busy.label}. Available outside those hours.` };
+  if (busy) return { cls: "busy", date: pretty, text: `Busy all day — ${busy.label}. Please pick another date.` };
   if (weekend) return { cls: "free", date: pretty, text: "Weekend — interviews possible on request." };
   return { cls: "free", date: pretty, text: `Available. ${CONFIG.hours}` };
 }
@@ -370,11 +460,18 @@ function renderBusyList() {
   const ul = $("busyList");
   ul.textContent = "";
   if (SCHEDULE.busy.length === 0) {
-    ul.append(el("li", "", "No exams booked yet — SAA-C03 / CKA dates will appear here once scheduled."));
+    ul.append(el("li", "empty", "No exams booked yet — SAA-C03 / CKA dates will appear here once scheduled."));
     return;
   }
-  for (const b of SCHEDULE.busy)
-    ul.append(el("li", "", `${b.from} → ${b.to}${b.time ? ` (${b.time})` : " (all day)"} — ${b.label}`));
+  for (const b of SCHEDULE.busy) {
+    const li = el("li", "busy-item");
+    li.append(el("span", `b-dot ${b.time ? "partial" : "busy"}`));
+    const main = el("div", "b-main");
+    main.append(el("span", "b-label", b.label));
+    main.append(el("span", "b-when", `${b.from} → ${b.to} · ${b.time || "all day"}`));
+    li.append(main);
+    ul.append(li);
+  }
 }
 
 function renderContact() {

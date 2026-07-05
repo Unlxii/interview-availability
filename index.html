@@ -98,6 +98,13 @@
   .status.busy{background:color-mix(in srgb,var(--busy) 10%,transparent)}
   .status.busy::before{background:var(--busy);box-shadow:0 0 0 3px color-mix(in srgb,var(--busy) 22%,transparent)}
 
+  .heroActions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .btn-hero{display:inline-flex;align-items:center;padding:8px 16px;border-radius:9px;
+    font-size:.82rem;font-weight:500;border:1px solid var(--border);color:var(--text)}
+  .btn-hero:hover{text-decoration:none;border-color:var(--border-strong)}
+  .btn-hero.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+  .btn-hero.primary:hover{opacity:.88}
+
   .themeBtn{position:absolute;top:0;right:0;width:34px;height:34px;border-radius:10px;
     border:1px solid var(--border);background:var(--surface);color:var(--muted);
     cursor:pointer;font-size:.95rem;line-height:1;padding:0}
@@ -132,20 +139,23 @@
   .v a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border-strong)}
   .v .dim{color:var(--muted)}
 
-  /* ---------- terminal date checker ---------- */
-  .term{display:flex;gap:10px;align-items:center;background:var(--surface2);border:1px solid var(--border);
-        border-radius:9px;padding:11px 14px;margin-bottom:8px;font-family:var(--mono)}
-  .term:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
-  .t-prompt{color:var(--faint);font-size:.85rem;user-select:none}
-  .t-input{flex:1;border:0;background:transparent;color:var(--text);font-family:var(--mono);
-           font-size:.85rem;padding:0}
-  .t-input::placeholder{color:var(--faint)}
-  .t-input:focus{outline:none;box-shadow:none;border:0}
-  .t-out{font-family:var(--mono);font-size:.78rem;margin:0 2px 16px;line-height:1.6;min-height:0}
-  .t-out.free{color:var(--free)}
-  .t-out.partial{color:var(--partial)}
-  .t-out.busy{color:var(--busy)}
-  .t-out.err{color:var(--faint)}
+  /* ---------- custom date picker (no native OS widget) ---------- */
+  .dp{position:fixed;z-index:60;width:242px;background:var(--surface);border:1px solid var(--border);
+      border-radius:12px;padding:12px;box-shadow:0 16px 40px rgba(0,0,0,.3);display:none}
+  .dp.open{display:block}
+  .dp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .dp-title{font-family:var(--mono);font-size:.76rem;font-weight:600}
+  .dp-btn{width:26px;height:26px;border-radius:7px;border:1px solid var(--border);
+          background:var(--surface2);color:var(--muted);cursor:pointer;font-size:.8rem;padding:0}
+  .dp-btn:hover{color:var(--text);border-color:var(--border-strong);opacity:1}
+  .dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+  .dp-dow{font-family:var(--mono);font-size:.55rem;color:var(--faint);text-align:center;padding:2px 0}
+  .dp-day{border:0;background:transparent;border-radius:6px;padding:5px 0;font-size:.72rem;
+          color:var(--text);cursor:pointer;font-family:var(--mono)}
+  .dp-day:hover{background:var(--surface2)}
+  .dp-day.out{color:var(--faint);opacity:.5}
+  .dp-day.today{box-shadow:inset 0 0 0 1px var(--border-strong)}
+  .dp-day.sel{background:var(--accent);color:var(--accent-fg)}
 
   /* ---------- calendar ---------- */
   .calnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
@@ -169,6 +179,7 @@
   .evt.busy{background:var(--busy)}
   .evt.flex{background:var(--flex)}
   .evt.intv{background:var(--intv)}
+  .evt.more{background:transparent;color:var(--faint);border:1px dashed var(--border-strong)}
   .day.off{opacity:.45}
   .day:hover{border-color:var(--border-strong);transform:translateY(-1px)}
   .day:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
@@ -205,8 +216,9 @@
   .dv-close{width:30px;height:30px;border-radius:8px;padding:0;flex:none;
     background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:.85rem;cursor:pointer}
   .dv-close:hover{color:var(--text);border-color:var(--border-strong);opacity:1}
+  .dv-alldays{display:grid;gap:6px;margin-bottom:12px}
   .dv-allday{font-family:var(--mono);font-size:.74rem;color:#fff;background:var(--busy);
-    border-radius:7px;padding:7px 11px;margin-bottom:12px}
+    border-radius:7px;padding:7px 11px}
   .timeline{position:relative;margin-top:4px}
   .tl-hour{display:flex;gap:10px;height:34px;align-items:flex-start}
   .tl-label{font-family:var(--mono);font-size:.6rem;color:var(--faint);width:38px;
@@ -292,14 +304,18 @@
     <div>
       <h1>Ronnachai Sitthichoksathit</h1>
       <p class="sub">Junior DevOps / SRE Engineer</p>
-      <p class="meta">Asia/Bangkok (GMT+7) · updated <span id="updated"></span> · <a href="#h-ticket">resume on request</a></p>
+      <p class="meta">Asia/Bangkok (GMT+7) · updated <span id="updated"></span></p>
       <span id="status" class="status"></span>
+      <div class="heroActions">
+        <a class="btn-hero primary" href="resume-public.pdf" target="_blank" rel="noopener noreferrer">View resume — public copy</a>
+        <a class="btn-hero" id="resumeReq" href="#h-ticket">Request full resume</a>
+      </div>
     </div>
     <button id="themeBtn" class="themeBtn" aria-label="Toggle dark / light mode">◐</button>
   </header>
 
   <section aria-labelledby="h-about">
-    <h2 id="h-about">whoami</h2>
+    <h2 id="h-about">about</h2>
     <div class="card">
       <p class="lead">I build and secure CI/CD pipelines — and I like my infrastructure boring, observable, and automated.</p>
       <div class="kv">
@@ -325,14 +341,10 @@
         <div class="navbtns">
           <button type="button" class="navBtn" id="calPrev" aria-label="Previous 4 weeks">‹</button>
           <button type="button" class="navBtn" id="calToday">today</button>
+          <button type="button" class="navBtn" id="calPick" aria-haspopup="dialog">pick date ▾</button>
           <button type="button" class="navBtn" id="calNext" aria-label="Next 4 weeks">›</button>
         </div>
       </div>
-      <div class="term">
-        <span class="t-prompt">›</span>
-        <input id="q" class="t-input" placeholder="15 jul · 15/07 · tomorrow · next mon" autocomplete="off" spellcheck="false" aria-label="Check a date">
-      </div>
-      <p id="qOut" class="t-out" role="status" aria-live="polite" hidden></p>
       <div class="cal" id="cal"></div>
       <p class="legend">blue = learning, still reachable · purple = interview booked · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
       <p class="note" id="hours"></p>
@@ -340,7 +352,7 @@
   </section>
 
   <section aria-labelledby="h-focus" id="focusSection" hidden>
-    <h2 id="h-focus">current-focus</h2>
+    <h2 id="h-focus">current focus</h2>
     <div class="card"><div class="chips" id="focusChips"></div></div>
   </section>
 
@@ -353,7 +365,7 @@
   </section>
 
   <section aria-labelledby="h-ticket">
-    <h2 id="h-ticket">request-interview --ticket</h2>
+    <h2 id="h-ticket">request an interview</h2>
     <div class="card">
       <form id="ticket" novalidate>
         <div class="row">
@@ -382,7 +394,7 @@
           <div class="count" id="msgCount" hidden></div></div>
         <label class="check">
           <input type="checkbox" id="wantResume">
-          Request my resume (sent by email after I verify your company — usually same day)
+          Request my full resume — includes phone number (sent by email after I verify your company, usually same day)
         </label>
         <label class="check">
           <input type="checkbox" id="notify">
@@ -405,6 +417,8 @@
   <div class="t-date" id="tDate"></div>
   <div class="t-text" id="tText"></div>
 </div>
+
+<div id="dp" class="dp" role="dialog" aria-label="Date picker"></div>
 
 <div id="dayviewBackdrop" class="dayview-backdrop" role="dialog" aria-modal="true" aria-labelledby="dvDate">
   <div class="dayview">
@@ -495,7 +509,16 @@ const holidayOf = (ds) => TH_HOLIDAYS[ds.slice(5)];
 const $ = (id) => document.getElementById(id);
 /* local-timezone ISO — toISOString() converts to UTC and shifts GMT+7 dates back a day */
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const isBusy = (ds) => SCHEDULE.busy.find((b) => ds >= b.from && ds <= b.to);
+const busiesOf = (ds) => SCHEDULE.busy.filter((b) => ds >= b.from && ds <= b.to); // ALL events that day
+const evtCls = (b) => b.kind === "flex" ? "flex" : b.kind === "interview" ? "intv" : b.kind === "exam" ? "busy" : b.time ? "partial" : "busy";
+function dayKind(list) { // most severe wins for the cell colour
+  if (!list.length) return "free";
+  if (list.some((b) => b.kind === "exam")) return "busy";
+  if (list.some((b) => !b.time && !["flex", "interview"].includes(b.kind))) return "busy";
+  if (list.some((b) => b.kind === "interview")) return "intv";
+  if (list.some((b) => b.kind !== "flex")) return "partial";
+  return "flex";
+}
 
 /* All dynamic content is inserted via textContent / DOM APIs — never innerHTML. */
 
@@ -526,20 +549,19 @@ function renderCalendar() {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
     const ds = iso(d);
-    const busy = isBusy(ds);
+    const list = busiesOf(ds);
     const weekend = d.getDay() === 0 || d.getDay() === 6;
-    const kindCls = busy ? (busy.kind === "flex" ? "flex" : busy.kind === "interview" ? "intv" : busy.kind === "exam" ? "busy" : busy.time ? "partial" : "busy") : "free";
-    const cls = ["day", kindCls];
+    const cls = ["day", dayKind(list)];
     if (weekend || d < today) cls.push("off");
     if (ds === iso(today)) cls.push("today");
     if (holidayOf(ds)) cls.push("holiday");
     const cell = el("div", cls.join(" "));
     const showMonth = i === 0 || d.getDate() === 1;
     cell.append(el("span", "num", showMonth ? `${d.toLocaleString("en", { month: "short" })} ${d.getDate()}` : String(d.getDate())));
-    if (busy) {
-      cell.append(el("div", `evt ${kindCls}`,
-        busy.time ? `${busy.time} · ${busy.label}` : busy.label));
+    for (const b of list.slice(0, 2)) {
+      cell.append(el("div", `evt ${evtCls(b)}`, b.time ? `${b.time} · ${b.label}` : b.label));
     }
+    if (list.length > 2) cell.append(el("div", "evt more", `+${list.length - 2} more`));
     cell.append(el("span", "dot"));
     cell.dataset.ds = ds;
     cell.tabIndex = 0;
@@ -554,16 +576,21 @@ function renderCalendar() {
 function describeDay(ds) {
   const d = new Date(ds + "T00:00:00");
   const today = new Date(); today.setHours(0, 0, 0, 0);
-  const busy = isBusy(ds);
+  const list = busiesOf(ds);
   const weekend = d.getDay() === 0 || d.getDay() === 6;
   const hol = holidayOf(ds);
   const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" });
   if (d < today) return { cls: "past", date: pretty, text: "Past date." };
-  if (busy && busy.kind === "exam") return { cls: "busy", date: pretty, text: `Exam day — ${busy.label}${busy.time ? ` (${busy.time})` : ""}. Please pick another date.` };
-  if (busy && busy.kind === "interview") return { cls: "intv", date: pretty, text: `Interview scheduled${busy.time ? ` ${busy.time}` : ""} — ${busy.label}. This slot is booked; other times may be available.` };
-  if (busy && busy.kind === "flex") return { cls: "flex", date: pretty, text: `${busy.label}${busy.time ? ` ${busy.time}` : ""} — flexible: still reachable, feel free to contact anytime.` };
-  if (busy && busy.time) return { cls: "partial", date: pretty, text: `Busy ${busy.time} — ${busy.label}. Available outside those hours.` };
-  if (busy) return { cls: "busy", date: pretty, text: `Busy all day — ${busy.label}. Please pick another date.` };
+  if (list.length) {
+    const items = list.map((b) => `${b.time || "all day"} — ${b.label}`).join(" · ");
+    const kind = dayKind(list);
+    const note = list.some((b) => b.kind === "exam") ? "Exam day — please pick another date."
+      : kind === "busy" ? "Please pick another date."
+      : list.some((b) => b.kind === "interview") ? "Interview booked — other times may be available."
+      : kind === "flex" ? "Still reachable — feel free to contact anytime."
+      : "Available outside these hours.";
+    return { cls: kind, date: pretty, text: `${items}. ${note}` };
+  }
   if (hol) return { cls: "free", date: pretty, text: `Thai public holiday — ${hol}. Interviews possible on request.` };
   if (weekend) return { cls: "free", date: pretty, text: "Weekend — interviews possible on request." };
   return { cls: "free", date: pretty, text: `Available. ${CONFIG.hours}` };
@@ -597,7 +624,7 @@ function hideTip() {
 const DV_START = 7, DV_END = 20, HOUR_PX = 34; // 07:00–20:00 window
 function openDayView(ds) {
   const d = new Date(ds + "T00:00:00");
-  const busy = isBusy(ds);
+  const list = busiesOf(ds);
   const hol = holidayOf(ds);
   const today0 = new Date(); today0.setHours(0, 0, 0, 0);
   $("dvDate").textContent = d.toLocaleDateString("en", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
@@ -605,20 +632,28 @@ function openDayView(ds) {
   if (d < today0) bits.push("past date");
   if (hol) bits.push(`Thai public holiday — ${hol}`);
   if (d.getDay() === 0 || d.getDay() === 6) bits.push("weekend — interviews on request");
-  if (!busy && d >= today0 && !hol && d.getDay() > 0 && d.getDay() < 6) bits.push("available · " + CONFIG.hours);
-  if (busy && busy.kind === "exam") bits.push("exam day — unavailable, please pick another date");
-  else if (busy && busy.kind === "interview") bits.push(`interview booked${busy.time ? ` ${busy.time}` : ""} — other times may be available`);
-  else if (busy && busy.kind === "flex") bits.push("learning — still reachable, feel free to contact anytime");
-  else if (busy && busy.time) bits.push(`busy ${busy.time} — free outside those hours`);
+  if (!list.length && d >= today0 && !hol && d.getDay() > 0 && d.getDay() < 6) bits.push("available · " + CONFIG.hours);
+  if (list.length) {
+    if (list.some((b) => b.kind === "exam")) bits.push("exam day — unavailable, please pick another date");
+    else if (dayKind(list) === "busy") bits.push("unavailable — please pick another date");
+    else if (list.some((b) => b.kind === "interview")) bits.push("interview booked — other times may be available");
+    else if (dayKind(list) === "flex") bits.push("learning — still reachable, feel free to contact anytime");
+    else bits.push("free outside the scheduled hours");
+  }
   $("dvSub").textContent = bits.join(" · ") || "available";
+  /* all-day banners — one per all-day event */
   const allday = $("dvAllday");
-  allday.hidden = !(busy && !busy.time);
-  if (busy && !busy.time) {
-    allday.className = `dv-allday${busy.kind === "flex" ? " flex" : busy.kind === "interview" ? " intv" : ""}`;
-    allday.textContent = busy.kind === "exam" ? `Exam day — ${busy.label}`
-      : busy.kind === "interview" ? `Interview scheduled — ${busy.label}`
-      : busy.kind === "flex" ? `${busy.label} — all day, still reachable`
-      : `Busy all day — ${busy.label}`;
+  const alldayEvts = list.filter((b) => !b.time);
+  allday.hidden = alldayEvts.length === 0;
+  allday.textContent = "";
+  allday.className = "dv-alldays";
+  for (const b of alldayEvts) {
+    const bn = el("div", `dv-allday${b.kind === "flex" ? " flex" : b.kind === "interview" ? " intv" : ""}`);
+    bn.textContent = b.kind === "exam" ? `Exam day — ${b.label}`
+      : b.kind === "interview" ? `Interview scheduled — ${b.label}`
+      : b.kind === "flex" ? `${b.label} — all day, still reachable`
+      : `Busy all day — ${b.label}`;
+    allday.append(bn);
   }
   const tl = $("dvTimeline");
   tl.textContent = "";
@@ -636,16 +671,18 @@ function openDayView(ds) {
     band.style.height = `${(18 - 9) * HOUR_PX}px`;
     tl.append(band);
   }
-  if (busy && busy.time) {
-    const [s, e] = busy.time.split("-");
-    const toMin = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+  /* every timed event gets its own block at its real position */
+  const toMin = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+  for (const b of list.filter((x) => x.time)) {
+    const [s, e] = b.time.split("-");
     const startM = Math.max(toMin(s), DV_START * 60);
     const endM = Math.min(toMin(e), DV_END * 60);
-    const evt = el("div", `tl-evt${busy.kind === "flex" ? " flex" : busy.kind === "exam" ? " exam" : busy.kind === "interview" ? " intv" : ""}`);
+    if (endM <= startM) continue;
+    const evt = el("div", `tl-evt${b.kind === "flex" ? " flex" : b.kind === "exam" ? " exam" : b.kind === "interview" ? " intv" : ""}`);
     evt.style.top = `${(startM - DV_START * 60) / 60 * HOUR_PX}px`;
     evt.style.height = `${Math.max((endM - startM) / 60 * HOUR_PX, 24)}px`;
-    evt.append(el("div", "tl-evt-title", busy.label));
-    evt.append(el("div", "tl-evt-time", busy.time));
+    evt.append(el("div", "tl-evt-title", b.label));
+    evt.append(el("div", "tl-evt-time", b.time));
     tl.append(evt);
   }
   hideTip();
@@ -668,7 +705,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDayVi
   cal.addEventListener("focusout", hideTip);
   window.addEventListener("scroll", () => { if (Date.now() > tipPinnedUntil) hideTip(); }, { passive: true });
   document.addEventListener("click", (e) => {
-    if (!e.target.closest(".day") && !e.target.closest(".term")) hideTip(); // mobile: tap outside closes
+    if (!e.target.closest(".day") && !e.target.closest("#dp")) hideTip(); // mobile: tap outside closes
   });
 }
 let tipPinnedUntil = 0; // lets the search auto-scroll finish without closing the popover
@@ -797,64 +834,80 @@ $("copy").addEventListener("click", async () => {
   }
 });
 
-/* ---- terminal date checker: natural input, no native picker ---- */
-const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-const WDAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-function parseDateQuery(raw) {
-  const q = raw.trim().toLowerCase().replace(/\s+/g, " ");
-  if (!q) return null;
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const mk = (y, mo, d) => {
-    const dt = new Date(y, mo - 1, d);
-    dt.setHours(0, 0, 0, 0);
-    return (dt.getMonth() === mo - 1 && dt.getDate() === d) ? dt : null; // rejects 31 feb etc.
-  };
-  const normYear = (y) => (y < 100 ? 2000 + y : y);
-  if (q === "today") return today;
-  if (q === "tomorrow") { const d = new Date(today); d.setDate(d.getDate() + 1); return d; }
-  const wd = q.replace(/^next /, "");
-  if (wd.length >= 3) {
-    const wi = WDAYS.findIndex((w) => w.startsWith(wd));
-    if (wi >= 0) {
-      const d = new Date(today);
-      let diff = (wi - d.getDay() + 7) % 7;
-      if (diff === 0) diff = 7;
-      d.setDate(d.getDate() + diff);
-      return d;
-    }
-  }
-  let m = q.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);                      // 2026-07-15
-  if (m) return mk(+m[1], +m[2], +m[3]);
-  m = q.match(/^(\d{1,2})[\/.](\d{1,2})(?:[\/.](\d{2,4}))?$/);           // 15/07 or 15/07/2026
-  if (m) return mk(m[3] ? normYear(+m[3]) : today.getFullYear(), +m[2], +m[1]);
-  m = q.match(/^(\d{1,2}) ([a-z]{3,})(?: (\d{2,4}))?$/);                 // 15 jul [2026]
-  if (m) { const mi = MONTHS.findIndex((x) => m[2].startsWith(x)); if (mi >= 0) return mk(m[3] ? normYear(+m[3]) : today.getFullYear(), mi + 1, +m[1]); }
-  m = q.match(/^([a-z]{3,}) (\d{1,2})(?: (\d{2,4}))?$/);                 // jul 15 [2026]
-  if (m) { const mi = MONTHS.findIndex((x) => m[1].startsWith(x)); if (mi >= 0) return mk(m[3] ? normYear(+m[3]) : today.getFullYear(), mi + 1, +m[2]); }
-  return null;
-}
+/* ---- jump the calendar to any date (used by the picker) ---- */
 function clearHit() {
   document.querySelectorAll(".day.hit").forEach((c) => c.classList.remove("hit"));
 }
-$("q").addEventListener("input", () => {
-  const out = $("qOut");
-  const raw = $("q").value;
+function jumpToDate(d) {
   clearHit();
-  if (!raw.trim()) { out.hidden = true; hideTip(); return; }
-  const d = parseDateQuery(raw);
-  if (!d) { out.hidden = false; out.className = "t-out err"; out.textContent = "… try: 15 jul · 15/07 · 2026-07-15 · tomorrow · next mon"; hideTip(); return; }
-  /* the answer IS the calendar: page to the right 4 weeks, jump to the cell, pop the detail */
-  out.hidden = true;
   const weeksDiff = Math.round((sundayOf(d) - sundayOf(new Date())) / 604800000);
   const page = Math.floor(weeksDiff / 4) * 4;
   if (page !== calOffset) { calOffset = page; renderCalendar(); }
   const cell = document.querySelector(`.day[data-ds="${iso(d)}"]`);
-  if (!cell) { hideTip(); return; }
+  if (!cell) return;
   cell.classList.add("hit");
   tipPinnedUntil = Date.now() + 800;
   cell.scrollIntoView({ block: "nearest", behavior: "smooth" });
   showTip(cell);
+}
+
+/* ---- custom date picker (no native OS widget) ---- */
+const dp = { view: null, sel: "", onPick: null };
+function dpOpen(anchor, isoVal, onPick) {
+  dp.onPick = onPick;
+  const base = DATE_RE.test(isoVal) ? new Date(isoVal + "T00:00:00") : new Date();
+  dp.view = new Date(base.getFullYear(), base.getMonth(), 1);
+  dp.sel = DATE_RE.test(isoVal) ? isoVal : "";
+  dpRender();
+  const box = $("dp");
+  box.classList.add("open");
+  const r = anchor.getBoundingClientRect();
+  const x = Math.max(8, Math.min(r.left, innerWidth - 252));
+  let y = r.bottom + 6;
+  if (y + 290 > innerHeight) y = Math.max(8, r.top - 296);
+  box.style.left = `${x}px`;
+  box.style.top = `${y}px`;
+}
+function dpClose() { $("dp").classList.remove("open"); }
+function dpRender() {
+  const box = $("dp");
+  box.textContent = "";
+  const head = el("div", "dp-head");
+  const prev = el("button", "dp-btn", "‹"); prev.type = "button";
+  const next = el("button", "dp-btn", "›"); next.type = "button";
+  const title = el("span", "dp-title", dp.view.toLocaleDateString("en", { month: "long", year: "numeric" }));
+  prev.addEventListener("click", (e) => { e.stopPropagation(); dp.view.setMonth(dp.view.getMonth() - 1); dpRender(); });
+  next.addEventListener("click", (e) => { e.stopPropagation(); dp.view.setMonth(dp.view.getMonth() + 1); dpRender(); });
+  head.append(prev, title, next);
+  box.append(head);
+  const grid = el("div", "dp-grid");
+  for (const d of ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]) grid.append(el("span", "dp-dow", d));
+  const first = new Date(dp.view);
+  first.setDate(1 - first.getDay()); // back to the Sunday before the 1st
+  const tIso = iso(new Date());
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(first); d.setDate(first.getDate() + i);
+    const ds = iso(d);
+    const b = el("button", "dp-day", String(d.getDate()));
+    b.type = "button";
+    if (d.getMonth() !== dp.view.getMonth()) b.classList.add("out");
+    if (ds === tIso) b.classList.add("today");
+    if (ds === dp.sel) b.classList.add("sel");
+    b.addEventListener("click", (e) => { e.stopPropagation(); dp.onPick(ds); dpClose(); });
+    grid.append(b);
+  }
+  box.append(grid);
+}
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#dp") && e.target.id !== "calPick") dpClose();
 });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") dpClose(); });
+$("calPick").addEventListener("click", () => {
+  dpOpen($("calPick"), "", (ds) => jumpToDate(new Date(ds + "T00:00:00")));
+});
+
+/* make "Request full resume" pre-tick the checkbox on its way to the form */
+$("resumeReq").addEventListener("click", () => { $("wantResume").checked = true; });
 
 function renderSchedule() {
   $("updated").textContent = SCHEDULE.updated + (scheduleFresh ? "" : " · showing cached copy");

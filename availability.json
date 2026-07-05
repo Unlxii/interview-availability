@@ -11,7 +11,7 @@
     },
     {
       "from": "2026-07-04",
-      "to": "2026-07-24",
+      "to": "2026-07-07",
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "flex"
@@ -41,6 +41,55 @@
       "to": "2026-07-24",
       "time": "11:00-15:00",
       "label": "Learning AWS SAA-C03 and CKA",
+      "kind": "flex"
+    },
+    {
+      "from": "2026-07-10",
+      "to": "2026-07-11",
+      "time": "16:30-19:00",
+      "label": "Exercises",
+      "kind": "flex"
+    },
+    {
+      "from": "2026-07-13",
+      "to": "2026-07-14",
+      "time": "16:30-19:00",
+      "label": "Exercises",
+      "kind": "flex"
+    },
+    {
+      "from": "2026-07-16",
+      "to": "2026-07-18",
+      "time": "16:30-19:00",
+      "label": "Exercises",
+      "kind": "flex"
+    },
+    {
+      "from": "2026-07-20",
+      "to": "2026-07-21",
+      "time": "16:30-19:00",
+      "label": "Exercises",
+      "kind": "flex"
+    },
+    {
+      "from": "2026-07-23",
+      "to": "2026-07-25",
+      "time": "16:30-19:00",
+      "label": "Exercises",
+      "kind": "flex"
+    },
+    {
+      "from": "2026-07-27",
+      "to": "2026-07-28",
+      "time": "16:30-19:00",
+      "label": "Exercises",
+      "kind": "flex"
+    },
+    {
+      "from": "2026-07-30",
+      "to": "2026-08-01",
+      "time": "16:30-19:00",
+      "label": "Exercises",
       "kind": "flex"
     }
   ],

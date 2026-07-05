@@ -72,7 +72,7 @@
   @media(min-width:1020px){
     main{max-width:1180px}
     .layout{display:grid;grid-template-columns:minmax(300px,370px) 1fr;column-gap:32px;align-items:start;
-      grid-template-areas:"about avail" "focus avail" "contact avail" ". ticket"}
+      grid-template-areas:"about avail" "focus ticket" "contact ticket" ". ticket"}
     section[aria-labelledby="h-about"]{grid-area:about}
     section[aria-labelledby="h-avail"]{grid-area:avail}
     section[aria-labelledby="h-focus"]{grid-area:focus}
@@ -529,7 +529,10 @@ const holidayOf = (ds) => TH_HOLIDAYS[ds.slice(5)];
 const $ = (id) => document.getElementById(id);
 /* local-timezone ISO — toISOString() converts to UTC and shifts GMT+7 dates back a day */
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const busiesOf = (ds) => SCHEDULE.busy.filter((b) => ds >= b.from && ds <= b.to); // ALL events that day
+const startMin = (b) => b.time ? +b.time.slice(0, 2) * 60 + +b.time.slice(3, 5) : -1; // all-day sorts first
+const busiesOf = (ds) => SCHEDULE.busy
+  .filter((b) => ds >= b.from && ds <= b.to)
+  .sort((a, b) => startMin(a) - startMin(b)); // chronological within the day
 const evtCls = (b) => b.kind === "flex" ? "flex" : b.kind === "interview" ? "intv" : b.kind === "exam" ? "busy" : b.time ? "partial" : "busy";
 function dayKind(list) { // most severe wins for the cell colour
   if (!list.length) return "free";

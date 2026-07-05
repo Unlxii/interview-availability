@@ -27,7 +27,7 @@
     --text:#18181b; --muted:#71717a; --faint:#a1a1aa;
     --border:#e4e4e7; --border-strong:#d4d4d8;
     --accent:#18181b; --accent-fg:#ffffff;
-    --free:#16a34a; --partial:#d97706; --busy:#dc2626; --flex:#3b82f6;
+    --free:#16a34a; --partial:#d97706; --busy:#dc2626; --flex:#3b82f6; --intv:#8b5cf6;
     --ring:rgba(24,24,27,.12);
     --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
     --mono:ui-monospace,"SF Mono",Consolas,Menlo,monospace;
@@ -168,6 +168,7 @@
   .evt.partial{background:var(--partial)}
   .evt.busy{background:var(--busy)}
   .evt.flex{background:var(--flex)}
+  .evt.intv{background:var(--intv)}
   .day.off{opacity:.45}
   .day:hover{border-color:var(--border-strong);transform:translateY(-1px)}
   .day:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
@@ -184,6 +185,7 @@
     .day.partial .dot{background:var(--partial)}
     .day.busy .dot{background:var(--busy)}
     .day.flex .dot{background:var(--flex)}
+    .day.intv .dot{background:var(--intv)}
   }
 
   /* ---------- day view (Apple Calendar style) ---------- */
@@ -216,7 +218,9 @@
     background:color-mix(in srgb,var(--partial) 16%,var(--surface));border-left:3px solid var(--partial)}
   .tl-evt.flex{background:color-mix(in srgb,var(--flex) 14%,var(--surface));border-left-color:var(--flex)}
   .tl-evt.exam{background:color-mix(in srgb,var(--busy) 14%,var(--surface));border-left-color:var(--busy)}
+  .tl-evt.intv{background:color-mix(in srgb,var(--intv) 14%,var(--surface));border-left-color:var(--intv)}
   .dv-allday.flex{background:var(--flex)}
+  .dv-allday.intv{background:var(--intv)}
   .tl-evt-title{font-size:.74rem;font-weight:600;line-height:1.35}
   .tl-evt-time{font-family:var(--mono);font-size:.64rem;color:var(--muted)}
 
@@ -234,6 +238,7 @@
   .tip.busy{border-top-color:var(--busy)}
   .tip.past{border-top-color:var(--faint)}
   .tip.flex{border-top-color:var(--flex)}
+  .tip.intv{border-top-color:var(--intv)}
   .day.holiday .num{color:var(--busy);font-weight:600}
   @media (prefers-reduced-motion: reduce){ .tip{transition:none} }
   .legend{margin-top:12px;font-family:var(--mono);font-size:.68rem;color:var(--faint)}
@@ -329,7 +334,7 @@
       </div>
       <p id="qOut" class="t-out" role="status" aria-live="polite" hidden></p>
       <div class="cal" id="cal"></div>
-      <p class="legend">blue = learning, still reachable · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
+      <p class="legend">blue = learning, still reachable · purple = interview booked · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
       <p class="note" id="hours"></p>
     </div>
   </section>
@@ -446,7 +451,7 @@ function sanitizeSchedule(raw) {
           to: b.to < b.from ? b.from : b.to,
           time: String(b.time || "").trim().slice(0, 40),
           label: (String(b.label || "").trim() || "Busy").slice(0, 120),
-          ...(b.kind === "flex" || b.kind === "exam" ? { kind: b.kind } : {}), // flex = reachable · exam = do not disturb
+          ...(["flex", "exam", "interview"].includes(b.kind) ? { kind: b.kind } : {}), // flex = reachable · exam = do not disturb · interview = slot booked
         }))
     : [];
   const focus = Array.isArray(raw.focus)
@@ -523,7 +528,7 @@ function renderCalendar() {
     const ds = iso(d);
     const busy = isBusy(ds);
     const weekend = d.getDay() === 0 || d.getDay() === 6;
-    const kindCls = busy ? (busy.kind === "flex" ? "flex" : busy.kind === "exam" ? "busy" : busy.time ? "partial" : "busy") : "free";
+    const kindCls = busy ? (busy.kind === "flex" ? "flex" : busy.kind === "interview" ? "intv" : busy.kind === "exam" ? "busy" : busy.time ? "partial" : "busy") : "free";
     const cls = ["day", kindCls];
     if (weekend || d < today) cls.push("off");
     if (ds === iso(today)) cls.push("today");
@@ -555,6 +560,7 @@ function describeDay(ds) {
   const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" });
   if (d < today) return { cls: "past", date: pretty, text: "Past date." };
   if (busy && busy.kind === "exam") return { cls: "busy", date: pretty, text: `Exam day — ${busy.label}${busy.time ? ` (${busy.time})` : ""}. Please pick another date.` };
+  if (busy && busy.kind === "interview") return { cls: "intv", date: pretty, text: `Interview scheduled${busy.time ? ` ${busy.time}` : ""} — ${busy.label}. This slot is booked; other times may be available.` };
   if (busy && busy.kind === "flex") return { cls: "flex", date: pretty, text: `${busy.label}${busy.time ? ` ${busy.time}` : ""} — flexible: still reachable, feel free to contact anytime.` };
   if (busy && busy.time) return { cls: "partial", date: pretty, text: `Busy ${busy.time} — ${busy.label}. Available outside those hours.` };
   if (busy) return { cls: "busy", date: pretty, text: `Busy all day — ${busy.label}. Please pick another date.` };
@@ -601,14 +607,16 @@ function openDayView(ds) {
   if (d.getDay() === 0 || d.getDay() === 6) bits.push("weekend — interviews on request");
   if (!busy && d >= today0 && !hol && d.getDay() > 0 && d.getDay() < 6) bits.push("available · " + CONFIG.hours);
   if (busy && busy.kind === "exam") bits.push("exam day — unavailable, please pick another date");
+  else if (busy && busy.kind === "interview") bits.push(`interview booked${busy.time ? ` ${busy.time}` : ""} — other times may be available`);
   else if (busy && busy.kind === "flex") bits.push("learning — still reachable, feel free to contact anytime");
   else if (busy && busy.time) bits.push(`busy ${busy.time} — free outside those hours`);
   $("dvSub").textContent = bits.join(" · ") || "available";
   const allday = $("dvAllday");
   allday.hidden = !(busy && !busy.time);
   if (busy && !busy.time) {
-    allday.className = `dv-allday${busy.kind === "flex" ? " flex" : ""}`;
+    allday.className = `dv-allday${busy.kind === "flex" ? " flex" : busy.kind === "interview" ? " intv" : ""}`;
     allday.textContent = busy.kind === "exam" ? `Exam day — ${busy.label}`
+      : busy.kind === "interview" ? `Interview scheduled — ${busy.label}`
       : busy.kind === "flex" ? `${busy.label} — all day, still reachable`
       : `Busy all day — ${busy.label}`;
   }
@@ -633,7 +641,7 @@ function openDayView(ds) {
     const toMin = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
     const startM = Math.max(toMin(s), DV_START * 60);
     const endM = Math.min(toMin(e), DV_END * 60);
-    const evt = el("div", `tl-evt${busy.kind === "flex" ? " flex" : busy.kind === "exam" ? " exam" : ""}`);
+    const evt = el("div", `tl-evt${busy.kind === "flex" ? " flex" : busy.kind === "exam" ? " exam" : busy.kind === "interview" ? " intv" : ""}`);
     evt.style.top = `${(startM - DV_START * 60) / 60 * HOUR_PX}px`;
     evt.style.height = `${Math.max((endM - startM) / 60 * HOUR_PX, 24)}px`;
     evt.append(el("div", "tl-evt-title", busy.label));

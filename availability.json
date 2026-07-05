@@ -91,6 +91,27 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "flex"
+    },
+    {
+      "from": "2026-06-16",
+      "to": "2026-07-02",
+      "time": "18:00-19:00",
+      "label": "SI company",
+      "kind": "interview"
+    },
+    {
+      "from": "2026-07-02",
+      "to": "2026-07-02",
+      "time": "15:00-17:00",
+      "label": "SI company",
+      "kind": "interview"
+    },
+    {
+      "from": "2026-05-21",
+      "to": "2026-05-27",
+      "time": "13:00-14:00",
+      "label": "ISV company",
+      "kind": "interview"
     }
   ],
   "focus": [

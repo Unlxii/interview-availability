@@ -68,6 +68,19 @@
        font-size:15px;-webkit-font-smoothing:antialiased;
        transition:background .3s ease,color .3s ease}
   main{max-width:680px;margin:0 auto;padding:56px 20px 72px}
+  /* wide screens: two-column component layout — calendar & form get the space they deserve */
+  @media(min-width:1020px){
+    main{max-width:1180px}
+    .layout{display:grid;grid-template-columns:minmax(300px,370px) 1fr;column-gap:32px;align-items:start;
+      grid-template-areas:"about avail" "focus avail" "contact avail" ". ticket"}
+    section[aria-labelledby="h-about"]{grid-area:about}
+    section[aria-labelledby="h-avail"]{grid-area:avail}
+    section[aria-labelledby="h-focus"]{grid-area:focus}
+    section[aria-labelledby="h-contact"]{grid-area:contact}
+    section[aria-labelledby="h-ticket"]{grid-area:ticket}
+    .day{min-height:78px}
+    .evt{font-size:.64rem}
+  }
   a{color:inherit;text-decoration:none}
   a:hover{text-decoration:underline;text-underline-offset:3px}
   a,button,input,select,textarea,.day{transition:all .16s ease}
@@ -181,7 +194,10 @@
   .evt.intv{background:var(--intv)}
   .evt.more{background:transparent;color:var(--faint);border:1px dashed var(--border-strong)}
   .day.off{opacity:.45}
-  .day:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+  .day:hover{background:color-mix(in srgb,var(--text) 9%,var(--surface2));
+    border-color:var(--border-strong);transform:translateY(-1px)}
+  .day.partial:hover{background:color-mix(in srgb,var(--text) 9%,color-mix(in srgb,var(--partial) 9%,var(--surface2)))}
+  .day.busy:hover{background:color-mix(in srgb,var(--text) 9%,color-mix(in srgb,var(--busy) 9%,var(--surface2)))}
   .day:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
   .day.hit{border-color:var(--accent);box-shadow:0 0 0 2px var(--ring)}
   @media (prefers-reduced-motion: no-preference){
@@ -314,6 +330,8 @@
     <button id="themeBtn" class="themeBtn" aria-label="Toggle dark / light mode">◐</button>
   </header>
 
+  <div class="layout">
+
   <section aria-labelledby="h-about">
     <h2 id="h-about">about</h2>
     <div class="card">
@@ -409,6 +427,8 @@
       </form>
     </div>
   </section>
+
+  </div><!-- /.layout -->
 
   <footer>© 2026 Ronnachai Sitthichoksathit</footer>
 </main>

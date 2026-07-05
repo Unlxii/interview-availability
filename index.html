@@ -8,13 +8,13 @@
       content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Ronnachai Sitthichoksathit — Interview Availability</title>
-<meta name="description" content="Interview availability for Ronnachai Sitthichoksathit, Junior DevOps / SRE Engineer. Check the schedule and open a ticket to request an interview.">
+<meta name="description" content="Interview availability for Ronnachai Sitthichoksathit — Junior DevOps / SRE and Front-End Developer. Check the live schedule and request an interview.">
 <meta name="theme-color" content="#0a0a0b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%230f1216'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='24'%20fill='%2316a34a'/%3E%3C/svg%3E">
 <!-- link previews (LINE / LinkedIn / Slack / email clients) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ronnachai Sitthichoksathit — Interview Availability">
-<meta property="og:description" content="Junior DevOps / SRE Engineer. Check my live schedule and book an interview slot.">
+<meta property="og:description" content="Junior DevOps / SRE · Front-End Developer. Check my live schedule and book an interview slot.">
 <meta property="og:url" content="https://unlxii.github.io/interview-availability/">
 <meta name="twitter:card" content="summary">
 <script type="application/ld+json">
@@ -72,12 +72,12 @@
   @media(min-width:1020px){
     main{max-width:1180px}
     .layout{display:grid;grid-template-columns:minmax(300px,370px) 1fr;column-gap:32px;align-items:start;
-      grid-template-areas:"about avail" "focus ticket" "contact ticket" ". ticket"}
+      grid-template-areas:"about main" "focus main" "contact main" "certs main"}
     section[aria-labelledby="h-about"]{grid-area:about}
-    section[aria-labelledby="h-avail"]{grid-area:avail}
+    .col-main{grid-area:main} /* availability + ticket flow together — no shared-row gaps */
     section[aria-labelledby="h-focus"]{grid-area:focus}
     section[aria-labelledby="h-contact"]{grid-area:contact}
-    section[aria-labelledby="h-ticket"]{grid-area:ticket}
+    section[aria-labelledby="h-certs"]{grid-area:certs}
     .day{min-height:78px}
     .evt{font-size:.64rem}
   }
@@ -273,6 +273,17 @@
 
   .note{margin-top:14px;font-size:.8rem;color:var(--muted)}
 
+  /* ---------- certifications (LinkedIn-style list) ---------- */
+  .cert{padding:11px 0;border-bottom:1px solid var(--border)}
+  .cert:first-child{padding-top:0}
+  .cert:last-child{border-bottom:0;padding-bottom:0}
+  .cert .c-name{font-size:.85rem;font-weight:600;line-height:1.4}
+  .cert .c-issuer{font-size:.78rem;color:var(--muted);margin-top:1px}
+  .cert .c-meta{font-family:var(--mono);font-size:.66rem;color:var(--faint);margin-top:2px}
+  .cert .c-link{display:inline-block;margin-top:5px;font-family:var(--mono);font-size:.7rem;
+    color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:2px 10px}
+  .cert .c-link:hover{text-decoration:none;border-color:var(--border-strong);color:var(--text)}
+
   /* ---------- current focus chips ---------- */
   .chips{display:flex;gap:8px;flex-wrap:wrap}
   .chip{font-family:var(--mono);font-size:.75rem;padding:6px 13px;border-radius:999px;
@@ -354,6 +365,8 @@
     </div>
   </section>
 
+  <div class="col-main">
+
   <section aria-labelledby="h-avail">
     <h2 id="h-avail">availability</h2>
     <div class="card">
@@ -369,19 +382,6 @@
       <div class="cal" id="cal"></div>
       <p class="legend">blue = learning, still reachable · purple = interview booked · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
       <p class="note" id="hours"></p>
-    </div>
-  </section>
-
-  <section aria-labelledby="h-focus" id="focusSection" hidden>
-    <h2 id="h-focus">current focus</h2>
-    <div class="card"><div class="chips" id="focusChips"></div></div>
-  </section>
-
-  <section aria-labelledby="h-contact">
-    <h2 id="h-contact">contact</h2>
-    <div class="card">
-      <dl id="contact"></dl>
-      <p class="note">Fastest response: open a ticket below or email directly — I reply within a few hours on weekdays.</p>
     </div>
   </section>
 
@@ -431,6 +431,26 @@
     </div>
   </section>
 
+  </div><!-- /.col-main -->
+
+  <section aria-labelledby="h-focus" id="focusSection" hidden>
+    <h2 id="h-focus">current focus</h2>
+    <div class="card"><div class="chips" id="focusChips"></div></div>
+  </section>
+
+  <section aria-labelledby="h-contact">
+    <h2 id="h-contact">contact</h2>
+    <div class="card">
+      <dl id="contact"></dl>
+      <p class="note">Fastest response: open a ticket below or email directly — I reply within a few hours on weekdays.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-certs">
+    <h2 id="h-certs">licenses &amp; certifications</h2>
+    <div class="card" id="certList"></div>
+  </section>
+
   </div><!-- /.layout -->
 
   <footer>© 2026 Ronnachai Sitthichoksathit</footer>
@@ -469,6 +489,16 @@ const CONFIG = Object.freeze({
     busy: "Unavailable — please propose dates after blocked period",
   },
   hours: "Preferred hours: Mon–Fri 09:00–18:00 (GMT+7). Weekends on request.",
+  /* url: paste the Credly / issuer verification link to show a "show credential ↗" pill */
+  certs: [
+    { name: "AWS Certified Cloud Practitioner", issuer: "Amazon Web Services (AWS)", meta: "Issued Jun 2026 · Expires Jun 2029", url: "" },
+    { name: "HCCDA — Tech Essentials", issuer: "Huawei", meta: "Issued Mar 2025 · Expires Mar 2028", url: "" },
+    { name: "Linux Essentials", issuer: "Cisco", meta: "Issued Mar 2025", url: "" },
+    { name: "Introduction to Cybersecurity", issuer: "Cisco", meta: "Issued Sep 2024", url: "" },
+    { name: "NDG Linux Unhatched", issuer: "Cisco Networking Academy", meta: "", url: "" },
+    { name: "AWS Cloud Practitioner Essentials (course)", issuer: "Amazon Web Services (AWS)", meta: "Issued Apr 2026", url: "" },
+    { name: "EF SET English Certificate 51/100 (B2 Upper Intermediate)", issuer: "EF SET", meta: "Issued Dec 2025", url: "" },
+  ],
 });
 
 /* ---- Schedule data: managed in availability.json (add/move/remove dates there).
@@ -727,6 +757,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDayVi
   cal.addEventListener("mouseover", enter);
   cal.addEventListener("focusin", enter);
   cal.addEventListener("click", (e) => { const c = cellOf(e); if (c && c.dataset.ds) openDayView(c.dataset.ds); });
+  cal.addEventListener("keydown", (e) => { // real keyboard support for role="button" cells
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const c = cellOf(e);
+    if (c && c.dataset.ds) { e.preventDefault(); openDayView(c.dataset.ds); }
+  });
   cal.addEventListener("mouseleave", hideTip);
   cal.addEventListener("focusout", hideTip);
   window.addEventListener("scroll", () => { if (Date.now() > tipPinnedUntil) hideTip(); }, { passive: true });
@@ -778,6 +813,24 @@ function renderFocus() {
   wrap.textContent = "";
   $("focusSection").hidden = SCHEDULE.focus.length === 0;
   for (const f of SCHEDULE.focus) wrap.append(el("span", "chip", f));
+}
+
+function renderCerts() {
+  const wrap = $("certList");
+  for (const c of CONFIG.certs) {
+    const row = el("div", "cert");
+    row.append(el("div", "c-name", c.name));
+    row.append(el("div", "c-issuer", c.issuer));
+    if (c.meta) row.append(el("div", "c-meta", c.meta));
+    if (c.url) {
+      const a = el("a", "c-link", "show credential ↗");
+      a.href = c.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      row.append(a);
+    }
+    wrap.append(row);
+  }
 }
 
 function renderContact() {
@@ -947,6 +1000,7 @@ function renderSchedule() {
 (async function init() {
   $("hours").textContent = CONFIG.hours;
   renderContact();
+  renderCerts();
   await loadSchedule();
   renderSchedule();
   /* near-realtime: re-fetch schedule every 60 s while the page is open */

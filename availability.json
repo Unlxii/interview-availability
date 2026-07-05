@@ -1,18 +1,13 @@
 {
   "status": "open",
   "updated": "2026-07-05",
-  "focus": [
-    "AWS SAA-C03",
-    "CKA",
-    "Psychological First Aid ✓"
-  ],
   "busy": [
     {
       "from": "2026-07-04",
       "to": "2026-07-08",
       "time": "10:30-15:00",
-      "kind": "flex",
-      "label": "Learning AWS SAA-C03"
+      "label": "Learning AWS SAA-C03",
+      "kind": "flex"
     },
     {
       "from": "2026-07-09",
@@ -24,22 +19,27 @@
       "from": "2026-07-10",
       "to": "2026-07-10",
       "time": "10:30-15:00",
-      "kind": "flex",
-      "label": "Learning AWS SAA-C03"
+      "label": "Learning AWS SAA-C03",
+      "kind": "flex"
     },
     {
       "from": "2026-07-13",
       "to": "2026-07-17",
       "time": "11:00-15:00",
-      "kind": "flex",
-      "label": "Learning AWS SAA-C03 and CKA"
+      "label": "Learning AWS SAA-C03 and CKA",
+      "kind": "flex"
     },
     {
       "from": "2026-07-20",
       "to": "2026-07-24",
       "time": "11:00-15:00",
-      "kind": "flex",
-      "label": "Learning AWS SAA-C03 and CKA"
+      "label": "Learning AWS SAA-C03 and CKA",
+      "kind": "flex"
     }
+  ],
+  "focus": [
+    "AWS SAA-C03",
+    "CKA",
+    "Psychological First Aid"
   ]
 }

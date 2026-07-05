@@ -27,7 +27,7 @@
     --text:#18181b; --muted:#71717a; --faint:#a1a1aa;
     --border:#e4e4e7; --border-strong:#d4d4d8;
     --accent:#18181b; --accent-fg:#ffffff;
-    --free:#16a34a; --partial:#d97706; --busy:#dc2626;
+    --free:#16a34a; --partial:#d97706; --busy:#dc2626; --flex:#3b82f6;
     --ring:rgba(24,24,27,.12);
     --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
     --mono:ui-monospace,"SF Mono",Consolas,Menlo,monospace;
@@ -167,6 +167,7 @@
        color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   .evt.partial{background:var(--partial)}
   .evt.busy{background:var(--busy)}
+  .evt.flex{background:var(--flex)}
   .day.off{opacity:.45}
   .day:hover{border-color:var(--border-strong);transform:translateY(-1px)}
   .day:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
@@ -182,7 +183,42 @@
     .day .dot{display:block;width:6px;height:6px;border-radius:50%;margin:auto 0 2px 3px}
     .day.partial .dot{background:var(--partial)}
     .day.busy .dot{background:var(--busy)}
+    .day.flex .dot{background:var(--flex)}
   }
+
+  /* ---------- day view (Apple Calendar style) ---------- */
+  .dayview-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);
+    z-index:50;display:none;align-items:center;justify-content:center;padding:20px}
+  .dayview-backdrop.open{display:flex}
+  .dayview{width:100%;max-width:420px;max-height:86vh;overflow-y:auto;background:var(--surface);
+    border:1px solid var(--border);border-radius:16px;padding:20px 22px;
+    box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  @media (prefers-reduced-motion: no-preference){
+    .dayview-backdrop.open .dayview{animation:dvIn .22s ease}
+    @keyframes dvIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
+  }
+  .dv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .dv-date{font-weight:650;font-size:1.02rem;letter-spacing:-.01em}
+  .dv-sub{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin:4px 0 14px}
+  .dv-close{width:30px;height:30px;border-radius:8px;padding:0;flex:none;
+    background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:.85rem;cursor:pointer}
+  .dv-close:hover{color:var(--text);border-color:var(--border-strong);opacity:1}
+  .dv-allday{font-family:var(--mono);font-size:.74rem;color:#fff;background:var(--busy);
+    border-radius:7px;padding:7px 11px;margin-bottom:12px}
+  .timeline{position:relative;margin-top:4px}
+  .tl-hour{display:flex;gap:10px;height:34px;align-items:flex-start}
+  .tl-label{font-family:var(--mono);font-size:.6rem;color:var(--faint);width:38px;
+    text-align:right;transform:translateY(-7px);flex:none}
+  .tl-line{flex:1;border-top:1px solid var(--border)}
+  .tl-band{position:absolute;left:48px;right:0;border-radius:6px;pointer-events:none;
+    background:color-mix(in srgb,var(--free) 6%,transparent)}
+  .tl-evt{position:absolute;left:48px;right:0;border-radius:8px;padding:5px 10px;overflow:hidden;
+    background:color-mix(in srgb,var(--partial) 16%,var(--surface));border-left:3px solid var(--partial)}
+  .tl-evt.flex{background:color-mix(in srgb,var(--flex) 14%,var(--surface));border-left-color:var(--flex)}
+  .tl-evt.exam{background:color-mix(in srgb,var(--busy) 14%,var(--surface));border-left-color:var(--busy)}
+  .dv-allday.flex{background:var(--flex)}
+  .tl-evt-title{font-size:.74rem;font-weight:600;line-height:1.35}
+  .tl-evt-time{font-family:var(--mono);font-size:.64rem;color:var(--muted)}
 
   /* floating popover anchored to the hovered day */
   .tip{position:fixed;z-index:40;max-width:280px;background:var(--surface);border:1px solid var(--border);
@@ -197,6 +233,7 @@
   .tip.partial{border-top-color:var(--partial)}
   .tip.busy{border-top-color:var(--busy)}
   .tip.past{border-top-color:var(--faint)}
+  .tip.flex{border-top-color:var(--flex)}
   .day.holiday .num{color:var(--busy);font-weight:600}
   @media (prefers-reduced-motion: reduce){ .tip{transition:none} }
   .legend{margin-top:12px;font-family:var(--mono);font-size:.68rem;color:var(--faint)}
@@ -292,7 +329,7 @@
       </div>
       <p id="qOut" class="t-out" role="status" aria-live="polite" hidden></p>
       <div class="cal" id="cal"></div>
-      <p class="legend">amber block = partly busy (hours shown) · red block = busy all day · red date = Thai public holiday · empty = available · faded = weekend / past</p>
+      <p class="legend">blue = learning, still reachable · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
       <p class="note" id="hours"></p>
     </div>
   </section>
@@ -364,6 +401,18 @@
   <div class="t-text" id="tText"></div>
 </div>
 
+<div id="dayviewBackdrop" class="dayview-backdrop" role="dialog" aria-modal="true" aria-labelledby="dvDate">
+  <div class="dayview">
+    <div class="dv-head">
+      <div class="dv-date" id="dvDate"></div>
+      <button type="button" class="dv-close" id="dvClose" aria-label="Close">✕</button>
+    </div>
+    <div class="dv-sub" id="dvSub"></div>
+    <div class="dv-allday" id="dvAllday" hidden></div>
+    <div class="timeline" id="dvTimeline"></div>
+  </div>
+</div>
+
 <script>
 "use strict";
 
@@ -397,6 +446,7 @@ function sanitizeSchedule(raw) {
           to: b.to < b.from ? b.from : b.to,
           time: String(b.time || "").trim().slice(0, 40),
           label: (String(b.label || "").trim() || "Busy").slice(0, 120),
+          ...(b.kind === "flex" || b.kind === "exam" ? { kind: b.kind } : {}), // flex = reachable · exam = do not disturb
         }))
     : [];
   const focus = Array.isArray(raw.focus)
@@ -473,7 +523,8 @@ function renderCalendar() {
     const ds = iso(d);
     const busy = isBusy(ds);
     const weekend = d.getDay() === 0 || d.getDay() === 6;
-    const cls = ["day", busy ? (busy.time ? "partial" : "busy") : "free"];
+    const kindCls = busy ? (busy.kind === "flex" ? "flex" : busy.kind === "exam" ? "busy" : busy.time ? "partial" : "busy") : "free";
+    const cls = ["day", kindCls];
     if (weekend || d < today) cls.push("off");
     if (ds === iso(today)) cls.push("today");
     if (holidayOf(ds)) cls.push("holiday");
@@ -481,7 +532,7 @@ function renderCalendar() {
     const showMonth = i === 0 || d.getDate() === 1;
     cell.append(el("span", "num", showMonth ? `${d.toLocaleString("en", { month: "short" })} ${d.getDate()}` : String(d.getDate())));
     if (busy) {
-      cell.append(el("div", `evt ${busy.time ? "partial" : "busy"}`,
+      cell.append(el("div", `evt ${kindCls}`,
         busy.time ? `${busy.time} · ${busy.label}` : busy.label));
     }
     cell.append(el("span", "dot"));
@@ -503,6 +554,8 @@ function describeDay(ds) {
   const hol = holidayOf(ds);
   const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" });
   if (d < today) return { cls: "past", date: pretty, text: "Past date." };
+  if (busy && busy.kind === "exam") return { cls: "busy", date: pretty, text: `Exam day — ${busy.label}${busy.time ? ` (${busy.time})` : ""}. Please pick another date.` };
+  if (busy && busy.kind === "flex") return { cls: "flex", date: pretty, text: `${busy.label}${busy.time ? ` ${busy.time}` : ""} — flexible: still reachable, feel free to contact anytime.` };
   if (busy && busy.time) return { cls: "partial", date: pretty, text: `Busy ${busy.time} — ${busy.label}. Available outside those hours.` };
   if (busy) return { cls: "busy", date: pretty, text: `Busy all day — ${busy.label}. Please pick another date.` };
   if (hol) return { cls: "free", date: pretty, text: `Thai public holiday — ${hol}. Interviews possible on request.` };
@@ -534,14 +587,75 @@ function hideTip() {
   tip.setAttribute("aria-hidden", "true");
 }
 
-/* one delegated listener set for all 28 cells (hover, tap, keyboard focus) */
+/* ---- day view: click a cell → Apple Calendar-style hour timeline ---- */
+const DV_START = 7, DV_END = 20, HOUR_PX = 34; // 07:00–20:00 window
+function openDayView(ds) {
+  const d = new Date(ds + "T00:00:00");
+  const busy = isBusy(ds);
+  const hol = holidayOf(ds);
+  const today0 = new Date(); today0.setHours(0, 0, 0, 0);
+  $("dvDate").textContent = d.toLocaleDateString("en", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const bits = [];
+  if (d < today0) bits.push("past date");
+  if (hol) bits.push(`Thai public holiday — ${hol}`);
+  if (d.getDay() === 0 || d.getDay() === 6) bits.push("weekend — interviews on request");
+  if (!busy && d >= today0 && !hol && d.getDay() > 0 && d.getDay() < 6) bits.push("available · " + CONFIG.hours);
+  if (busy && busy.kind === "exam") bits.push("exam day — unavailable, please pick another date");
+  else if (busy && busy.kind === "flex") bits.push("learning — still reachable, feel free to contact anytime");
+  else if (busy && busy.time) bits.push(`busy ${busy.time} — free outside those hours`);
+  $("dvSub").textContent = bits.join(" · ") || "available";
+  const allday = $("dvAllday");
+  allday.hidden = !(busy && !busy.time);
+  if (busy && !busy.time) {
+    allday.className = `dv-allday${busy.kind === "flex" ? " flex" : ""}`;
+    allday.textContent = busy.kind === "exam" ? `Exam day — ${busy.label}`
+      : busy.kind === "flex" ? `${busy.label} — all day, still reachable`
+      : `Busy all day — ${busy.label}`;
+  }
+  const tl = $("dvTimeline");
+  tl.textContent = "";
+  const frag = document.createDocumentFragment();
+  for (let h = DV_START; h <= DV_END; h++) {
+    const row = el("div", "tl-hour");
+    row.append(el("span", "tl-label", `${String(h).padStart(2, "0")}:00`));
+    row.append(el("span", "tl-line"));
+    frag.append(row);
+  }
+  tl.append(frag);
+  if (d.getDay() >= 1 && d.getDay() <= 5) { // preferred-hours band (Mon–Fri 09–18)
+    const band = el("div", "tl-band");
+    band.style.top = `${(9 - DV_START) * HOUR_PX}px`;
+    band.style.height = `${(18 - 9) * HOUR_PX}px`;
+    tl.append(band);
+  }
+  if (busy && busy.time) {
+    const [s, e] = busy.time.split("-");
+    const toMin = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+    const startM = Math.max(toMin(s), DV_START * 60);
+    const endM = Math.min(toMin(e), DV_END * 60);
+    const evt = el("div", `tl-evt${busy.kind === "flex" ? " flex" : busy.kind === "exam" ? " exam" : ""}`);
+    evt.style.top = `${(startM - DV_START * 60) / 60 * HOUR_PX}px`;
+    evt.style.height = `${Math.max((endM - startM) / 60 * HOUR_PX, 24)}px`;
+    evt.append(el("div", "tl-evt-title", busy.label));
+    evt.append(el("div", "tl-evt-time", busy.time));
+    tl.append(evt);
+  }
+  hideTip();
+  $("dayviewBackdrop").classList.add("open");
+}
+function closeDayView() { $("dayviewBackdrop").classList.remove("open"); }
+$("dvClose").addEventListener("click", closeDayView);
+$("dayviewBackdrop").addEventListener("click", (e) => { if (e.target.id === "dayviewBackdrop") closeDayView(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDayView(); });
+
+/* one delegated listener set for all 28 cells (hover = popover, click = day view) */
 {
   const cal = $("cal");
   const cellOf = (e) => e.target.closest(".day");
   const enter = (e) => { const c = cellOf(e); if (c && c.dataset.ds) showTip(c); };
   cal.addEventListener("mouseover", enter);
-  cal.addEventListener("click", enter);
   cal.addEventListener("focusin", enter);
+  cal.addEventListener("click", (e) => { const c = cellOf(e); if (c && c.dataset.ds) openDayView(c.dataset.ds); });
   cal.addEventListener("mouseleave", hideTip);
   cal.addEventListener("focusout", hideTip);
   window.addEventListener("scroll", () => { if (Date.now() > tipPinnedUntil) hideTip(); }, { passive: true });

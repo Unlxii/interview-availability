@@ -39,6 +39,7 @@ jobs:
             if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);
             if (b.to < b.from) fail(`busy[${i}]: reversed range (${b.from} > ${b.to})`);
             if (b.time && !TIME.test(b.time)) fail(`busy[${i}]: time must be HH:MM-HH:MM`);
+            if (b.kind !== undefined && !["flex", "exam"].includes(b.kind)) fail(`busy[${i}]: kind must be "flex", "exam", or omitted`);
             if (typeof (b.label ?? "") !== "string" || String(b.label || "").length > 120) fail(`busy[${i}]: label must be a string <= 120 chars`);
           }
           console.log(`availability.json valid — ${d.busy.length} busy period(s)`);'

@@ -10,7 +10,7 @@
 <title>Ronnachai Sitthichoksathit — Interview Availability</title>
 <meta name="description" content="Interview availability for Ronnachai Sitthichoksathit — Junior DevOps / SRE and Front-End Developer. Check the live schedule and request an interview.">
 <meta name="theme-color" content="#0a0a0b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='20'%20fill='%230f1216'/%3E%3Ccircle%20cx='50'%20cy='50'%20r='24'%20fill='%2316a34a'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%23101013'/%3E%3Crect%20x='20'%20y='28'%20width='60'%20height='50'%20rx='9'%20fill='none'%20stroke='%23e4e4e7'%20stroke-width='6'/%3E%3Cline%20x1='20'%20y1='44'%20x2='80'%20y2='44'%20stroke='%23e4e4e7'%20stroke-width='6'/%3E%3Crect%20x='31'%20y='17'%20width='7'%20height='15'%20rx='3.5'%20fill='%23e4e4e7'/%3E%3Crect%20x='62'%20y='17'%20width='7'%20height='15'%20rx='3.5'%20fill='%23e4e4e7'/%3E%3Ccircle%20cx='61'%20cy='61'%20r='7.5'%20fill='%2316a34a'/%3E%3C/svg%3E">
 <!-- link previews (LINE / LinkedIn / Slack / email clients) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ronnachai Sitthichoksathit — Interview Availability">
@@ -72,12 +72,11 @@
   @media(min-width:1020px){
     main{max-width:1180px}
     .layout{display:grid;grid-template-columns:minmax(300px,370px) 1fr;column-gap:32px;align-items:start;
-      grid-template-areas:"about main" "focus main" "contact main" "certs main"}
+      grid-template-areas:"about main" "focus main" "contact main"}
     section[aria-labelledby="h-about"]{grid-area:about}
     .col-main{grid-area:main} /* availability + ticket flow together — no shared-row gaps */
     section[aria-labelledby="h-focus"]{grid-area:focus}
     section[aria-labelledby="h-contact"]{grid-area:contact}
-    section[aria-labelledby="h-certs"]{grid-area:certs}
     .day{min-height:78px}
     .evt{font-size:.64rem}
   }
@@ -126,7 +125,7 @@
   .btn-hero.primary{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
   .btn-hero.primary:hover{opacity:.88}
 
-  .themeBtn{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:10px;
+  .themeBtn{position:fixed;top:16px;right:16px;z-index:70;width:34px;height:34px;border-radius:10px;
     border:1px solid var(--border);background:var(--surface);color:var(--muted);
     cursor:pointer;font-size:.95rem;line-height:1;padding:0}
   .themeBtn:hover{color:var(--text);border-color:var(--border-strong)}
@@ -281,10 +280,10 @@
 
   .note{margin-top:14px;font-size:.8rem;color:var(--muted)}
 
-  /* ---------- certifications (LinkedIn-style list) ---------- */
-  .cert{padding:11px 0;border-bottom:1px solid var(--border)}
-  .cert:first-child{padding-top:0}
-  .cert:last-child{border-bottom:0;padding-bottom:0}
+  /* ---------- certifications (LinkedIn-style tiles, full width) ---------- */
+  .certGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .cert{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+        padding:14px 16px;box-shadow:var(--shadow)}
   .cert .c-name{font-size:.85rem;font-weight:600;line-height:1.4}
   .cert .c-issuer{font-size:.78rem;color:var(--muted);margin-top:1px}
   .cert .c-meta{font-family:var(--mono);font-size:.66rem;color:var(--faint);margin-top:2px}
@@ -333,9 +332,9 @@
 </style>
 </head>
 <body>
+<button id="themeBtn" class="themeBtn" aria-label="Toggle dark / light mode">◐</button>
 <main>
   <header>
-    <button id="themeBtn" class="themeBtn" aria-label="Toggle dark / light mode">◐</button>
     <div class="bc-top">
       <div>
         <h1>Ronnachai Sitthichoksathit</h1>
@@ -364,7 +363,7 @@
   <section aria-labelledby="h-about">
     <h2 id="h-about">about</h2>
     <div class="card">
-      <p class="lead">I build and secure CI/CD pipelines — and I like my infrastructure boring, observable, and automated.</p>
+      <p class="lead">Computer engineer specializing in CI/CD automation, cloud infrastructure, and front-end development — focused on building systems that are reliable, secure, and easy to operate.</p>
       <div class="kv">
         <div class="kv-row"><span class="k">education</span>
           <span class="v">B.Eng. Computer Engineering, Chiang Mai University <span class="dim">(2022–2026)</span></span></div>
@@ -463,12 +462,12 @@
     </div>
   </section>
 
+  </div><!-- /.layout -->
+
   <section aria-labelledby="h-certs">
     <h2 id="h-certs">licenses &amp; certifications</h2>
-    <div class="card" id="certList"></div>
+    <div class="certGrid" id="certList"></div>
   </section>
-
-  </div><!-- /.layout -->
 
   <footer>© 2026 Ronnachai Sitthichoksathit</footer>
 </main>

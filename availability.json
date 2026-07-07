@@ -110,6 +110,17 @@
   "focus": [
     "AWS SAA-C03",
     "CKA",
-    "Psychological First Aid"
+    "Psychological First Aid",
+    "TOEIC"
+  ],
+  "gaming": [
+    {
+      "label": "VALORANT",
+      "url": "https://tracker.gg/valorant/profile/riot/nvy%20dada%23apac/overview?platform=pc&playlist=competitive&season=9d85c932-4820-c060-09c3-668636d4df1b"
+    },
+    {
+      "label": "STEAM",
+      "url": "https://steamcommunity.com/id/nongdada/"
+    }
   ]
 }

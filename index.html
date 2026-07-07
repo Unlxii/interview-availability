@@ -72,10 +72,11 @@
   @media(min-width:1020px){
     main{max-width:1180px}
     .layout{display:grid;grid-template-columns:minmax(300px,370px) 1fr;column-gap:32px;align-items:start;
-      grid-template-areas:"about main" "focus main" "contact main"}
+      grid-template-areas:"about main" "focus main" "gaming main" "contact main"}
     section[aria-labelledby="h-about"]{grid-area:about}
     .col-main{grid-area:main} /* availability + ticket flow together — no shared-row gaps */
     section[aria-labelledby="h-focus"]{grid-area:focus}
+    section[aria-labelledby="h-gaming"]{grid-area:gaming}
     section[aria-labelledby="h-contact"]{grid-area:contact}
     .day{min-height:78px}
     .evt{font-size:.64rem}
@@ -302,6 +303,12 @@
         background:var(--surface2);border:1px solid var(--border);color:var(--text)}
   .chip::before{content:"→ ";color:var(--free);font-weight:600}
 
+  /* ---------- gaming tags (optional link out to Riot/Steam profile etc.) ---------- */
+  .gaming{display:flex;gap:8px;flex-wrap:wrap}
+  .gtag{font-family:var(--mono);font-size:.75rem;padding:6px 13px;border-radius:999px;
+        background:var(--surface2);border:1px solid var(--border);color:var(--text);display:inline-block}
+  a.gtag:hover{text-decoration:none;border-color:var(--border-strong);color:var(--text)}
+
   /* ---------- contact ---------- */
   dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:.88rem;align-items:baseline}
   dt{color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
@@ -459,6 +466,11 @@
     <div class="card"><div class="chips" id="focusChips"></div></div>
   </section>
 
+  <section aria-labelledby="h-gaming" id="gamingSection" hidden>
+    <h2 id="h-gaming">currently playing</h2>
+    <div class="card"><div class="gaming" id="gamingTags"></div></div>
+  </section>
+
   <section aria-labelledby="h-contact">
     <h2 id="h-contact">contact</h2>
     <div class="card">
@@ -529,7 +541,7 @@ const CONFIG = Object.freeze({
 
 /* ---- Schedule data: managed in availability.json (add/move/remove dates there).
         Falls back to these defaults if the file can't be loaded. ---- */
-let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [], focus: [] };
+let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [], focus: [], gaming: [] };
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 function sanitizeSchedule(raw) {
@@ -550,7 +562,17 @@ function sanitizeSchedule(raw) {
   const focus = Array.isArray(raw.focus)
     ? raw.focus.map((f) => String(f).trim().slice(0, 60)).filter(Boolean).slice(0, 6)
     : [];
-  return { status, updated, busy, focus };
+  const gaming = Array.isArray(raw.gaming)
+    ? raw.gaming
+        .filter((g) => g && typeof g.label === "string" && g.label.trim())
+        .map((g) => ({
+          label: String(g.label).trim().slice(0, 40),
+          // only accept http(s) links — never render arbitrary URL schemes
+          ...(typeof g.url === "string" && /^https?:\/\//i.test(g.url.trim()) ? { url: g.url.trim().slice(0, 300) } : {}),
+        }))
+        .slice(0, 8)
+    : [];
+  return { status, updated, busy, focus, gaming };
 }
 
 let scheduleFresh = false; // false = showing cached/default data (fetch failed)
@@ -845,6 +867,24 @@ function renderFocus() {
   for (const f of SCHEDULE.focus) wrap.append(el("span", "chip", f));
 }
 
+function renderGaming() {
+  const wrap = $("gamingTags");
+  wrap.textContent = "";
+  const list = SCHEDULE.gaming || [];
+  $("gamingSection").hidden = list.length === 0;
+  for (const g of list) {
+    if (g.url) {
+      const a = el("a", "gtag", g.label);
+      a.href = g.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      wrap.append(a);
+    } else {
+      wrap.append(el("span", "gtag", g.label));
+    }
+  }
+}
+
 function renderCerts() {
   const wrap = $("certList");
   for (const c of CONFIG.certs) {
@@ -1025,6 +1065,7 @@ function renderSchedule() {
   st.textContent = CONFIG.statusText[SCHEDULE.status];
   renderCalendar();
   renderFocus();
+  renderGaming();
 }
 
 (async function init() {
@@ -1038,4 +1079,4 @@ function renderSchedule() {
 })();
 </script>
 </body>
-</htm
+</html>

@@ -35,6 +35,15 @@ jobs:
             for (const [i, f] of d.focus.entries())
               if (typeof f !== "string" || f.length > 60) fail(`focus[${i}]: must be a string <= 60 chars`);
           }
+          if (d.gaming !== undefined) {
+            if (!Array.isArray(d.gaming)) fail("gaming must be an array");
+            if (d.gaming.length > 8) fail("gaming: max 8 tags");
+            const URLRE = /^https?:\/\//i;
+            for (const [i, g] of d.gaming.entries()) {
+              if (typeof g.label !== "string" || !g.label.trim() || g.label.length > 40) fail(`gaming[${i}]: label must be a non-empty string <= 40 chars`);
+              if (g.url !== undefined && (typeof g.url !== "string" || !URLRE.test(g.url) || g.url.length > 300)) fail(`gaming[${i}]: url must be http(s) and <= 300 chars`);
+            }
+          }
           for (const [i, b] of d.busy.entries()) {
             if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);
             if (b.to < b.from) fail(`busy[${i}]: reversed range (${b.from} > ${b.to})`);
@@ -42,4 +51,6 @@ jobs:
             // NOTE: "feedback" is deliberately NOT in this list — it is an admin-only private tag
             // that admin.html strips out before export. If it ever shows up here, something leaked it.
             if (b.kind !== undefined && !["flex", "exam", "interview", "exercise"].includes(b.kind)) fail(`busy[${i}]: kind must be "flex", "exam", "interview", "exercise", or omitted`);
-            if (ty
+            if (typeof (b.label ?? "") !== "string" || String(b.label || "").length > 120) fail(`busy[${i}]: label must be a string <= 120 chars`);
+          }
+          console.log(`availability.json valid — ${d.busy.length} busy period(s)`);'

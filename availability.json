@@ -112,6 +112,13 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "flex"
+    },
+    {
+      "from": "2026-07-07",
+      "to": "2026-07-07",
+      "time": "14:30-16:00",
+      "label": "Confidential AI Solution Provider ( DevOps Engineer Roles )",
+      "kind": "interview"
     }
   ],
   "focus": [

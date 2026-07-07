@@ -7,13 +7,13 @@
 <meta http-equiv="Content-Security-Policy"
       content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
 <meta name="referrer" content="no-referrer">
-<title>Ronnachai Sitthichoksathit — Interview Availability</title>
-<meta name="description" content="Interview availability for Ronnachai Sitthichoksathit — Junior DevOps / SRE and Front-End Developer. Check the live schedule and request an interview.">
+<title>Ronnachai Sitthichoksathit · Interview Availability</title>
+<meta name="description" content="Interview availability for Ronnachai Sitthichoksathit, Junior DevOps / SRE and Front-End Developer. Check the live schedule and request an interview.">
 <meta name="theme-color" content="#0a0a0b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Crect%20width='100'%20height='100'%20rx='22'%20fill='%23101013'/%3E%3Crect%20x='20'%20y='28'%20width='60'%20height='50'%20rx='9'%20fill='none'%20stroke='%23e4e4e7'%20stroke-width='6'/%3E%3Cline%20x1='20'%20y1='44'%20x2='80'%20y2='44'%20stroke='%23e4e4e7'%20stroke-width='6'/%3E%3Crect%20x='31'%20y='17'%20width='7'%20height='15'%20rx='3.5'%20fill='%23e4e4e7'/%3E%3Crect%20x='62'%20y='17'%20width='7'%20height='15'%20rx='3.5'%20fill='%23e4e4e7'/%3E%3Ccircle%20cx='61'%20cy='61'%20r='7.5'%20fill='%2316a34a'/%3E%3C/svg%3E">
 <!-- link previews (LINE / LinkedIn / Slack / email clients) -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Ronnachai Sitthichoksathit — Interview Availability">
+<meta property="og:title" content="Ronnachai Sitthichoksathit · Interview Availability">
 <meta property="og:description" content="Junior DevOps / SRE · Front-End Developer. Check my live schedule and book an interview slot.">
 <meta property="og:url" content="https://unlxii.github.io/interview-availability/">
 <meta name="twitter:card" content="summary">
@@ -27,7 +27,7 @@
     --text:#18181b; --muted:#71717a; --faint:#a1a1aa;
     --border:#e4e4e7; --border-strong:#d4d4d8;
     --accent:#18181b; --accent-fg:#ffffff;
-    --free:#16a34a; --partial:#d97706; --busy:#dc2626; --flex:#3b82f6; --intv:#8b5cf6;
+    --free:#16a34a; --partial:#d97706; --busy:#dc2626; --flex:#3b82f6; --intv:#8b5cf6; --exercise:#db2777;
     --ring:rgba(24,24,27,.12);
     --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
     --mono:ui-monospace,"SF Mono",Consolas,Menlo,monospace;
@@ -199,6 +199,7 @@
   .evt.busy{background:var(--busy)}
   .evt.flex{background:var(--flex)}
   .evt.intv{background:var(--intv)}
+  .evt.exercise{background:var(--exercise)}
   .evt.more{background:transparent;color:var(--faint);border:1px dashed var(--border-strong)}
   .day.off{opacity:.45}
   .day:hover{background:color-mix(in srgb,var(--text) 9%,var(--surface2));
@@ -220,6 +221,7 @@
     .day.busy .dot{background:var(--busy)}
     .day.flex .dot{background:var(--flex)}
     .day.intv .dot{background:var(--intv)}
+    .day.exercise .dot{background:var(--exercise)}
   }
 
   /* ---------- day view (Apple Calendar style) ---------- */
@@ -254,8 +256,10 @@
   .tl-evt.flex{background:color-mix(in srgb,var(--flex) 14%,var(--surface));border-left-color:var(--flex)}
   .tl-evt.exam{background:color-mix(in srgb,var(--busy) 14%,var(--surface));border-left-color:var(--busy)}
   .tl-evt.intv{background:color-mix(in srgb,var(--intv) 14%,var(--surface));border-left-color:var(--intv)}
+  .tl-evt.exercise{background:color-mix(in srgb,var(--exercise) 14%,var(--surface));border-left-color:var(--exercise)}
   .dv-allday.flex{background:var(--flex)}
   .dv-allday.intv{background:var(--intv)}
+  .dv-allday.exercise{background:var(--exercise)}
   .tl-evt-title{font-size:.74rem;font-weight:600;line-height:1.35}
   .tl-evt-time{font-family:var(--mono);font-size:.64rem;color:var(--muted)}
 
@@ -274,6 +278,7 @@
   .tip.past{border-top-color:var(--faint)}
   .tip.flex{border-top-color:var(--flex)}
   .tip.intv{border-top-color:var(--intv)}
+  .tip.exercise{border-top-color:var(--exercise)}
   .day.holiday .num{color:var(--busy);font-weight:600}
   @media (prefers-reduced-motion: reduce){ .tip{transition:none} }
   .legend{margin-top:12px;font-family:var(--mono);font-size:.68rem;color:var(--faint)}
@@ -363,20 +368,20 @@
   <section aria-labelledby="h-about">
     <h2 id="h-about">about</h2>
     <div class="card">
-      <p class="lead">Computer engineer specializing in CI/CD automation, cloud infrastructure, and front-end development — focused on building systems that are reliable, secure, and easy to operate.</p>
+      <p class="lead">Computer engineer specializing in CI/CD automation, cloud infrastructure, and front-end development, focused on building systems that are reliable, secure, and easy to operate.</p>
       <div class="kv">
         <div class="kv-row"><span class="k">education</span>
           <span class="v">B.Eng. Computer Engineering, Chiang Mai University <span class="dim">(2022–2026)</span></span></div>
         <div class="kv-row"><span class="k">experience</span>
-          <span class="v">Co-op @ ITSC CMU — GitLab CI/CD, GitOps, Kubernetes, ArgoCD <span class="dim">·</span> AD migration WS2012R2→2022 for an SME client</span></div>
+          <span class="v">Co-op @ ITSC CMU: GitLab CI/CD, GitOps, Kubernetes, ArgoCD <span class="dim">·</span> AD migration WS2012R2→2022 for an SME client</span></div>
         <div class="kv-row"><span class="k">project</span>
-          <span class="v"><a href="https://github.com/Unlxii/VisScan" target="_blank" rel="noopener noreferrer">VisScan</a> — DevSecOps platform <span class="dim">· Semgrep · Gitleaks · Trivy · RabbitMQ</span></span></div>
+          <span class="v"><a href="https://github.com/Unlxii/VisScan" target="_blank" rel="noopener noreferrer">VisScan</a>: DevSecOps platform <span class="dim">· Semgrep · Gitleaks · Trivy · RabbitMQ</span></span></div>
         <div class="kv-row"><span class="k">certs</span>
           <span class="v">AWS Cloud Practitioner (CLF-C02) ✓ <span class="dim">· SAA-C03 &amp; CKA in progress</span></span></div>
         <div class="kv-row"><span class="k">seeking</span>
           <span class="v"><strong>Junior DevOps / Cloud / SRE · Front-End Developer</strong> <span class="dim">· Chiang Rai, TH · relocating to Bangkok · open to remote</span></span></div>
         <div class="kv-row"><span class="k">frontend</span>
-          <span class="v">Membership web app @ Southern Thailand Association <span class="dim">· Next.js · TypeScript</span> — and this site <span class="dim">(vanilla JS, custom design system)</span></span></div>
+          <span class="v">Membership web app @ Southern Thailand Association <span class="dim">· Next.js · TypeScript</span> · and this site <span class="dim">(vanilla JS, custom design system)</span></span></div>
       </div>
     </div>
   </section>
@@ -396,7 +401,7 @@
         </div>
       </div>
       <div class="cal" id="cal"></div>
-      <p class="legend">blue = learning, still reachable · purple = interview booked · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
+      <p class="legend">blue = learning, still reachable · purple = interview booked · rose = workout block · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
       <p class="note" id="hours"></p>
     </div>
   </section>
@@ -427,15 +432,15 @@
             <input id="when" maxlength="120" placeholder="e.g. Mon 13 Jul, 14:00"></div>
         </div>
         <div><label for="msg">Message / JD link</label>
-          <textarea id="msg" maxlength="2000" placeholder="Anything helpful — JD link, salary range, next steps…"></textarea>
+          <textarea id="msg" maxlength="2000" placeholder="Anything helpful: JD link, salary range, next steps"></textarea>
           <div class="count" id="msgCount" hidden></div></div>
         <label class="check">
           <input type="checkbox" id="wantResume">
-          Request my full resume — includes phone number (sent by email after I verify your company, usually same day)
+          Request my full resume (includes phone number; sent by email after I verify your company, usually same day)
         </label>
         <label class="check">
           <input type="checkbox" id="notify">
-          Notify me by email if this availability changes (optional — requires your email above)
+          Notify me by email if this availability changes (optional, requires your email above)
         </label>
         <div class="actions">
           <button type="submit">Send via email</button>
@@ -458,7 +463,7 @@
     <h2 id="h-contact">contact</h2>
     <div class="card">
       <dl id="contact"></dl>
-      <p class="note">Fastest response: open a ticket below or email directly — I reply within a few hours on weekdays.</p>
+      <p class="note">Fastest response: open a ticket below or email directly. I reply within a few hours on weekdays.</p>
     </div>
   </section>
 
@@ -500,9 +505,9 @@ const CONFIG = Object.freeze({
   github: "https://github.com/Unlxii",
   linkedin: "https://linkedin.com/in/tent-ronnachai",
   statusText: {
-    open: "Open to interviews — preparing AWS SAA-C03 & CKA",
-    limited: "Limited availability — exam period, see calendar",
-    busy: "Unavailable — please propose dates after blocked period",
+    open: "Open to interviews · preparing AWS SAA-C03 & CKA",
+    limited: "Limited availability: exam period, see calendar",
+    busy: "Unavailable: please propose dates after the blocked period",
   },
   hours: "Preferred hours: Mon–Fri 09:00–18:00 (GMT+7). Weekends on request.",
   /* url: paste the Credly / issuer verification link to show a "show credential ↗" pill */
@@ -539,7 +544,7 @@ function sanitizeSchedule(raw) {
           to: b.to < b.from ? b.from : b.to,
           time: String(b.time || "").trim().slice(0, 40),
           label: (String(b.label || "").trim() || "Busy").slice(0, 120),
-          ...(["flex", "exam", "interview"].includes(b.kind) ? { kind: b.kind } : {}), // flex = reachable · exam = do not disturb · interview = slot booked
+          ...(["flex", "exam", "interview", "exercise"].includes(b.kind) ? { kind: b.kind } : {}), // flex = reachable · exam = do not disturb · interview = slot booked · exercise = workout block ("feedback" intentionally NOT whitelisted here — admin-only, never published)
         }))
     : [];
   const focus = Array.isArray(raw.focus)
@@ -587,12 +592,13 @@ const startMin = (b) => b.time ? +b.time.slice(0, 2) * 60 + +b.time.slice(3, 5) 
 const busiesOf = (ds) => SCHEDULE.busy
   .filter((b) => ds >= b.from && ds <= b.to)
   .sort((a, b) => startMin(a) - startMin(b)); // chronological within the day
-const evtCls = (b) => b.kind === "flex" ? "flex" : b.kind === "interview" ? "intv" : b.kind === "exam" ? "busy" : b.time ? "partial" : "busy";
+const evtCls = (b) => b.kind === "flex" ? "flex" : b.kind === "interview" ? "intv" : b.kind === "exam" ? "busy" : b.kind === "exercise" ? "exercise" : b.time ? "partial" : "busy";
 function dayKind(list) { // most severe wins for the cell colour
   if (!list.length) return "free";
   if (list.some((b) => b.kind === "exam")) return "busy";
-  if (list.some((b) => !b.time && !["flex", "interview"].includes(b.kind))) return "busy";
+  if (list.some((b) => !b.time && !["flex", "interview", "exercise"].includes(b.kind))) return "busy";
   if (list.some((b) => b.kind === "interview")) return "intv";
+  if (list.some((b) => b.kind === "exercise")) return "exercise";
   if (list.some((b) => b.kind !== "flex")) return "partial";
   return "flex";
 }
@@ -659,17 +665,18 @@ function describeDay(ds) {
   const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" });
   if (d < today) return { cls: "past", date: pretty, text: "Past date." };
   if (list.length) {
-    const items = list.map((b) => `${b.time || "all day"} — ${b.label}`).join(" · ");
+    const items = list.map((b) => `${b.label} (${b.time || "all day"})`).join(" · ");
     const kind = dayKind(list);
-    const note = list.some((b) => b.kind === "exam") ? "Exam day — please pick another date."
+    const note = list.some((b) => b.kind === "exam") ? "Exam day, please pick another date."
       : kind === "busy" ? "Please pick another date."
-      : list.some((b) => b.kind === "interview") ? "Interview booked — other times may be available."
-      : kind === "flex" ? "Still reachable — feel free to contact anytime."
+      : list.some((b) => b.kind === "interview") ? "Interview booked; other times may be available."
+      : kind === "exercise" ? "Workout block; still reachable outside this time."
+      : kind === "flex" ? "Still reachable, feel free to contact anytime."
       : "Available outside these hours.";
     return { cls: kind, date: pretty, text: `${items}. ${note}` };
   }
-  if (hol) return { cls: "free", date: pretty, text: `Thai public holiday — ${hol}. Interviews possible on request.` };
-  if (weekend) return { cls: "free", date: pretty, text: "Weekend — interviews possible on request." };
+  if (hol) return { cls: "free", date: pretty, text: `Thai public holiday: ${hol}. Interviews possible on request.` };
+  if (weekend) return { cls: "free", date: pretty, text: "Weekend: interviews possible on request." };
   return { cls: "free", date: pretty, text: `Available. ${CONFIG.hours}` };
 }
 
@@ -711,10 +718,11 @@ function openDayView(ds) {
   if (d.getDay() === 0 || d.getDay() === 6) bits.push("weekend — interviews on request");
   if (!list.length && d >= today0 && !hol && d.getDay() > 0 && d.getDay() < 6) bits.push("available · " + CONFIG.hours);
   if (list.length) {
-    if (list.some((b) => b.kind === "exam")) bits.push("exam day — unavailable, please pick another date");
-    else if (dayKind(list) === "busy") bits.push("unavailable — please pick another date");
-    else if (list.some((b) => b.kind === "interview")) bits.push("interview booked — other times may be available");
-    else if (dayKind(list) === "flex") bits.push("learning — still reachable, feel free to contact anytime");
+    if (list.some((b) => b.kind === "exam")) bits.push("exam day: unavailable, please pick another date");
+    else if (dayKind(list) === "busy") bits.push("unavailable: please pick another date");
+    else if (list.some((b) => b.kind === "interview")) bits.push("interview booked; other times may be available");
+    else if (dayKind(list) === "exercise") bits.push("workout block: still reachable outside this time");
+    else if (dayKind(list) === "flex") bits.push("learning: still reachable, feel free to contact anytime");
     else bits.push("free outside the scheduled hours");
   }
   $("dvSub").textContent = bits.join(" · ") || "available";
@@ -725,11 +733,12 @@ function openDayView(ds) {
   allday.textContent = "";
   allday.className = "dv-alldays";
   for (const b of alldayEvts) {
-    const bn = el("div", `dv-allday${b.kind === "flex" ? " flex" : b.kind === "interview" ? " intv" : ""}`);
-    bn.textContent = b.kind === "exam" ? `Exam day — ${b.label}`
-      : b.kind === "interview" ? `Interview scheduled — ${b.label}`
-      : b.kind === "flex" ? `${b.label} — all day, still reachable`
-      : `Busy all day — ${b.label}`;
+    const bn = el("div", `dv-allday${b.kind === "flex" ? " flex" : b.kind === "interview" ? " intv" : b.kind === "exercise" ? " exercise" : ""}`);
+    bn.textContent = b.kind === "exam" ? `Exam day: ${b.label}`
+      : b.kind === "interview" ? `Interview scheduled: ${b.label}`
+      : b.kind === "flex" ? `${b.label} (all day, still reachable)`
+      : b.kind === "exercise" ? `Workout (all day): ${b.label}`
+      : `Busy all day: ${b.label}`;
     allday.append(bn);
   }
   const tl = $("dvTimeline");
@@ -755,7 +764,7 @@ function openDayView(ds) {
     const startM = Math.max(toMin(s), DV_START * 60);
     const endM = Math.min(toMin(e), DV_END * 60);
     if (endM <= startM) continue;
-    const evt = el("div", `tl-evt${b.kind === "flex" ? " flex" : b.kind === "exam" ? " exam" : b.kind === "interview" ? " intv" : ""}`);
+    const evt = el("div", `tl-evt${b.kind === "flex" ? " flex" : b.kind === "exam" ? " exam" : b.kind === "interview" ? " intv" : b.kind === "exercise" ? " exercise" : ""}`);
     evt.style.top = `${(startM - DV_START * 60) / 60 * HOUR_PX}px`;
     evt.style.height = `${Math.max((endM - startM) / 60 * HOUR_PX, 24)}px`;
     evt.append(el("div", "tl-evt-title", b.label));

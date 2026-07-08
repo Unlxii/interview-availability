@@ -63,6 +63,38 @@
       "kind": "exercise"
     },
     {
+      "from": "2026-07-10",
+      "to": "2026-07-10",
+      "time": "03:00-05:00",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": false
+    },
+    {
+      "from": "2026-07-11",
+      "to": "2026-07-11",
+      "time": "02:00-04:00",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": false
+    },
+    {
+      "from": "2026-07-12",
+      "to": "2026-07-12",
+      "time": "04:00-05:30",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": false
+    },
+    {
+      "from": "2026-07-12",
+      "to": "2026-07-12",
+      "time": "08:00-10:00",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": true
+    },
+    {
       "from": "2026-07-13",
       "to": "2026-07-17",
       "time": "11:00-15:00",
@@ -119,36 +151,10 @@
       "kind": "exercise"
     },
     {
-      "from": "2026-07-10",
-      "to": "2026-07-10",
-      "time": "03:00-05:00",
-      "label": "FIFA World Cup",
-      "kind": "activity",
-      "free": false
-    },
-    {
-      "from": "2026-07-11",
-      "to": "2026-07-11",
-      "time": "02:00-04:00",
-      "label": "FIFA World Cup",
-      "kind": "activity",
-      "free": false
-    },
-    {
-      "from": "2026-07-12",
-      "to": "2026-07-12",
-      "time": "04:00-05:30",
-      "label": "FIFA World Cup",
-      "kind": "activity",
-      "free": false
-    },
-    {
-      "from": "2026-07-12",
-      "to": "2026-07-12",
-      "time": "08:00-10:00",
-      "label": "FIFA World Cup",
-      "kind": "activity",
-      "free": true
+      "from": "2026-07-04",
+      "to": "2026-07-18",
+      "kind": "feedback",
+      "color": "orange"
     }
   ],
   "focus": [

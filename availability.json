@@ -30,6 +30,12 @@
       "kind": "exercise"
     },
     {
+      "from": "2026-07-04",
+      "to": "2026-07-18",
+      "kind": "feedback",
+      "color": "orange"
+    },
+    {
       "from": "2026-07-07",
       "to": "2026-07-07",
       "time": "14:30-16:00",
@@ -151,10 +157,12 @@
       "kind": "exercise"
     },
     {
-      "from": "2026-07-04",
-      "to": "2026-07-18",
-      "kind": "feedback",
-      "color": "orange"
+      "from": "2026-07-15",
+      "to": "2026-07-15",
+      "time": "08:00-08:30",
+      "label": "waiting SpiritVale Release",
+      "kind": "activity",
+      "free": true
     }
   ],
   "focus": [

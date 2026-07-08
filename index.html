@@ -27,7 +27,7 @@
     --text:#18181b; --muted:#71717a; --faint:#a1a1aa;
     --border:#e4e4e7; --border-strong:#d4d4d8;
     --accent:#18181b; --accent-fg:#ffffff;
-    --free:#16a34a; --partial:#d97706; --busy:#dc2626; --flex:#3b82f6; --intv:#8b5cf6; --exercise:#c026d3;
+    --free:#16a34a; --partial:#d97706; --busy:#dc2626; --flex:#3b82f6; --intv:#8b5cf6; --exercise:#c026d3; --activity:#65a30d;
     --ring:rgba(24,24,27,.12);
     --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
     --mono:ui-monospace,"SF Mono",Consolas,Menlo,monospace;
@@ -201,6 +201,8 @@
   .evt.flex{background:var(--flex)}
   .evt.intv{background:var(--intv)}
   .evt.exercise{background:var(--exercise)}
+  .evt.activity{background:var(--activity)}
+  .evt.fb-dot{width:7px;height:7px;min-width:7px;padding:0;border-radius:50%}
   .evt.more{background:transparent;color:var(--faint);border:1px dashed var(--border-strong)}
   .day.off{opacity:.45}
   .day:hover{background:color-mix(in srgb,var(--text) 9%,var(--surface2));
@@ -217,12 +219,14 @@
   @media(max-width:560px){
     .day{min-height:46px}
     .evt{display:none}
+    .evt.fb-dot{display:block}
     .day .dot{display:block;width:6px;height:6px;border-radius:50%;margin:auto 0 2px 3px}
     .day.partial .dot{background:var(--partial)}
     .day.busy .dot{background:var(--busy)}
     .day.flex .dot{background:var(--flex)}
     .day.intv .dot{background:var(--intv)}
     .day.exercise .dot{background:var(--exercise)}
+    .day.activity .dot{background:var(--activity)}
   }
 
   /* ---------- day view (Apple Calendar style) ---------- */
@@ -258,9 +262,11 @@
   .tl-evt.exam{background:color-mix(in srgb,var(--busy) 14%,var(--surface));border-left-color:var(--busy)}
   .tl-evt.intv{background:color-mix(in srgb,var(--intv) 14%,var(--surface));border-left-color:var(--intv)}
   .tl-evt.exercise{background:color-mix(in srgb,var(--exercise) 14%,var(--surface));border-left-color:var(--exercise)}
+  .tl-evt.activity{background:color-mix(in srgb,var(--activity) 14%,var(--surface));border-left-color:var(--activity)}
   .dv-allday.flex{background:var(--flex)}
   .dv-allday.intv{background:var(--intv)}
   .dv-allday.exercise{background:var(--exercise)}
+  .dv-allday.activity{background:var(--activity)}
   .tl-evt-title{font-size:.74rem;font-weight:600;line-height:1.35}
   .tl-evt-time{font-family:var(--mono);font-size:.64rem;color:var(--muted)}
 
@@ -280,6 +286,7 @@
   .tip.flex{border-top-color:var(--flex)}
   .tip.intv{border-top-color:var(--intv)}
   .tip.exercise{border-top-color:var(--exercise)}
+  .tip.activity{border-top-color:var(--activity)}
   .day.holiday .num{color:var(--busy);font-weight:600}
   @media (prefers-reduced-motion: reduce){ .tip{transition:none} }
   .legend{margin-top:12px;font-family:var(--mono);font-size:.68rem;color:var(--faint)}
@@ -408,7 +415,7 @@
         </div>
       </div>
       <div class="cal" id="cal"></div>
-      <p class="legend">blue = learning, still reachable · purple = interview booked · magenta = workout block · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
+      <p class="legend">blue = learning, still reachable · purple = interview booked · magenta = workout block · lime = other activities/hobbies · amber = busy those hours · red = exam / unavailable · red date = Thai holiday · empty = available · faded = weekend / past</p>
       <p class="note" id="hours"></p>
     </div>
   </section>
@@ -544,6 +551,8 @@ const CONFIG = Object.freeze({
 let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [], focus: [], gaming: [] };
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+/* same curated palette as admin.html — feedback dots use one of these, chosen there */
+const TAG_PALETTE = { teal: "#0d9488", fuchsia: "#c026d3", blue: "#2563eb", amber: "#d97706", lime: "#65a30d", rose: "#e11d48", violet: "#7c3aed", cyan: "#0891b2" };
 function sanitizeSchedule(raw) {
   if (typeof raw !== "object" || raw === null) return null;
   const status = ["open", "limited", "busy"].includes(raw.status) ? raw.status : "open";
@@ -556,7 +565,12 @@ function sanitizeSchedule(raw) {
           to: b.to < b.from ? b.from : b.to,
           time: String(b.time || "").trim().slice(0, 40),
           label: (String(b.label || "").trim() || "Busy").slice(0, 120),
-          ...(["flex", "exam", "interview", "exercise"].includes(b.kind) ? { kind: b.kind } : {}), // flex = reachable · exam = do not disturb · interview = slot booked · exercise = workout block ("feedback" intentionally NOT whitelisted here — admin-only, never published)
+          // flex = reachable · exam = do not disturb · interview = slot booked · exercise = workout block ·
+          // activity = personal/character (busy or free per entry) · feedback = renders only as an
+          // anonymous colored dot — its label is never published for this kind, by design
+          ...(["flex", "exam", "interview", "exercise", "activity", "feedback"].includes(b.kind) ? { kind: b.kind } : {}),
+          ...(b.kind === "feedback" && TAG_PALETTE[b.color] ? { color: b.color } : {}),
+          ...(b.kind === "activity" ? { free: !!b.free } : {}),
         }))
     : [];
   const focus = Array.isArray(raw.focus)
@@ -614,14 +628,16 @@ const startMin = (b) => b.time ? +b.time.slice(0, 2) * 60 + +b.time.slice(3, 5) 
 const busiesOf = (ds) => SCHEDULE.busy
   .filter((b) => ds >= b.from && ds <= b.to)
   .sort((a, b) => startMin(a) - startMin(b)); // chronological within the day
-const evtCls = (b) => b.kind === "flex" ? "flex" : b.kind === "interview" ? "intv" : b.kind === "exam" ? "busy" : b.kind === "exercise" ? "exercise" : b.time ? "partial" : "busy";
-function dayKind(list) { // most severe wins for the cell colour
-  if (!list.length) return "free";
-  if (list.some((b) => b.kind === "exam")) return "busy";
-  if (list.some((b) => !b.time && !["flex", "interview", "exercise"].includes(b.kind))) return "busy";
-  if (list.some((b) => b.kind === "interview")) return "intv";
-  if (list.some((b) => b.kind === "exercise")) return "exercise";
-  if (list.some((b) => b.kind !== "flex")) return "partial";
+const evtCls = (b) => b.kind === "flex" ? "flex" : b.kind === "interview" ? "intv" : b.kind === "exam" ? "busy" : b.kind === "exercise" ? "exercise" : b.kind === "activity" ? "activity" : b.time ? "partial" : "busy";
+function dayKind(list) { // most severe wins for the cell colour — feedback dots never affect this
+  const dl = list.filter((b) => b.kind !== "feedback");
+  if (!dl.length) return "free";
+  if (dl.some((b) => b.kind === "exam")) return "busy";
+  if (dl.some((b) => !b.time && !["flex", "interview", "exercise"].includes(b.kind) && !(b.kind === "activity" && b.free))) return "busy";
+  if (dl.some((b) => b.kind === "interview")) return "intv";
+  if (dl.some((b) => b.kind === "exercise")) return "exercise";
+  if (dl.some((b) => b.kind === "activity" && !b.free)) return "activity";
+  if (dl.some((b) => b.kind !== "flex" && !(b.kind === "activity" && b.free))) return "partial";
   return "flex";
 }
 
@@ -663,10 +679,18 @@ function renderCalendar() {
     const cell = el("div", cls.join(" "));
     const showMonth = i === 0 || d.getDate() === 1;
     cell.append(el("span", "num", showMonth ? `${d.toLocaleString("en", { month: "short" })} ${d.getDate()}` : String(d.getDate())));
-    for (const b of list.slice(0, 2)) {
+    const others = list.filter((b) => b.kind !== "feedback");
+    for (const b of others.slice(0, 2)) {
       cell.append(el("div", `evt ${evtCls(b)}`, b.time ? `${b.time} · ${b.label}` : b.label));
     }
-    if (list.length > 2) cell.append(el("div", "evt more", `+${list.length - 2} more`));
+    if (others.length > 2) cell.append(el("div", "evt more", `+${others.length - 2} more`));
+    // feedback dots: no label, no tooltip text, always shown regardless of the +N cap above —
+    // a private marker only the owner can interpret
+    for (const b of list.filter((b) => b.kind === "feedback")) {
+      const fd = el("div", "evt fb-dot");
+      fd.style.background = TAG_PALETTE[b.color || "teal"] || TAG_PALETTE.teal;
+      cell.append(fd);
+    }
     cell.append(el("span", "dot"));
     cell.dataset.ds = ds;
     cell.tabIndex = 0;
@@ -681,7 +705,8 @@ function renderCalendar() {
 function describeDay(ds) {
   const d = new Date(ds + "T00:00:00");
   const today = new Date(); today.setHours(0, 0, 0, 0);
-  const list = busiesOf(ds);
+  // feedback entries are excluded here entirely — no text, no hint, nowhere in this popover
+  const list = busiesOf(ds).filter((b) => b.kind !== "feedback");
   const weekend = d.getDay() === 0 || d.getDay() === 6;
   const hol = holidayOf(ds);
   const pretty = d.toLocaleDateString("en", { weekday: "short", day: "numeric", month: "short" });
@@ -693,6 +718,7 @@ function describeDay(ds) {
       : kind === "busy" ? "Please pick another date."
       : list.some((b) => b.kind === "interview") ? "Interview booked; other times may be available."
       : kind === "exercise" ? "Workout block; still reachable outside this time."
+      : kind === "activity" ? "Personal commitment; still reachable outside this time."
       : kind === "flex" ? "Still reachable, feel free to contact anytime."
       : "Available outside these hours.";
     return { cls: kind, date: pretty, text: `${items}. ${note}` };
@@ -730,7 +756,8 @@ function hideTip() {
 const DV_START = 7, DV_END = 20, HOUR_PX = 34; // 07:00–20:00 window
 function openDayView(ds) {
   const d = new Date(ds + "T00:00:00");
-  const list = busiesOf(ds);
+  // feedback entries are excluded here entirely — no banner, no timeline block, nothing
+  const list = busiesOf(ds).filter((b) => b.kind !== "feedback");
   const hol = holidayOf(ds);
   const today0 = new Date(); today0.setHours(0, 0, 0, 0);
   $("dvDate").textContent = d.toLocaleDateString("en", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
@@ -744,6 +771,7 @@ function openDayView(ds) {
     else if (dayKind(list) === "busy") bits.push("unavailable: please pick another date");
     else if (list.some((b) => b.kind === "interview")) bits.push("interview booked; other times may be available");
     else if (dayKind(list) === "exercise") bits.push("workout block: still reachable outside this time");
+    else if (dayKind(list) === "activity") bits.push("personal commitment: still reachable outside this time");
     else if (dayKind(list) === "flex") bits.push("learning: still reachable, feel free to contact anytime");
     else bits.push("free outside the scheduled hours");
   }
@@ -755,11 +783,12 @@ function openDayView(ds) {
   allday.textContent = "";
   allday.className = "dv-alldays";
   for (const b of alldayEvts) {
-    const bn = el("div", `dv-allday${b.kind === "flex" ? " flex" : b.kind === "interview" ? " intv" : b.kind === "exercise" ? " exercise" : ""}`);
+    const bn = el("div", `dv-allday${b.kind === "flex" ? " flex" : b.kind === "interview" ? " intv" : b.kind === "exercise" ? " exercise" : b.kind === "activity" ? " activity" : ""}`);
     bn.textContent = b.kind === "exam" ? `Exam day: ${b.label}`
       : b.kind === "interview" ? `Interview scheduled: ${b.label}`
       : b.kind === "flex" ? `${b.label} (all day, still reachable)`
       : b.kind === "exercise" ? `Workout (all day): ${b.label}`
+      : b.kind === "activity" ? `${b.label} (all day)`
       : `Busy all day: ${b.label}`;
     allday.append(bn);
   }
@@ -786,7 +815,7 @@ function openDayView(ds) {
     const startM = Math.max(toMin(s), DV_START * 60);
     const endM = Math.min(toMin(e), DV_END * 60);
     if (endM <= startM) continue;
-    const evt = el("div", `tl-evt${b.kind === "flex" ? " flex" : b.kind === "exam" ? " exam" : b.kind === "interview" ? " intv" : b.kind === "exercise" ? " exercise" : ""}`);
+    const evt = el("div", `tl-evt${b.kind === "flex" ? " flex" : b.kind === "exam" ? " exam" : b.kind === "interview" ? " intv" : b.kind === "exercise" ? " exercise" : b.kind === "activity" ? " activity" : ""}`);
     evt.style.top = `${(startM - DV_START * 60) / 60 * HOUR_PX}px`;
     evt.style.height = `${Math.max((endM - startM) / 60 * HOUR_PX, 24)}px`;
     evt.append(el("div", "tl-evt-title", b.label));

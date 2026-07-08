@@ -44,13 +44,17 @@ jobs:
               if (g.url !== undefined && (typeof g.url !== "string" || !URLRE.test(g.url) || g.url.length > 300)) fail(`gaming[${i}]: url must be http(s) and <= 300 chars`);
             }
           }
+          const TAG_COLORS = ["teal", "fuchsia", "blue", "amber", "lime", "rose", "violet", "cyan"];
           for (const [i, b] of d.busy.entries()) {
             if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);
             if (b.to < b.from) fail(`busy[${i}]: reversed range (${b.from} > ${b.to})`);
             if (b.time && !TIME.test(b.time)) fail(`busy[${i}]: time must be HH:MM-HH:MM`);
-            // NOTE: "feedback" is deliberately NOT in this list — it is an admin-only private tag
-            // that admin.html strips out before export. If it ever shows up here, something leaked it.
-            if (b.kind !== undefined && !["flex", "exam", "interview", "exercise"].includes(b.kind)) fail(`busy[${i}]: kind must be "flex", "exam", "interview", "exercise", or omitted`);
+            // "feedback" publishes as an anonymous colored dot only — admin.html strips its label
+            // before export, so if this entry has a real label here, something leaked it.
+            if (b.kind !== undefined && !["flex", "exam", "interview", "exercise", "activity", "feedback"].includes(b.kind))
+              fail(`busy[${i}]: kind must be "flex", "exam", "interview", "exercise", "activity", "feedback", or omitted`);
             if (typeof (b.label ?? "") !== "string" || String(b.label || "").length > 120) fail(`busy[${i}]: label must be a string <= 120 chars`);
+            if (b.color !== undefined && !TAG_COLORS.includes(b.color)) fail(`busy[${i}]: color must be one of ${TAG_COLORS.join(", ")}`);
+            if (b.free !== undefined && typeof b.free !== "boolean") fail(`busy[${i}]: free must be a boolean`);
           }
           console.log(`availability.json valid — ${d.busy.length} busy period(s)`);'

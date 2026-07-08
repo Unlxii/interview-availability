@@ -1,6 +1,6 @@
 {
   "status": "open",
-  "updated": "2026-07-07",
+  "updated": "2026-07-08",
   "busy": [
     {
       "from": "2026-07-02",
@@ -8,6 +8,12 @@
       "time": "15:00-17:00",
       "label": "SI Company ( Junior DevOps Engineer Roles )",
       "kind": "interview"
+    },
+    {
+      "from": "2026-07-02",
+      "to": "2026-07-16",
+      "kind": "feedback",
+      "color": "lime"
     },
     {
       "from": "2026-07-04",
@@ -31,6 +37,12 @@
       "kind": "interview"
     },
     {
+      "from": "2026-07-07",
+      "to": "2026-07-21",
+      "kind": "feedback",
+      "color": "blue"
+    },
+    {
       "from": "2026-07-09",
       "to": "2026-07-09",
       "time": "07:00-18:00",
@@ -49,6 +61,12 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "exercise"
+    },
+    {
+      "from": "2026-07-10",
+      "to": "2026-07-10",
+      "time": "",
+      "label": "Busy"
     },
     {
       "from": "2026-07-13",
@@ -105,6 +123,38 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "exercise"
+    },
+    {
+      "from": "2026-07-10",
+      "to": "2026-07-10",
+      "time": "03:00-05:00",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": false
+    },
+    {
+      "from": "2026-07-11",
+      "to": "2026-07-11",
+      "time": "02:00-04:00",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": false
+    },
+    {
+      "from": "2026-07-12",
+      "to": "2026-07-12",
+      "time": "04:00-05:30",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": false
+    },
+    {
+      "from": "2026-07-12",
+      "to": "2026-07-12",
+      "time": "08:00-10:00",
+      "label": "FIFA World Cup",
+      "kind": "activity",
+      "free": true
     }
   ],
   "focus": [

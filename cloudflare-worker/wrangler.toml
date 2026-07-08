@@ -1,0 +1,13 @@
+name = "availability-publish"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# Secrets — set these with `wrangler secret put <NAME>`, never write them here:
+#   GITHUB_TOKEN   fine-grained PAT, scoped to ONLY the interview-availability repo,
+#                  permission: Contents = Read and write (nothing else, no other repos)
+#   ADMIN_SECRET   a long random string (e.g. `openssl rand -hex 32`) — admin.html
+#                  must send this back on every publish request
+
+[vars]
+GITHUB_OWNER = "Unlxii"
+GITHUB_REPO = "interview-availability"

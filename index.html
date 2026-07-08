@@ -72,12 +72,12 @@
   @media(min-width:1020px){
     main{max-width:1180px}
     .layout{display:grid;grid-template-columns:minmax(300px,370px) 1fr;column-gap:32px;align-items:start;
-      grid-template-areas:"about main" "focus main" "gaming main" "contact main"}
+      grid-template-areas:"about main" "contact main" "focus main" "gaming main"}
     section[aria-labelledby="h-about"]{grid-area:about}
     .col-main{grid-area:main} /* availability + ticket flow together — no shared-row gaps */
+    section[aria-labelledby="h-contact"]{grid-area:contact}
     section[aria-labelledby="h-focus"]{grid-area:focus}
     section[aria-labelledby="h-gaming"]{grid-area:gaming}
-    section[aria-labelledby="h-contact"]{grid-area:contact}
     .day{min-height:78px}
     .evt{font-size:.64rem}
   }
@@ -113,11 +113,19 @@
           border-radius:999px;font-family:var(--mono);font-size:.76rem;font-weight:500;
           background:color-mix(in srgb,var(--free) 10%,transparent);color:var(--text)}
   .status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--free);
-          box-shadow:0 0 0 3px color-mix(in srgb,var(--free) 22%,transparent)}
+          box-shadow:0 0 0 3px color-mix(in srgb,var(--free) 22%,transparent);--dot:var(--free)}
   .status.limited{background:color-mix(in srgb,var(--partial) 10%,transparent)}
-  .status.limited::before{background:var(--partial);box-shadow:0 0 0 3px color-mix(in srgb,var(--partial) 22%,transparent)}
+  .status.limited::before{background:var(--partial);box-shadow:0 0 0 3px color-mix(in srgb,var(--partial) 22%,transparent);--dot:var(--partial)}
   .status.busy{background:color-mix(in srgb,var(--busy) 10%,transparent)}
-  .status.busy::before{background:var(--busy);box-shadow:0 0 0 3px color-mix(in srgb,var(--busy) 22%,transparent)}
+  .status.busy::before{background:var(--busy);box-shadow:0 0 0 3px color-mix(in srgb,var(--busy) 22%,transparent);--dot:var(--busy)}
+  /* a gentle live pulse — signals this is polling in real time, not a static badge */
+  @media (prefers-reduced-motion: no-preference){
+    .status::before{animation:statusPulse 2.4s ease-in-out infinite}
+    @keyframes statusPulse{
+      0%,100%{box-shadow:0 0 0 3px color-mix(in srgb,var(--dot) 22%,transparent)}
+      50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--dot) 10%,transparent)}
+    }
+  }
 
   .heroActions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
   .btn-hero{display:inline-flex;align-items:center;padding:8px 16px;border-radius:9px;
@@ -297,7 +305,8 @@
   /* ---------- certifications (LinkedIn-style tiles, full width) ---------- */
   .certGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
   .cert{background:var(--surface);border:1px solid var(--border);border-radius:12px;
-        padding:14px 16px;box-shadow:var(--shadow)}
+        padding:14px 16px;box-shadow:var(--shadow);transition:transform .16s ease,border-color .16s ease}
+  .cert:hover{transform:translateY(-2px);border-color:var(--border-strong)}
   .cert .c-name{font-size:.85rem;font-weight:600;line-height:1.4}
   .cert .c-issuer{font-size:.78rem;color:var(--muted);margin-top:1px}
   .cert .c-meta{font-family:var(--mono);font-size:.66rem;color:var(--faint);margin-top:2px}
@@ -308,14 +317,17 @@
   /* ---------- current focus chips ---------- */
   .chips{display:flex;gap:8px;flex-wrap:wrap}
   .chip{font-family:var(--mono);font-size:.75rem;padding:6px 13px;border-radius:999px;
-        background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+        background:var(--surface2);border:1px solid var(--border);color:var(--text);
+        transition:transform .16s ease,border-color .16s ease}
+  .chip:hover{transform:translateY(-1px);border-color:var(--border-strong)}
   .chip::before{content:"→ ";color:var(--free);font-weight:600}
 
   /* ---------- gaming tags (optional link out to Riot/Steam profile etc.) ---------- */
   .gaming{display:flex;gap:8px;flex-wrap:wrap}
   .gtag{font-family:var(--mono);font-size:.75rem;padding:6px 13px;border-radius:999px;
-        background:var(--surface2);border:1px solid var(--border);color:var(--text);display:inline-block}
-  a.gtag:hover{text-decoration:none;border-color:var(--border-strong);color:var(--text)}
+        background:var(--surface2);border:1px solid var(--border);color:var(--text);display:inline-block;
+        transition:transform .16s ease,border-color .16s ease}
+  a.gtag:hover{text-decoration:none;border-color:var(--border-strong);color:var(--text);transform:translateY(-1px)}
 
   /* ---------- contact ---------- */
   dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:.88rem;align-items:baseline}
@@ -401,6 +413,14 @@
     </div>
   </section>
 
+  <section aria-labelledby="h-contact">
+    <h2 id="h-contact">contact</h2>
+    <div class="card">
+      <dl id="contact"></dl>
+      <p class="note">Fastest response: open a ticket below or email directly. I reply within a few hours on weekdays.</p>
+    </div>
+  </section>
+
   <div class="col-main">
 
   <section aria-labelledby="h-avail">
@@ -475,16 +495,8 @@
   </section>
 
   <section aria-labelledby="h-gaming" id="gamingSection" hidden>
-    <h2 id="h-gaming">currently playing</h2>
+    <h2 id="h-gaming">off duty</h2>
     <div class="card"><div class="gaming" id="gamingTags"></div></div>
-  </section>
-
-  <section aria-labelledby="h-contact">
-    <h2 id="h-contact">contact</h2>
-    <div class="card">
-      <dl id="contact"></dl>
-      <p class="note">Fastest response: open a ticket below or email directly. I reply within a few hours on weekdays.</p>
-    </div>
   </section>
 
   </div><!-- /.layout -->
@@ -594,7 +606,28 @@ function sanitizeSchedule(raw) {
         }))
         .slice(0, 8)
     : [];
-  return { status, updated, busy, focus, gaming };
+  const URLRE = /^https?:\/\//i;
+  const certs = Array.isArray(raw.certs)
+    ? raw.certs
+        .filter((c) => c && typeof c.name === "string" && c.name.trim())
+        .map((c) => ({
+          name: String(c.name).trim().slice(0, 120),
+          issuer: String(c.issuer || "").trim().slice(0, 120),
+          meta: String(c.meta || "").trim().slice(0, 160),
+          // urls may be relative (e.g. a PDF in the repo) or absolute http(s) — never other schemes
+          ...(typeof c.url === "string" && c.url.trim() && (URLRE.test(c.url.trim()) || !c.url.trim().includes(":"))
+            ? { url: c.url.trim().slice(0, 300) } : {}),
+        }))
+        .slice(0, 30)
+    : undefined; // undefined (not []) so an empty/missing field falls back to CONFIG.certs, not a blank grid
+  const statusText = typeof raw.statusText === "object" && raw.statusText !== null
+    ? {
+        open: String(raw.statusText.open || "").trim().slice(0, 140),
+        limited: String(raw.statusText.limited || "").trim().slice(0, 140),
+        busy: String(raw.statusText.busy || "").trim().slice(0, 140),
+      }
+    : undefined;
+  return { status, updated, busy, focus, gaming, certs, statusText };
 }
 
 let scheduleFresh = false; // false = showing cached/default data (fetch failed)
@@ -931,7 +964,11 @@ function renderGaming() {
 
 function renderCerts() {
   const wrap = $("certList");
-  for (const c of CONFIG.certs) {
+  wrap.textContent = "";
+  // admin.html can manage these directly now; CONFIG.certs is only the fallback
+  // shown before availability.json has any certs saved to it
+  const list = (SCHEDULE.certs && SCHEDULE.certs.length) ? SCHEDULE.certs : CONFIG.certs;
+  for (const c of list) {
     const row = el("div", "cert");
     row.append(el("div", "c-name", c.name));
     row.append(el("div", "c-issuer", c.issuer));
@@ -1106,16 +1143,17 @@ function renderSchedule() {
   $("updated").textContent = SCHEDULE.updated + (scheduleFresh ? "" : " · showing cached copy");
   const st = $("status");
   st.className = "status " + SCHEDULE.status;
-  st.textContent = CONFIG.statusText[SCHEDULE.status];
+  // admin.html can override this copy per status; CONFIG.statusText is only the fallback
+  st.textContent = (SCHEDULE.statusText && SCHEDULE.statusText[SCHEDULE.status]) || CONFIG.statusText[SCHEDULE.status];
   renderCalendar();
   renderFocus();
   renderGaming();
+  renderCerts();
 }
 
 (async function init() {
   $("hours").textContent = CONFIG.hours;
   renderContact();
-  renderCerts();
   await loadSchedule();
   renderSchedule();
   /* near-realtime: re-fetch schedule every 60 s while the page is open */

@@ -44,6 +44,25 @@ jobs:
               if (g.url !== undefined && (typeof g.url !== "string" || !URLRE.test(g.url) || g.url.length > 300)) fail(`gaming[${i}]: url must be http(s) and <= 300 chars`);
             }
           }
+          if (d.certs !== undefined) {
+            if (!Array.isArray(d.certs)) fail("certs must be an array");
+            if (d.certs.length > 30) fail("certs: max 30 entries");
+            for (const [i, c] of d.certs.entries()) {
+              if (typeof c.name !== "string" || !c.name.trim() || c.name.length > 120) fail(`certs[${i}]: name must be a non-empty string <= 120 chars`);
+              if (c.issuer !== undefined && (typeof c.issuer !== "string" || c.issuer.length > 120)) fail(`certs[${i}]: issuer must be a string <= 120 chars`);
+              if (c.meta !== undefined && (typeof c.meta !== "string" || c.meta.length > 160)) fail(`certs[${i}]: meta must be a string <= 160 chars`);
+              // urls may be relative (a PDF checked into the repo) or absolute http(s) — never other schemes
+              if (c.url !== undefined && (typeof c.url !== "string" || c.url.length > 300 || (c.url.includes(":") && !/^https?:\/\//i.test(c.url))))
+                fail(`certs[${i}]: url must be http(s), a relative path, or omitted`);
+            }
+          }
+          if (d.statusText !== undefined) {
+            if (typeof d.statusText !== "object" || d.statusText === null || Array.isArray(d.statusText)) fail("statusText must be an object");
+            for (const k of ["open", "limited", "busy"]) {
+              if (d.statusText[k] !== undefined && (typeof d.statusText[k] !== "string" || d.statusText[k].length > 140))
+                fail(`statusText.${k} must be a string <= 140 chars`);
+            }
+          }
           const TAG_COLORS = ["rose", "pink", "fuchsia", "purple", "violet", "indigo", "blue", "sky", "cyan", "teal", "emerald", "lime", "yellow", "amber", "orange", "slate"];
           for (const [i, b] of d.busy.entries()) {
             if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);

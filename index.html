@@ -552,7 +552,12 @@ let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [], focus: [], gam
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 /* same curated palette as admin.html — feedback dots use one of these, chosen there */
-const TAG_PALETTE = { teal: "#0d9488", fuchsia: "#c026d3", blue: "#2563eb", amber: "#d97706", lime: "#65a30d", rose: "#e11d48", violet: "#7c3aed", cyan: "#0891b2" };
+const TAG_PALETTE = {
+  rose: "#e11d48", pink: "#db2777", fuchsia: "#c026d3", purple: "#9333ea",
+  violet: "#7c3aed", indigo: "#4f46e5", blue: "#2563eb", sky: "#0284c7",
+  cyan: "#0891b2", teal: "#0d9488", emerald: "#059669", lime: "#65a30d",
+  yellow: "#ca8a04", amber: "#d97706", orange: "#ea580c", slate: "#475569",
+};
 function sanitizeSchedule(raw) {
   if (typeof raw !== "object" || raw === null) return null;
   const status = ["open", "limited", "busy"].includes(raw.status) ? raw.status : "open";

@@ -44,7 +44,7 @@ jobs:
               if (g.url !== undefined && (typeof g.url !== "string" || !URLRE.test(g.url) || g.url.length > 300)) fail(`gaming[${i}]: url must be http(s) and <= 300 chars`);
             }
           }
-          const TAG_COLORS = ["teal", "fuchsia", "blue", "amber", "lime", "rose", "violet", "cyan"];
+          const TAG_COLORS = ["rose", "pink", "fuchsia", "purple", "violet", "indigo", "blue", "sky", "cyan", "teal", "emerald", "lime", "yellow", "amber", "orange", "slate"];
           for (const [i, b] of d.busy.entries()) {
             if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);
             if (b.to < b.from) fail(`busy[${i}]: reversed range (${b.from} > ${b.to})`);

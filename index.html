@@ -249,7 +249,8 @@
   .dv-alldays{display:grid;gap:6px;margin-bottom:12px}
   .dv-allday{font-family:var(--mono);font-size:.74rem;color:#fff;background:var(--busy);
     border-radius:7px;padding:7px 11px}
-  .timeline{position:relative;margin-top:4px}
+  .timeline-scroll{max-height:min(52vh,420px);overflow-y:auto;margin-top:4px;border-radius:8px}
+  .timeline{position:relative}
   .tl-hour{display:flex;gap:10px;height:34px;align-items:flex-start}
   .tl-label{font-family:var(--mono);font-size:.6rem;color:var(--faint);width:38px;
     text-align:right;transform:translateY(-7px);flex:none}
@@ -511,7 +512,9 @@
     </div>
     <div class="dv-sub" id="dvSub"></div>
     <div class="dv-allday" id="dvAllday" hidden></div>
-    <div class="timeline" id="dvTimeline"></div>
+    <div class="timeline-scroll" id="dvTimelineScroll">
+      <div class="timeline" id="dvTimeline"></div>
+    </div>
   </div>
 </div>
 
@@ -758,7 +761,7 @@ function hideTip() {
 }
 
 /* ---- day view: click a cell → Apple Calendar-style hour timeline ---- */
-const DV_START = 7, DV_END = 20, HOUR_PX = 34; // 07:00–20:00 window
+const DV_START = 0, DV_END = 23, HOUR_PX = 34; // full 24h, scrollable (Apple Calendar style)
 function openDayView(ds) {
   const d = new Date(ds + "T00:00:00");
   // feedback entries are excluded here entirely — no banner, no timeline block, nothing
@@ -815,10 +818,11 @@ function openDayView(ds) {
   }
   /* every timed event gets its own block at its real position */
   const toMin = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
-  for (const b of list.filter((x) => x.time)) {
+  const timedList = list.filter((x) => x.time);
+  for (const b of timedList) {
     const [s, e] = b.time.split("-");
     const startM = Math.max(toMin(s), DV_START * 60);
-    const endM = Math.min(toMin(e), DV_END * 60);
+    const endM = Math.min(toMin(e), 24 * 60); // cap at midnight, not DV_END, so late events aren't clipped
     if (endM <= startM) continue;
     const evt = el("div", `tl-evt${b.kind === "flex" ? " flex" : b.kind === "exam" ? " exam" : b.kind === "interview" ? " intv" : b.kind === "exercise" ? " exercise" : b.kind === "activity" ? " activity" : ""}`);
     evt.style.top = `${(startM - DV_START * 60) / 60 * HOUR_PX}px`;
@@ -829,6 +833,12 @@ function openDayView(ds) {
   }
   hideTip();
   $("dayviewBackdrop").classList.add("open");
+  // scroll straight to what matters — the earliest event (with an hour of lead-in), or
+  // 08:00 by default — instead of dumping the visitor at midnight every time
+  const scrollTargetMin = timedList.length
+    ? Math.max(0, Math.min(...timedList.map((x) => toMin(x.time.split("-")[0]))) - 60)
+    : 8 * 60;
+  $("dvTimelineScroll").scrollTop = Math.max(0, (scrollTargetMin - DV_START * 60) / 60 * HOUR_PX);
 }
 function closeDayView() { $("dayviewBackdrop").classList.remove("open"); }
 $("dvClose").addEventListener("click", closeDayView);

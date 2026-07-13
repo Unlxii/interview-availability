@@ -1,6 +1,6 @@
 {
   "status": "open",
-  "updated": "2026-07-08",
+  "updated": "2026-07-13",
   "busy": [
     {
       "from": "2026-07-02",
@@ -31,7 +31,7 @@
     },
     {
       "from": "2026-07-04",
-      "to": "2026-07-18",
+      "to": "2026-07-27",
       "kind": "feedback",
       "color": "orange"
     },
@@ -115,6 +115,14 @@
       "kind": "exercise"
     },
     {
+      "from": "2026-07-15",
+      "to": "2026-07-15",
+      "time": "08:00-08:30",
+      "label": "waiting SpiritVale Release",
+      "kind": "activity",
+      "free": true
+    },
+    {
       "from": "2026-07-16",
       "to": "2026-07-18",
       "time": "16:30-19:00",
@@ -155,14 +163,6 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "exercise"
-    },
-    {
-      "from": "2026-07-15",
-      "to": "2026-07-15",
-      "time": "08:00-08:30",
-      "label": "waiting SpiritVale Release",
-      "kind": "activity",
-      "free": true
     }
   ],
   "focus": [
@@ -180,5 +180,54 @@
       "label": "CS2",
       "url": "https://tracker.gg/cs2/profile/steam/76561198319038119/overview?playlist=premier&season=4"
     }
-  ]
+  ],
+  "certs": [
+    {
+      "name": "AWS Certified Cloud Practitioner",
+      "issuer": "Amazon Web Services (AWS)",
+      "meta": "Issued Jun 2026 · Expires Jun 2029",
+      "url": "https://www.credly.com/badges/fb9fb4f4-527e-465e-b776-01f7778f317e"
+    },
+    {
+      "name": "HCCDA — Tech Essentials",
+      "issuer": "Huawei",
+      "meta": "Issued Mar 2025 · Expires Mar 2028 · No. HWENDCTEDA762708",
+      "url": "cert-hccda-huawei.pdf"
+    },
+    {
+      "name": "Linux Essentials",
+      "issuer": "Cisco",
+      "meta": "Issued Mar 2025",
+      "url": "https://www.credly.com/badges/2bdcd7a7-988e-4344-b273-6b221fb375b6"
+    },
+    {
+      "name": "Introduction to Cybersecurity",
+      "issuer": "Cisco",
+      "meta": "Issued Sep 2024",
+      "url": "https://www.credly.com/badges/de039e48-74b5-41b4-83e5-9e4929b52bea"
+    },
+    {
+      "name": "NDG Linux Unhatched",
+      "issuer": "Cisco Networking Academy",
+      "meta": ""
+    },
+    {
+      "name": "AWS Cloud Practitioner Essentials (course)",
+      "issuer": "Amazon Web Services (AWS)",
+      "meta": "Issued Apr 2026"
+    },
+    {
+      "name": "EF SET English Certificate 51/100 (B2 Upper Intermediate)",
+      "issuer": "EF SET",
+      "meta": "Issued Dec 2025",
+      "url": "https://cert.efset.org/en/xNernx"
+    }
+  ],
+  "statusText": {
+    "open": "Open to interviews · preparing AWS SAA-C03 & CKA",
+    "limited": "Limited availability: exam period, see calendar",
+    "busy": "Unavailable: please propose dates after the blocked period"
+  },
+  "hired": false,
+  "hiredNote": ""
 }

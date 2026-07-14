@@ -1,6 +1,6 @@
 {
   "status": "open",
-  "updated": "2026-07-13",
+  "updated": "2026-07-14",
   "busy": [
     {
       "from": "2026-07-02",
@@ -163,6 +163,22 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "exercise"
+    },
+    {
+      "from": "2026-07-15",
+      "to": "2026-07-15",
+      "time": "02:00-04:00",
+      "label": "FIFA World Cup (France vs Spain)",
+      "kind": "activity",
+      "free": false
+    },
+    {
+      "from": "2026-07-16",
+      "to": "2026-07-16",
+      "time": "02:00-03:30",
+      "label": "FIFA World Cup (Argentina vs England)",
+      "kind": "activity",
+      "free": false
     }
   ],
   "focus": [

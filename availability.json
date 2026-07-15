@@ -1,6 +1,6 @@
 {
   "status": "open",
-  "updated": "2026-07-14",
+  "updated": "2026-07-15",
   "busy": [
     {
       "from": "2026-07-02",
@@ -117,10 +117,18 @@
     {
       "from": "2026-07-15",
       "to": "2026-07-15",
-      "time": "08:00-08:30",
+      "time": "21:00-22:00",
       "label": "waiting SpiritVale Release",
       "kind": "activity",
       "free": true
+    },
+    {
+      "from": "2026-07-15",
+      "to": "2026-07-15",
+      "time": "02:00-04:00",
+      "label": "FIFA World Cup (France vs Spain)",
+      "kind": "activity",
+      "free": false
     },
     {
       "from": "2026-07-16",
@@ -128,6 +136,14 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "exercise"
+    },
+    {
+      "from": "2026-07-16",
+      "to": "2026-07-16",
+      "time": "02:00-03:30",
+      "label": "FIFA World Cup (Argentina vs England)",
+      "kind": "activity",
+      "free": false
     },
     {
       "from": "2026-07-20",
@@ -163,22 +179,6 @@
       "time": "16:30-19:00",
       "label": "Exercises",
       "kind": "exercise"
-    },
-    {
-      "from": "2026-07-15",
-      "to": "2026-07-15",
-      "time": "02:00-04:00",
-      "label": "FIFA World Cup (France vs Spain)",
-      "kind": "activity",
-      "free": false
-    },
-    {
-      "from": "2026-07-16",
-      "to": "2026-07-16",
-      "time": "02:00-03:30",
-      "label": "FIFA World Cup (Argentina vs England)",
-      "kind": "activity",
-      "free": false
     }
   ],
   "focus": [

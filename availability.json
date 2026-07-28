@@ -184,7 +184,6 @@
   "focus": [
     "AWS SAA-C03",
     "CKA",
-    "Psychological First Aid",
     "TOEIC"
   ],
   "gaming": [
@@ -237,6 +236,12 @@
       "issuer": "EF SET",
       "meta": "Issued Dec 2025",
       "url": "https://cert.efset.org/en/xNernx"
+    },
+    {
+      "name": "Psychological First Aid",
+      "issuer": "Johns Hopkins University",
+      "meta": "Issued Jul 2026",
+      "url": "https://www.coursera.org/account/accomplishments/verify/Z2HOM3FMXZ95"
     }
   ],
   "statusText": {

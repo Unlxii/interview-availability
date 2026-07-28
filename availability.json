@@ -1,6 +1,6 @@
 {
-  "status": "open",
-  "updated": "2026-07-15",
+  "status": "limited",
+  "updated": "2026-07-28",
   "busy": [
     {
       "from": "2026-07-02",
@@ -244,6 +244,6 @@
     "limited": "Limited availability: exam period, see calendar",
     "busy": "Unavailable: please propose dates after the blocked period"
   },
-  "hired": false,
+  "hired": true,
   "hiredNote": ""
 }

@@ -127,6 +127,12 @@
     }
   }
 
+  /* friendly note shown when the "got the job" flag is on — informational only, never hides
+     anything else on the page (calendar/certs/ticket form all stay exactly as they are) */
+  .hiredNote{margin-top:10px;padding:9px 14px;border-radius:10px;font-size:.82rem;line-height:1.5;
+    background:color-mix(in srgb,var(--free) 9%,transparent);
+    border:1px solid color-mix(in srgb,var(--free) 28%,transparent);color:var(--text)}
+
   .heroActions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
   .btn-hero{display:inline-flex;align-items:center;padding:8px 16px;border-radius:9px;
     font-size:.82rem;font-weight:500;border:1px solid var(--border);color:var(--text)}
@@ -383,6 +389,7 @@
       <span id="status" class="status"></span>
       <span class="meta">updated <span id="updated"></span></span>
     </div>
+    <p id="hiredNote" class="hiredNote" hidden></p>
     <div class="heroActions">
       <a class="btn-hero primary" href="resume-public.pdf" target="_blank" rel="noopener noreferrer">Resume · DevOps</a>
       <a class="btn-hero primary" href="resume-frontend-public.pdf" target="_blank" rel="noopener noreferrer">Resume · Front-End</a>
@@ -563,7 +570,7 @@ const CONFIG = Object.freeze({
 
 /* ---- Schedule data: managed in availability.json (add/move/remove dates there).
         Falls back to these defaults if the file can't be loaded. ---- */
-let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [], focus: [], gaming: [] };
+let SCHEDULE = { status: "open", updated: "2026-07-04", busy: [], focus: [], gaming: [], hired: false, hiredNote: "" };
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 /* same curated palette as admin.html — feedback dots use one of these, chosen there */
@@ -627,8 +634,13 @@ function sanitizeSchedule(raw) {
         busy: String(raw.statusText.busy || "").trim().slice(0, 140),
       }
     : undefined;
-  return { status, updated, busy, focus, gaming, certs, statusText };
+  // "got the job" — informational banner only, never hides the calendar/certs/ticket form.
+  const hired = raw.hired === true;
+  const hiredNote = typeof raw.hiredNote === "string" ? raw.hiredNote.trim().slice(0, 200) : "";
+  return { status, updated, busy, focus, gaming, certs, statusText, hired, hiredNote };
 }
+
+const DEFAULT_HIRED_NOTE = "Update: I've accepted a position, thank you so much for considering me! Feel free to keep browsing my profile and certifications below.";
 
 let scheduleFresh = false; // false = showing cached/default data (fetch failed)
 async function loadSchedule() {
@@ -1142,9 +1154,16 @@ $("resumeReq").addEventListener("click", () => { $("wantResume").checked = true;
 function renderSchedule() {
   $("updated").textContent = SCHEDULE.updated + (scheduleFresh ? "" : " · showing cached copy");
   const st = $("status");
-  st.className = "status " + SCHEDULE.status;
-  // admin.html can override this copy per status; CONFIG.statusText is only the fallback
-  st.textContent = (SCHEDULE.statusText && SCHEDULE.statusText[SCHEDULE.status]) || CONFIG.statusText[SCHEDULE.status];
+  // hired overrides the dot's own color/text so it never contradicts itself (e.g. dot saying
+  // "Open to interviews" right next to a banner saying "already accepted a position") — the
+  // calendar/certs/ticket form underneath are untouched either way, per how this was scoped.
+  st.className = "status " + (SCHEDULE.hired ? "open" : SCHEDULE.status);
+  st.textContent = SCHEDULE.hired
+    ? "Accepted a position"
+    : (SCHEDULE.statusText && SCHEDULE.statusText[SCHEDULE.status]) || CONFIG.statusText[SCHEDULE.status];
+  const note = $("hiredNote");
+  note.hidden = !SCHEDULE.hired;
+  if (SCHEDULE.hired) note.textContent = SCHEDULE.hiredNote || DEFAULT_HIRED_NOTE;
   renderCalendar();
   renderFocus();
   renderGaming();

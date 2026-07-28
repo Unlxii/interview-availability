@@ -63,6 +63,8 @@ jobs:
                 fail(`statusText.${k} must be a string <= 140 chars`);
             }
           }
+          if (d.hired !== undefined && typeof d.hired !== "boolean") fail("hired must be a boolean");
+          if (d.hiredNote !== undefined && (typeof d.hiredNote !== "string" || d.hiredNote.length > 200)) fail("hiredNote must be a string <= 200 chars");
           const TAG_COLORS = ["rose", "pink", "fuchsia", "purple", "violet", "indigo", "blue", "sky", "cyan", "teal", "emerald", "lime", "yellow", "amber", "orange", "slate"];
           for (const [i, b] of d.busy.entries()) {
             if (!DATE.test(String(b.from)) || !DATE.test(String(b.to))) fail(`busy[${i}]: from/to must be YYYY-MM-DD`);
